@@ -1,0 +1,169 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background:
+        radial-gradient(
+            circle at 50% 35%,
+            rgba(20, 91, 160, 0.25),
+            transparent 35%
+        ),
+        linear-gradient(
+            180deg,
+            #030a15 0%,
+            #071426 55%,
+            #020711 100%
+        );
+
+    color: white;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    overflow: hidden;
+}
+
+.app {
+    position: relative;
+
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.install-button {
+    position: absolute;
+
+    top: 22px;
+    right: 20px;
+
+    border: none;
+    outline: none;
+
+    padding: 11px 18px;
+
+    border-radius: 14px;
+
+    background: #168cff;
+    color: white;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 25px rgba(0, 115, 255, 0.28);
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease;
+}
+
+.install-button:active {
+    transform: scale(0.94);
+}
+
+.install-button:hover {
+    background: #0d7eea;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    transform: translateY(-2vh);
+}
+
+.avatar {
+    width: min(230px, 58vw);
+    height: min(230px, 58vw);
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    border: 5px solid rgba(255, 255, 255, 0.9);
+
+    background: #101d30;
+
+    box-shadow:
+        0 0 0 8px rgba(22, 140, 255, 0.08),
+        0 15px 60px rgba(0, 0, 0, 0.65),
+        0 0 45px rgba(15, 126, 255, 0.25);
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    /*
+       Берём область с лицом кота
+       и не показываем нижние надписи.
+    */
+    object-position: 57% 24%;
+
+    transform: scale(1.28);
+}
+
+h1 {
+    margin-top: 25px;
+
+    font-size: clamp(28px, 8vw, 42px);
+
+    line-height: 1;
+
+    font-weight: 800;
+
+    letter-spacing: -1px;
+
+    color: #ffffff;
+
+    text-shadow:
+        0 5px 25px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 480px) {
+
+    .install-button {
+        top: 16px;
+        right: 16px;
+
+        padding: 10px 15px;
+
+        font-size: 13px;
+    }
+
+    .avatar {
+        width: 190px;
+        height: 190px;
+    }
+
+    h1 {
+        margin-top: 21px;
+    }
+}
