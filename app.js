@@ -1,88 +1,144 @@
-let deferredPrompt = null;
+let installPrompt = null;
 
-const installButton = document.getElementById("installButton");
+const installButton =
+    document.getElementById("installButton");
 
-/*
-    Сначала кнопка видна.
-    Если браузер не поддерживает установку,
-    она будет скрыта после загрузки.
-*/
+const installMessage =
+    document.getElementById("installMessage");
 
-installButton.style.display = "none";
+const closeMessage =
+    document.getElementById("closeMessage");
 
-/*
-    Chrome сообщает сайту,
-    что приложение можно установить.
-*/
-
-window.addEventListener("beforeinstallprompt", (event) => {
-
-    event.preventDefault();
-
-    deferredPrompt = event;
-
-    installButton.style.display = "block";
-});
 
 /*
-    Нажатие на кнопку установки
+    Показываем кнопку сразу.
 */
 
-installButton.addEventListener("click", async () => {
+installButton.style.display = "block";
 
-    if (!deferredPrompt) {
-        return;
+
+/*
+    Chrome сообщает,
+    что PWA можно установить.
+*/
+
+window.addEventListener(
+    "beforeinstallprompt",
+    function (event) {
+
+        event.preventDefault();
+
+        installPrompt = event;
+
+        console.log(
+            "Nexgram можно установить"
+        );
     }
+);
 
-    deferredPrompt.prompt();
-
-    const result = await deferredPrompt.userChoice;
-
-    if (result.outcome === "accepted") {
-        console.log("Nexgram установлен");
-    } else {
-        console.log("Установка отменена");
-    }
-
-    deferredPrompt = null;
-
-    installButton.style.display = "none";
-});
 
 /*
-    Если приложение уже установлено,
-    кнопку установки не показываем.
+    Нажатие «Установить».
 */
 
-window.addEventListener("appinstalled", () => {
+installButton.addEventListener(
+    "click",
+    async function () {
 
-    deferredPrompt = null;
+        /*
+            Если Chrome дал настоящий
+            системный запрос установки.
+        */
 
-    installButton.style.display = "none";
+        if (installPrompt) {
 
-    console.log("Nexgram успешно установлен");
-});
+            installPrompt.prompt();
+
+            const result =
+                await installPrompt.userChoice;
+
+            console.log(
+                "Результат установки:",
+                result.outcome
+            );
+
+            installPrompt = null;
+
+            return;
+        }
+
+
+        /*
+            Если Chrome не передал
+            beforeinstallprompt.
+        */
+
+        installMessage.style.display =
+            "block";
+    }
+);
+
 
 /*
-    Регистрируем Service Worker
+    Закрытие подсказки.
+*/
+
+closeMessage.addEventListener(
+    "click",
+    function () {
+
+        installMessage.style.display =
+            "none";
+    }
+);
+
+
+/*
+    Приложение установлено.
+*/
+
+window.addEventListener(
+    "appinstalled",
+    function () {
+
+        console.log(
+            "Nexgram установлен"
+        );
+
+        installButton.style.display =
+            "none";
+    }
+);
+
+
+/*
+    Service Worker.
 */
 
 if ("serviceWorker" in navigator) {
 
-    window.addEventListener("load", () => {
+    window.addEventListener(
+        "load",
+        function () {
 
-        navigator.serviceWorker
-            .register("./sw.js")
-            .then(() => {
-                console.log("Service Worker запущен");
-            })
-            .catch((error) => {
-                console.error(
-                    "Ошибка Service Worker:",
-                    error
-                );
-            });
+            navigator.serviceWorker
+                .register("./sw.js")
+                .then(function () {
 
-    });
+                    console.log(
+                        "Service Worker работает"
+                    );
 
+                })
+                .catch(function (error) {
+
+                    console.error(
+                        "Ошибка Service Worker:",
+                        error
+                    );
+
+                });
+
+        }
+    );
 }
