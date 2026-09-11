@@ -5,37 +5,471 @@
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     >
-
-    <meta name="theme-color" content="#071426">
-
-    <link rel="manifest" href="./manifest.json">
-
-    <link rel="icon" href="./icon.svg">
 
     <title>Nexgram</title>
 
-    <link rel="stylesheet" href="./style.css">
+    <meta
+        name="theme-color"
+        content="#ffffff"
+    >
+
+    <meta
+        name="description"
+        content="Nexgram — новый мессенджер"
+    >
+
+    <link
+        rel="manifest"
+        href="./manifest.json?v=5"
+    >
+
+    <link
+        rel="icon"
+        type="image/svg+xml"
+        href="./icon.svg?v=5"
+    >
+
+    <link
+        rel="apple-touch-icon"
+        href="./icon.svg?v=5"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./style.css?v=5"
+    >
 </head>
 
 <body>
 
-    <button id="installBtn" type="button">
-        Установить приложение
-    </button>
+<div class="app">
 
-    <main>
+    <!-- ========================= -->
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
+    <!-- ========================= -->
 
-        <div class="avatar">
-            <img src="./icon.svg" alt="Nexgram">
+    <header class="topbar">
+
+        <div class="brand-small">
+            <div class="brand-dot"></div>
+            <span>Nexgram</span>
         </div>
 
-        <h1>Nexgram</h1>
+        <button
+            id="installBtn"
+            class="install-button"
+        >
+            Скачать приложение
+        </button>
+
+    </header>
+
+
+    <!-- ========================= -->
+    <!-- ЭКРАН АВТОРИЗАЦИИ -->
+    <!-- ========================= -->
+
+    <main
+        id="authScreen"
+        class="screen auth-screen"
+    >
+
+        <div class="auth-card">
+
+            <div class="logo-wrap">
+                <img
+                    src="./icon.svg?v=5"
+                    alt="Nexgram"
+                    class="main-logo"
+                >
+            </div>
+
+            <h1>Добро пожаловать<br>в Nexgram</h1>
+
+            <p class="subtitle">
+                Общайтесь, когда чаты будут готовы.
+                Мы уже работаем над ними.
+            </p>
+
+
+            <div class="auth-buttons">
+
+                <button
+                    id="registerBtn"
+                    class="primary-button"
+                >
+                    Регистрация
+                </button>
+
+                <button
+                    id="loginBtn"
+                    class="secondary-button"
+                >
+                    Войти
+                </button>
+
+            </div>
+
+
+            <button
+                id="anonymousBtn"
+                class="anonymous-button"
+            >
+                Зайти анонимно
+            </button>
+
+
+            <p class="privacy-text">
+                Продолжая, вы соглашаетесь с условиями
+                использования Nexgram.
+            </p>
+
+        </div>
 
     </main>
 
-    <script src="./app.js"></script>
+
+    <!-- ========================= -->
+    <!-- РЕГИСТРАЦИЯ -->
+    <!-- ========================= -->
+
+    <section
+        id="registerScreen"
+        class="screen form-screen hidden"
+    >
+
+        <div class="form-card">
+
+            <button
+                class="back-button"
+                data-back="auth"
+            >
+                ← Назад
+            </button>
+
+            <div class="form-icon">
+                ✦
+            </div>
+
+            <h2>Создать аккаунт</h2>
+
+            <p class="form-subtitle">
+                Зарегистрируйтесь в Nexgram.
+            </p>
+
+
+            <form id="registerForm">
+
+                <label>
+                    Имя
+                    <input
+                        id="registerName"
+                        type="text"
+                        placeholder="Ваше имя"
+                        autocomplete="name"
+                        required
+                    >
+                </label>
+
+
+                <label>
+                    Email
+                    <input
+                        id="registerEmail"
+                        type="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+                </label>
+
+
+                <label>
+                    Пароль
+                    <input
+                        id="registerPassword"
+                        type="password"
+                        placeholder="Минимум 6 символов"
+                        minlength="6"
+                        autocomplete="new-password"
+                        required
+                    >
+                </label>
+
+
+                <button
+                    type="submit"
+                    class="primary-button form-submit"
+                >
+                    Зарегистрироваться
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- ВХОД -->
+    <!-- ========================= -->
+
+    <section
+        id="loginScreen"
+        class="screen form-screen hidden"
+    >
+
+        <div class="form-card">
+
+            <button
+                class="back-button"
+                data-back="auth"
+            >
+                ← Назад
+            </button>
+
+            <div class="form-icon">
+                ↗
+            </div>
+
+            <h2>Войти в Nexgram</h2>
+
+            <p class="form-subtitle">
+                Введите данные своего аккаунта.
+            </p>
+
+
+            <form id="loginForm">
+
+                <label>
+                    Email
+                    <input
+                        id="loginEmail"
+                        type="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+                </label>
+
+
+                <label>
+                    Пароль
+                    <input
+                        id="loginPassword"
+                        type="password"
+                        placeholder="Ваш пароль"
+                        autocomplete="current-password"
+                        required
+                    >
+                </label>
+
+
+                <button
+                    type="submit"
+                    class="primary-button form-submit"
+                >
+                    Войти
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- АНОНИМНЫЙ ВХОД -->
+    <!-- ========================= -->
+
+    <div
+        id="anonymousModal"
+        class="modal hidden"
+    >
+
+        <div
+            class="modal-overlay"
+            id="modalOverlay"
+        ></div>
+
+        <div class="modal-card">
+
+            <button
+                id="closeModal"
+                class="modal-close"
+            >
+                ×
+            </button>
+
+
+            <div class="modal-icon">
+                👤
+            </div>
+
+
+            <h2>Анонимный вход</h2>
+
+            <p class="modal-text">
+                Вы можете посмотреть Nexgram без создания
+                аккаунта, но такой режим будет ограничен.
+            </p>
+
+
+            <div class="limitations">
+
+                <div class="limitation">
+                    <span>✓</span>
+                    <p>Можно войти без регистрации</p>
+                </div>
+
+                <div class="limitation">
+                    <span>×</span>
+                    <p>Нет полноценного профиля</p>
+                </div>
+
+                <div class="limitation">
+                    <span>×</span>
+                    <p>Недоступны настройки аккаунта</p>
+                </div>
+
+                <div class="limitation">
+                    <span>×</span>
+                    <p>Ограниченные возможности Nexgram</p>
+                </div>
+
+                <div class="limitation">
+                    <span>×</span>
+                    <p>Данные анонимного режима могут не сохраняться</p>
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    id="anonymousBack"
+                    class="secondary-button"
+                >
+                    Назад
+                </button>
+
+                <button
+                    id="anonymousContinue"
+                    class="primary-button"
+                >
+                    Продолжить
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- ЧАТЫ ЕЩЁ НЕ ГОТОВЫ -->
+    <!-- ========================= -->
+
+    <section
+        id="chatsScreen"
+        class="screen chats-screen hidden"
+    >
+
+        <div class="chats-card">
+
+            <div class="chat-logo">
+                <img
+                    src="./icon.svg?v=5"
+                    alt="Nexgram"
+                >
+            </div>
+
+
+            <div class="status-pill">
+                Скоро
+            </div>
+
+
+            <h2>Чаты ещё не готовы</h2>
+
+            <p>
+                Вы успешно вошли в Nexgram.
+                Сейчас мы заканчиваем разработку чатов
+                и основных функций мессенджера.
+            </p>
+
+            <p class="small-note">
+                Вы уже можете познакомиться с приложением.
+                Когда чаты будут готовы, этот экран исчезнет.
+            </p>
+
+
+            <button
+                id="continueChats"
+                class="primary-button"
+            >
+                Продолжить
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- ГЛАВНЫЙ ЭКРАН -->
+    <!-- ========================= -->
+
+    <section
+        id="homeScreen"
+        class="screen home-screen hidden"
+    >
+
+        <div class="home-content">
+
+            <div class="home-logo">
+                <img
+                    src="./icon.svg?v=5"
+                    alt="Nexgram"
+                >
+            </div>
+
+            <h2>Nexgram</h2>
+
+            <p>
+                Чаты ещё не готовы
+            </p>
+
+            <div class="home-line"></div>
+
+            <span>
+                Мы работаем над мессенджером.
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================= -->
+    <!-- TOAST -->
+    <!-- ========================= -->
+
+    <div
+        id="toast"
+        class="toast"
+    ></div>
+
+</div>
+
+
+<script src="./app.js?v=5"></script>
 
 </body>
 </html>
