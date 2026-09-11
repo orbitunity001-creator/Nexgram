@@ -1,20 +1,33 @@
 {
+    "id": "./",
     "name": "Nexgram Messenger",
     "short_name": "Nexgram",
+
     "description": "Nexgram Messenger",
+
     "start_url": "./",
     "scope": "./",
+
     "display": "standalone",
+
+    "display_override": [
+        "standalone",
+        "minimal-ui"
+    ],
+
     "orientation": "portrait",
-    "background_color": "#030a15",
+
+    "background_color": "#030b17",
     "theme_color": "#071426",
+
     "lang": "ru",
+
     "icons": [
         {
-            "src": "cat.jpg",
-            "sizes": "1536x1536",
-            "type": "image/jpeg",
-            "purpose": "any"
+            "src": "./icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
         }
     ]
 }
