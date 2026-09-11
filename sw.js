@@ -1,4 +1,4 @@
-const CACHE_NAME = "nexgram-v1";
+const CACHE_NAME = "nexgram-v2";
 
 const FILES = [
     "./",
@@ -9,59 +9,84 @@ const FILES = [
     "./cat.jpg"
 ];
 
-self.addEventListener("install", (event) => {
 
-    event.waitUntil(
+self.addEventListener(
+    "install",
+    function (event) {
 
-        caches.open(CACHE_NAME)
-            .then((cache) => {
-                return cache.addAll(FILES);
-            })
+        event.waitUntil(
 
-    );
+            caches
+                .open(CACHE_NAME)
+                .then(function (cache) {
 
-    self.skipWaiting();
-});
-
-self.addEventListener("activate", (event) => {
-
-    event.waitUntil(
-
-        caches.keys().then((keys) => {
-
-            return Promise.all(
-
-                keys.map((key) => {
-
-                    if (key !== CACHE_NAME) {
-                        return caches.delete(key);
-                    }
+                    return cache.addAll(FILES);
 
                 })
 
-            );
+        );
 
-        })
+        self.skipWaiting();
+    }
+);
 
-    );
 
-    self.clients.claim();
-});
+self.addEventListener(
+    "activate",
+    function (event) {
 
-self.addEventListener("fetch", (event) => {
+        event.waitUntil(
 
-    event.respondWith(
+            caches.keys()
+                .then(function (keys) {
 
-        caches.match(event.request)
-            .then((cachedResponse) => {
+                    return Promise.all(
 
-                if (cachedResponse) {
-                    return cachedResponse;
-                }
+                        keys.map(function (key) {
 
-                return fetch(event.request);
+                            if (
+                                key !== CACHE_NAME
+                            ) {
 
-            })
+                                return caches.delete(
+                                    key
+                                );
 
-    );
-});
+                            }
+
+                        })
+
+                    );
+
+                })
+
+        );
+
+        self.clients.claim();
+    }
+);
+
+
+self.addEventListener(
+    "fetch",
+    function (event) {
+
+        event.respondWith(
+
+            fetch(event.request)
+                .then(function (response) {
+
+                    return response;
+
+                })
+                .catch(function () {
+
+                    return caches.match(
+                        event.request
+                    );
+
+                })
+
+        );
+    }
+);
