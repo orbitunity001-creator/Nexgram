@@ -1,0 +1,20 @@
+{
+    "name": "Nexgram Messenger",
+    "short_name": "Nexgram",
+    "description": "Nexgram Messenger",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#030a15",
+    "theme_color": "#071426",
+    "lang": "ru",
+    "icons": [
+        {
+            "src": "cat.jpg",
+            "sizes": "1536x1536",
+            "type": "image/jpeg",
+            "purpose": "any"
+        }
+    ]
+}
