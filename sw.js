@@ -1,4 +1,4 @@
-const CACHE_NAME = "nexgram-v2";
+const CACHE_NAME = "nexgram-2026-01";
 
 const FILES = [
     "./",
@@ -6,7 +6,7 @@ const FILES = [
     "./style.css",
     "./app.js",
     "./manifest.json",
-    "./cat.jpg"
+    "./icon.svg"
 ];
 
 
@@ -15,15 +15,11 @@ self.addEventListener(
     function (event) {
 
         event.waitUntil(
-
             caches
                 .open(CACHE_NAME)
                 .then(function (cache) {
-
                     return cache.addAll(FILES);
-
                 })
-
         );
 
         self.skipWaiting();
@@ -37,28 +33,21 @@ self.addEventListener(
 
         event.waitUntil(
 
-            caches.keys()
-                .then(function (keys) {
+            caches.keys().then(function (keys) {
 
-                    return Promise.all(
+                return Promise.all(
 
-                        keys.map(function (key) {
+                    keys.map(function (key) {
 
-                            if (
-                                key !== CACHE_NAME
-                            ) {
+                        if (key !== CACHE_NAME) {
+                            return caches.delete(key);
+                        }
 
-                                return caches.delete(
-                                    key
-                                );
+                    })
 
-                            }
+                );
 
-                        })
-
-                    );
-
-                })
+            })
 
         );
 
