@@ -2,362 +2,394 @@
 
 <defs>
 
-    <!-- ЧЁРНЫЙ ФОН -->
-    <radialGradient id="bg" cx="50%" cy="45%" r="75%">
-        <stop offset="0%" stop-color="#102542"/>
-        <stop offset="35%" stop-color="#071426"/>
-        <stop offset="70%" stop-color="#020811"/>
-        <stop offset="100%" stop-color="#000000"/>
-    </radialGradient>
+  <!-- Тёмный космический фон -->
+  <radialGradient id="bg" cx="50%" cy="45%" r="75%">
+    <stop offset="0%" stop-color="#10233d"/>
+    <stop offset="45%" stop-color="#071322"/>
+    <stop offset="80%" stop-color="#020711"/>
+    <stop offset="100%" stop-color="#000000"/>
+  </radialGradient>
 
-    <!-- СИНИЙ СВЕТ -->
-    <radialGradient id="light">
-        <stop offset="0%" stop-color="#43baff" stop-opacity=".9"/>
-        <stop offset="35%" stop-color="#168cff" stop-opacity=".45"/>
-        <stop offset="100%" stop-color="#006cff" stop-opacity="0"/>
-    </radialGradient>
+  <!-- Корпус ракеты -->
+  <linearGradient id="rocket" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#ffffff"/>
+    <stop offset="25%" stop-color="#dcecff"/>
+    <stop offset="55%" stop-color="#7894ae"/>
+    <stop offset="75%" stop-color="#263b52"/>
+    <stop offset="100%" stop-color="#07111d"/>
+  </linearGradient>
 
-    <!-- ТЕКСТ -->
-    <linearGradient id="text"
-                    x1="0"
-                    y1="0"
-                    x2="1"
-                    y2="1">
-        <stop offset="0%" stop-color="#ffffff"/>
-        <stop offset="35%" stop-color="#dff4ff"/>
-        <stop offset="65%" stop-color="#72c8ff"/>
-        <stop offset="100%" stop-color="#ffffff"/>
-    </linearGradient>
+  <!-- Нос -->
+  <linearGradient id="nose" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#ffffff"/>
+    <stop offset="45%" stop-color="#9bb8d1"/>
+    <stop offset="100%" stop-color="#172c42"/>
+  </linearGradient>
 
-    <!-- ЗВЕЗДА -->
-    <linearGradient id="star"
-                    x1="0"
-                    y1="0"
-                    x2="1"
-                    y2="1">
-        <stop offset="0%" stop-color="#ffffff"/>
-        <stop offset="40%" stop-color="#9cddff"/>
-        <stop offset="75%" stop-color="#168cff"/>
-        <stop offset="100%" stop-color="#005ec4"/>
-    </linearGradient>
+  <!-- Стекло -->
+  <radialGradient id="window">
+    <stop offset="0%" stop-color="#bff1ff"/>
+    <stop offset="35%" stop-color="#36bfff"/>
+    <stop offset="75%" stop-color="#07558f"/>
+    <stop offset="100%" stop-color="#02192e"/>
+  </radialGradient>
 
-    <!-- СВЕЧЕНИЕ -->
-    <filter id="blur"
-            x="-100%"
-            y="-100%"
-            width="300%"
-            height="300%">
-        <feGaussianBlur stdDeviation="18"/>
-    </filter>
+  <!-- Пламя -->
+  <linearGradient id="flame" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#ffffff"/>
+    <stop offset="20%" stop-color="#8eeaff"/>
+    <stop offset="50%" stop-color="#24aaff"/>
+    <stop offset="75%" stop-color="#146cff"/>
+    <stop offset="100%" stop-color="#002cff"/>
+  </linearGradient>
 
-    <filter id="smallBlur"
-            x="-100%"
-            y="-100%"
-            width="300%"
-            height="300%">
-        <feGaussianBlur stdDeviation="5"/>
-    </filter>
+  <!-- Синее свечение -->
+  <radialGradient id="glow">
+    <stop offset="0%" stop-color="#28b9ff" stop-opacity=".75"/>
+    <stop offset="45%" stop-color="#087dff" stop-opacity=".3"/>
+    <stop offset="100%" stop-color="#005cff" stop-opacity="0"/>
+  </radialGradient>
+
+  <filter id="blur">
+    <feGaussianBlur stdDeviation="18"/>
+  </filter>
+
+  <filter id="glowSmall">
+    <feGaussianBlur stdDeviation="7"/>
+  </filter>
+
+  <filter id="shadow">
+    <feDropShadow dx="0" dy="10" stdDeviation="12"
+                  flood-color="#000000"
+                  flood-opacity=".8"/>
+  </filter>
 
 </defs>
 
 
-<!-- ЧЁРНЫЙ ФОН -->
+<!-- ================================= -->
+<!-- ФОН -->
+<!-- ================================= -->
 
 <rect
-    width="512"
-    height="512"
-    rx="100"
-    fill="url(#bg)"
+  width="512"
+  height="512"
+  rx="110"
+  fill="url(#bg)"
 />
 
 
-<!-- ========================== -->
-<!-- БОЛЬШИЕ СВЕЧЕНИЯ -->
-<!-- ========================== -->
+<!-- ================================= -->
+<!-- КОСМИЧЕСКОЕ СВЕЧЕНИЕ -->
+<!-- ================================= -->
 
 <circle
-    cx="55"
-    cy="55"
-    r="150"
-    fill="url(#light)"
-    filter="url(#blur)"
-    opacity=".65"
-/>
-
-<circle
-    cx="460"
-    cy="80"
-    r="130"
-    fill="url(#light)"
-    filter="url(#blur)"
-    opacity=".45"
+  cx="256"
+  cy="270"
+  r="230"
+  fill="url(#glow)"
+  opacity=".3"
 />
 
 <circle
-    cx="80"
-    cy="430"
-    r="150"
-    fill="url(#light)"
-    filter="url(#blur)"
-    opacity=".35"
+  cx="80"
+  cy="90"
+  r="100"
+  fill="url(#glow)"
+  filter="url(#blur)"
+  opacity=".25"
 />
 
 <circle
-    cx="455"
-    cy="440"
-    r="160"
-    fill="url(#light)"
-    filter="url(#blur)"
-    opacity=".55"
+  cx="430"
+  cy="410"
+  r="120"
+  fill="url(#glow)"
+  filter="url(#blur)"
+  opacity=".3"
 />
 
 
-<!-- ========================== -->
-<!-- СВЕТ В ЦЕНТРЕ -->
-<!-- ========================== -->
+<!-- ================================= -->
+<!-- ЗВЁЗДЫ -->
+<!-- ================================= -->
 
-<ellipse
-    cx="256"
-    cy="255"
-    rx="220"
-    ry="145"
-    fill="url(#light)"
-    opacity=".12"
-    filter="url(#blur)"
-/>
+<g fill="#b9eaff">
 
-
-<!-- ========================== -->
-<!-- ДИАГОНАЛЬНЫЕ БЛИКИ -->
-<!-- ========================== -->
-
-<path
-    d="M-30 360 L210 120"
-    stroke="#36aaff"
-    stroke-width="5"
-    opacity=".15"
-    filter="url(#smallBlur)"
-/>
-
-<path
-    d="M300 530 L540 290"
-    stroke="#39b7ff"
-    stroke-width="6"
-    opacity=".18"
-    filter="url(#smallBlur)"
-/>
-
-<path
-    d="M390 -20 L520 110"
-    stroke="#63caff"
-    stroke-width="5"
-    opacity=".15"
-    filter="url(#smallBlur)"
-/>
-
-
-<!-- ========================== -->
-<!-- NEXGRAM — СВЕЧЕНИЕ -->
-<!-- ========================== -->
-
-<text
-    x="256"
-    y="267"
-
-    text-anchor="middle"
-    dominant-baseline="middle"
-
-    font-family="Arial, Helvetica, sans-serif"
-    font-size="58"
-    font-weight="800"
-    letter-spacing="-2"
-
-    fill="#159cff"
-    opacity=".65"
-
-    filter="url(#smallBlur)"
->
-    Nexgram
-</text>
-
-
-<!-- NEXGRAM — ОСНОВНОЙ -->
-
-<text
-    x="256"
-    y="267"
-
-    text-anchor="middle"
-    dominant-baseline="middle"
-
-    font-family="Arial, Helvetica, sans-serif"
-    font-size="58"
-    font-weight="800"
-    letter-spacing="-2"
-
-    fill="url(#text)"
->
-    Nexgram
-</text>
-
-
-<!-- ========================== -->
-<!-- ЗВЕЗДА -->
-<!-- ========================== -->
-
-<!-- свечение -->
-
-<path
-    d="
-        M256 308
-        L266 330
-        L290 333
-        L272 348
-        L278 372
-        L256 359
-        L234 372
-        L240 348
-        L222 333
-        L246 330
-        Z
-    "
-
-    fill="#159cff"
-    opacity=".85"
-
-    filter="url(#blur)"
-/>
-
-
-<!-- сама звезда -->
-
-<path
-    d="
-        M256 308
-        L266 330
-        L290 333
-        L272 348
-        L278 372
-        L256 359
-        L234 372
-        L240 348
-        L222 333
-        L246 330
-        Z
-    "
-
-    fill="url(#star)"
-/>
-
-
-<!-- ========================== -->
-<!-- СВЕТОВЫЕ ТОЧКИ -->
-<!-- ========================== -->
-
-<circle cx="72" cy="145" r="4"
-        fill="#7ed8ff"/>
-
-<circle cx="112" cy="380" r="3"
-        fill="#ffffff"/>
-
-<circle cx="420" cy="145" r="4"
-        fill="#59c5ff"/>
-
-<circle cx="455" cy="330" r="3"
-        fill="#ffffff"/>
-
-<circle cx="370" cy="55" r="3"
-        fill="#75d0ff"/>
-
-<circle cx="145" cy="70" r="3"
-        fill="#ffffff"/>
-
-<circle cx="48" cy="285" r="3"
-        fill="#3daeff"/>
-
-<circle cx="465" cy="235" r="4"
-        fill="#46baff"/>
-
-
-<!-- ========================== -->
-<!-- ЯРКИЕ ЗВЁЗДНЫЕ БЛИКИ -->
-<!-- ========================== -->
-
-<g fill="#ffffff">
-
-    <path
-        d="
-            M95 105
-            L99 116
-            L110 120
-            L99 124
-            L95 136
-            L91 124
-            L80 120
-            L91 116
-            Z
-        "
-        opacity=".8"
-    />
-
-    <path
-        d="
-            M405 90
-            L409 101
-            L420 105
-            L409 109
-            L405 120
-            L401 109
-            L390 105
-            L401 101
-            Z
-        "
-        opacity=".7"
-    />
-
-    <path
-        d="
-            M420 390
-            L424 401
-            L435 405
-            L424 409
-            L420 420
-            L416 409
-            L405 405
-            L416 401
-            Z
-        "
-        opacity=".65"
-    />
-
-    <path
-        d="
-            M100 405
-            L103 414
-            L112 417
-            L103 420
-            L100 429
-            L97 420
-            L88 417
-            L97 414
-            Z
-        "
-        opacity=".55"
-    />
+  <circle cx="72" cy="125" r="2.5"/>
+  <circle cx="118" cy="72" r="2"/>
+  <circle cx="426" cy="82" r="2.5"/>
+  <circle cx="455" cy="180" r="2"/>
+  <circle cx="66" cy="330" r="2"/>
+  <circle cx="430" cy="340" r="2.5"/>
+  <circle cx="110" cy="420" r="2"/>
+  <circle cx="370" cy="55" r="1.8"/>
 
 </g>
 
 
-<!-- ========================== -->
-<!-- ТОНКИЙ СВЕТ ВНИЗУ -->
-<!-- ========================== -->
+<!-- Яркие звёздные блики -->
 
-<path
-    d="M155 405 Q256 430 357 405"
-    fill="none"
-    stroke="#168cff"
+<g fill="#ffffff">
+
+  <path d="
+    M90 170
+    L94 181
+    L105 185
+    L94 189
+    L90 200
+    L86 189
+    L75 185
+    L86 181 Z
+  "/>
+
+  <path d="
+    M420 245
+    L424 256
+    L435 260
+    L424 264
+    L420 275
+    L416 264
+    L405 260
+    L416 256 Z
+  "/>
+
+</g>
+
+
+<!-- ================================= -->
+<!-- СВЕЧЕНИЕ ЗА РАКЕТОЙ -->
+<!-- ================================= -->
+
+<ellipse
+  cx="256"
+  cy="350"
+  rx="105"
+  ry="150"
+  fill="#008cff"
+  opacity=".28"
+  filter="url(#blur)"
+/>
+
+
+<!-- ================================= -->
+<!-- РАКЕТА -->
+<!-- ================================= -->
+
+<g
+  transform="rotate(42 256 256)"
+  filter="url(#shadow)"
+>
+
+
+  <!-- ПЛАМЯ — внешнее -->
+
+  <path
+    d="
+      M245 385
+      C220 420 220 458 256 490
+      C292 458 292 420 267 385
+      Z
+    "
+    fill="#087dff"
+    opacity=".6"
+    filter="url(#glowSmall)"
+  />
+
+  <!-- ПЛАМЯ -->
+
+  <path
+    d="
+      M246 370
+      C235 405 235 430 256 470
+      C277 430 277 405 266 370
+      Z
+    "
+    fill="url(#flame)"
+  />
+
+  <!-- Центральное пламя -->
+
+  <path
+    d="
+      M250 380
+      C247 405 250 426 256 444
+      C262 426 265 405 262 380
+      Z
+    "
+    fill="#ffffff"
+  />
+
+
+  <!-- ЛЕВЫЙ СТАБИЛИЗАТОР -->
+
+  <path
+    d="
+      M185 302
+      C155 312 135 337 126 367
+      C150 360 174 348 194 330
+      Z
+    "
+    fill="#18324b"
+    stroke="#4b7191"
     stroke-width="3"
-    opacity=".3"
+  />
+
+
+  <!-- ПРАВЫЙ СТАБИЛИЗАТОР -->
+
+  <path
+    d="
+      M327 302
+      C357 312 377 337 386 367
+      C362 360 338 348 318 330
+      Z
+    "
+    fill="#18324b"
+    stroke="#4b7191"
+    stroke-width="3"
+  />
+
+
+  <!-- ОСНОВНОЙ КОРПУС -->
+
+  <path
+    d="
+      M256 62
+      C210 105 181 170 181 248
+      C181 315 207 359 256 389
+      C305 359 331 315 331 248
+      C331 170 302 105 256 62
+      Z
+    "
+    fill="url(#rocket)"
+    stroke="#9fc8e6"
+    stroke-width="3"
+  />
+
+
+  <!-- БЛИК НА ЛЕВОЙ СТОРОНЕ -->
+
+  <path
+    d="
+      M235 88
+      C207 140 198 200 202 260
+      C205 304 218 337 237 356
+      C218 304 214 230 220 168
+      C223 135 228 107 235 88
+      Z
+    "
+    fill="#ffffff"
+    opacity=".4"
+  />
+
+
+  <!-- ТЁМНАЯ ПОЛОСА -->
+
+  <path
+    d="
+      M181 248
+      C181 315 207 359 256 389
+      C305 359 331 315 331 248
+      Z
+    "
+    fill="#102238"
+    opacity=".28"
+  />
+
+
+  <!-- ИЛЛЮМИНАТОР -->
+
+  <circle
+    cx="256"
+    cy="205"
+    r="47"
+    fill="#071321"
+    stroke="#b8e6ff"
+    stroke-width="6"
+  />
+
+  <circle
+    cx="256"
+    cy="205"
+    r="38"
+    fill="url(#window)"
+  />
+
+  <!-- Блик стекла -->
+
+  <ellipse
+    cx="242"
+    cy="190"
+    rx="13"
+    ry="8"
+    fill="#ffffff"
+    opacity=".65"
+  />
+
+  <circle
+    cx="271"
+    cy="221"
+    r="5"
+    fill="#8be7ff"
+    opacity=".65"
+  />
+
+
+  <!-- НИЖНЕЕ КРЕПЛЕНИЕ -->
+
+  <path
+    d="
+      M215 330
+      Q256 350 297 330
+      L286 361
+      Q256 377 226 361
+      Z
+    "
+    fill="#0a1726"
+    stroke="#52748f"
+    stroke-width="3"
+  />
+
+</g>
+
+
+<!-- ================================= -->
+<!-- ДОПОЛНИТЕЛЬНЫЕ БЛИКИ -->
+<!-- ================================= -->
+
+<g opacity=".8">
+
+  <path
+    d="M105 310 L145 270"
+    stroke="#5dcaff"
+    stroke-width="3"
+    stroke-linecap="round"
+    filter="url(#glowSmall)"
+  />
+
+  <path
+    d="M365 150 L405 110"
+    stroke="#55c8ff"
+    stroke-width="3"
+    stroke-linecap="round"
+    filter="url(#glowSmall)"
+  />
+
+</g>
+
+
+<!-- ================================= -->
+<!-- ФИНАЛЬНАЯ ТОЧКА СВЕТА -->
+<!-- ================================= -->
+
+<circle
+  cx="256"
+  cy="256"
+  r="5"
+  fill="#ffffff"
+  opacity=".35"
+  filter="url(#glowSmall)"
 />
 
 </svg>
