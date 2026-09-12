@@ -1,155 +1,33 @@
-"use strict";
+const USER_KEY = "nexgram_user_v7";
+
+const screens = [
+    "authScreen",
+    "registerScreen",
+    "loginScreen",
+    "chatsScreen",
+    "homeScreen"
+];
 
 
-/* ================================= */
-/* СОСТОЯНИЕ */
-/* ================================= */
+/* =========================
+   ЭКРАНЫ
+========================= */
 
-const STORAGE_KEY = "nexgram_user_v5";
+function showScreen(id) {
 
+    screens.forEach(screenId => {
 
-/* ================================= */
-/* ЭЛЕМЕНТЫ */
-/* ================================= */
+        const screen =
+            document.getElementById(screenId);
 
-const authScreen = document.getElementById("authScreen");
+        if (!screen) return;
 
-const registerScreen =
-    document.getElementById("registerScreen");
-
-const loginScreen =
-    document.getElementById("loginScreen");
-
-const chatsScreen =
-    document.getElementById("chatsScreen");
-
-const homeScreen =
-    document.getElementById("homeScreen");
-
-const registerBtn =
-    document.getElementById("registerBtn");
-
-const loginBtn =
-    document.getElementById("loginBtn");
-
-const anonymousBtn =
-    document.getElementById("anonymousBtn");
-
-const anonymousModal =
-    document.getElementById("anonymousModal");
-
-const modalOverlay =
-    document.getElementById("modalOverlay");
-
-const closeModal =
-    document.getElementById("closeModal");
-
-const anonymousBack =
-    document.getElementById("anonymousBack");
-
-const anonymousContinue =
-    document.getElementById("anonymousContinue");
-
-const registerForm =
-    document.getElementById("registerForm");
-
-const loginForm =
-    document.getElementById("loginForm");
-
-const continueChats =
-    document.getElementById("continueChats");
-
-const installBtn =
-    document.getElementById("installBtn");
-
-const toast =
-    document.getElementById("toast");
-
-
-/* ================================= */
-/* INSTALL PWA */
-/* ================================= */
-
-let deferredInstallPrompt = null;
-
-
-window.addEventListener(
-    "beforeinstallprompt",
-    function(event) {
-
-        event.preventDefault();
-
-        deferredInstallPrompt = event;
-
-        installBtn.style.display = "block";
-    }
-);
-
-
-installBtn.addEventListener(
-    "click",
-    async function() {
-
-        if (deferredInstallPrompt) {
-
-            deferredInstallPrompt.prompt();
-
-            const result =
-                await deferredInstallPrompt.userChoice;
-
-            if (result.outcome === "accepted") {
-
-                showToast(
-                    "Приложение Nexgram устанавливается"
-                );
-
-            }
-
-            deferredInstallPrompt = null;
-
-            return;
-        }
-
-
-        showToast(
-            "Откройте меню браузера и выберите «Установить приложение»"
+        screen.classList.toggle(
+            "active",
+            screenId === id
         );
-    }
-);
 
-
-window.addEventListener(
-    "appinstalled",
-    function() {
-
-        deferredInstallPrompt = null;
-
-        showToast(
-            "Nexgram установлен"
-        );
-    }
-);
-
-
-/* ================================= */
-/* ЭКРАНЫ */
-/* ================================= */
-
-function hideAllScreens() {
-
-    authScreen.classList.add("hidden");
-    registerScreen.classList.add("hidden");
-    loginScreen.classList.add("hidden");
-    chatsScreen.classList.add("hidden");
-    homeScreen.classList.add("hidden");
-}
-
-
-function showScreen(screen) {
-
-    hideAllScreens();
-
-    screen.classList.remove("hidden");
+    });
 
     window.scrollTo({
         top: 0,
@@ -158,106 +36,77 @@ function showScreen(screen) {
 }
 
 
-/* ================================= */
-/* ПЕРВЫЙ ЗАПУСК */
-/* ================================= */
+/* =========================
+   TOAST
+========================= */
 
-function loadSavedUser() {
+function toast(message) {
 
-    try {
+    const element =
+        document.getElementById("toast");
 
-        const saved =
-            localStorage.getItem(STORAGE_KEY);
+    element.textContent = message;
 
-        if (!saved) {
+    element.classList.add("show");
 
-            showScreen(authScreen);
+    clearTimeout(window.toastTimer);
 
-            return;
-        }
+    window.toastTimer = setTimeout(() => {
 
+        element.classList.remove("show");
 
-        const user =
-            JSON.parse(saved);
-
-
-        if (user && user.entered) {
-
-            showScreen(chatsScreen);
-
-            return;
-        }
-
-
-        showScreen(authScreen);
-
-    } catch (error) {
-
-        localStorage.removeItem(STORAGE_KEY);
-
-        showScreen(authScreen);
-    }
+    }, 2800);
 }
 
 
-loadSavedUser();
-
-
-/* ================================= */
-/* РЕГИСТРАЦИЯ */
-/* ================================= */
-
-registerBtn.addEventListener(
-    "click",
-    function() {
-
-        showScreen(registerScreen);
-    }
-);
-
-
-/* ================================= */
-/* ВХОД */
-/* ================================= */
-
-loginBtn.addEventListener(
-    "click",
-    function() {
-
-        showScreen(loginScreen);
-    }
-);
-
-
-/* ================================= */
-/* НАЗАД */
-/* ================================= */
+/* =========================
+   ГЛАВНЫЕ КНОПКИ
+========================= */
 
 document
-    .querySelectorAll("[data-back]")
-    .forEach(function(button) {
+    .getElementById("registerBtn")
+    .addEventListener("click", () => {
 
-        button.addEventListener(
-            "click",
-            function() {
-
-                showScreen(authScreen);
-            }
-        );
+        showScreen("registerScreen");
 
     });
 
 
-/* ================================= */
-/* РЕГИСТРАЦИЯ FORM */
-/* ================================= */
+document
+    .getElementById("loginBtn")
+    .addEventListener("click", () => {
 
-registerForm.addEventListener(
-    "submit",
-    function(event) {
+        showScreen("loginScreen");
 
-        event.preventDefault();
+    });
 
+
+/* =========================
+   НАЗАД
+========================= */
+
+document
+    .querySelectorAll("[data-back]")
+    .forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            showScreen(
+                button.dataset.back
+            );
+
+        });
+
+    });
+
+
+/* =========================
+   РЕГИСТРАЦИЯ
+========================= */
+
+document
+    .getElementById("registerSubmit")
+    .addEventListener("click", () => {
 
         const name =
             document
@@ -265,23 +114,32 @@ registerForm.addEventListener(
                 .value
                 .trim();
 
+
         const email =
             document
                 .getElementById("registerEmail")
                 .value
                 .trim();
 
+
         const password =
             document
                 .getElementById("registerPassword")
-                .value;
+                .value
+                .trim();
 
 
-        if (!name || !email || !password) {
+        if (!name) {
 
-            showToast(
-                "Заполните все поля"
-            );
+            toast("Введите ваше имя");
+
+            return;
+        }
+
+
+        if (!email || !email.includes("@")) {
+
+            toast("Введите корректную почту");
 
             return;
         }
@@ -289,8 +147,8 @@ registerForm.addEventListener(
 
         if (password.length < 6) {
 
-            showToast(
-                "Пароль должен быть не короче 6 символов"
+            toast(
+                "Пароль должен содержать минимум 6 символов"
             );
 
             return;
@@ -305,36 +163,36 @@ registerForm.addEventListener(
 
             entered: true,
 
-            anonymous: false,
-
-            createdAt:
-                new Date().toISOString()
+            anonymous: false
 
         };
 
 
         localStorage.setItem(
-            STORAGE_KEY,
+            USER_KEY,
             JSON.stringify(user)
         );
 
 
-        showScreen(chatsScreen);
-
-    }
-);
+        toast("Аккаунт Nexgram создан ✦");
 
 
-/* ================================= */
-/* ВХОД */
-/* ================================= */
+        setTimeout(() => {
 
-loginForm.addEventListener(
-    "submit",
-    function(event) {
+            showScreen("chatsScreen");
 
-        event.preventDefault();
+        }, 500);
 
+    });
+
+
+/* =========================
+   ВХОД
+========================= */
+
+document
+    .getElementById("loginSubmit")
+    .addEventListener("click", () => {
 
         const email =
             document
@@ -342,23 +200,33 @@ loginForm.addEventListener(
                 .value
                 .trim();
 
+
         const password =
             document
                 .getElementById("loginPassword")
-                .value;
+                .value
+                .trim();
 
 
-        if (!email || !password) {
+        if (!email || !email.includes("@")) {
 
-            showToast(
-                "Введите email и пароль"
-            );
+            toast("Введите корректную почту");
+
+            return;
+        }
+
+
+        if (!password) {
+
+            toast("Введите пароль");
 
             return;
         }
 
 
         const user = {
+
+            name: "Пользователь Nexgram",
 
             email: email,
 
@@ -370,73 +238,63 @@ loginForm.addEventListener(
 
 
         localStorage.setItem(
-            STORAGE_KEY,
+            USER_KEY,
             JSON.stringify(user)
         );
 
 
-        showScreen(chatsScreen);
-
-    }
-);
+        toast("Вы вошли в Nexgram");
 
 
-/* ================================= */
-/* АНОНИМНЫЙ ВХОД */
-/* ================================= */
+        setTimeout(() => {
 
-anonymousBtn.addEventListener(
-    "click",
-    function() {
+            showScreen("chatsScreen");
 
-        anonymousModal.classList.remove(
-            "hidden"
-        );
-    }
-);
+        }, 500);
+
+    });
 
 
-/* ================================= */
-/* ЗАКРЫТЬ MODAL */
-/* ================================= */
+/* =========================
+   АНОНИМНЫЙ РЕЖИМ
+========================= */
 
-function closeAnonymousModal() {
-
-    anonymousModal.classList.add(
-        "hidden"
+const anonymousModal =
+    document.getElementById(
+        "anonymousModal"
     );
-}
 
 
-closeModal.addEventListener(
-    "click",
-    closeAnonymousModal
-);
+document
+    .getElementById("anonymousBtn")
+    .addEventListener("click", () => {
+
+        anonymousModal.classList.add("active");
+
+    });
 
 
-modalOverlay.addEventListener(
-    "click",
-    closeAnonymousModal
-);
+document
+    .getElementById("anonymousBack")
+    .addEventListener("click", () => {
+
+        anonymousModal.classList.remove("active");
+
+    });
 
 
-anonymousBack.addEventListener(
-    "click",
-    closeAnonymousModal
-);
+document
+    .getElementById("anonymousContinue")
+    .addEventListener("click", () => {
 
+        anonymousModal.classList.remove("active");
 
-/* ================================= */
-/* ПРОДОЛЖИТЬ АНОНИМНО */
-/* ================================= */
-
-anonymousContinue.addEventListener(
-    "click",
-    function() {
 
         const user = {
 
             name: "Аноним",
+
+            email: "",
 
             entered: true,
 
@@ -446,85 +304,159 @@ anonymousContinue.addEventListener(
 
 
         localStorage.setItem(
-            STORAGE_KEY,
+            USER_KEY,
             JSON.stringify(user)
         );
 
 
-        closeAnonymousModal();
-
-        showScreen(chatsScreen);
-
-    }
-);
+        toast("Анонимный режим включён");
 
 
-/* ================================= */
-/* ЧАТЫ */
-/* ================================= */
+        setTimeout(() => {
 
-continueChats.addEventListener(
-    "click",
-    function() {
+            showScreen("chatsScreen");
 
-        showScreen(homeScreen);
+        }, 500);
 
-    }
-);
+    });
 
 
-/* ================================= */
-/* TOAST */
-/* ================================= */
+/* =========================
+   ПРОДОЛЖИТЬ
+========================= */
 
-let toastTimer = null;
+document
+    .getElementById("continueBtn")
+    .addEventListener("click", () => {
 
+        showScreen("homeScreen");
 
-function showToast(message) {
-
-    toast.textContent = message;
-
-    toast.classList.add("show");
-
-
-    clearTimeout(toastTimer);
+    });
 
 
-    toastTimer = setTimeout(
-        function() {
+/* =========================
+   ВОССТАНОВЛЕНИЕ
+========================= */
 
-            toast.classList.remove("show");
+document
+    .getElementById("forgotPassword")
+    .addEventListener("click", () => {
 
-        },
-        2800
+        toast(
+            "Восстановление пароля появится позже"
+        );
+
+    });
+
+
+/* =========================
+   PWA INSTALL
+========================= */
+
+let deferredPrompt = null;
+
+const installBtn =
+    document.getElementById(
+        "installBtn"
     );
-}
 
 
-/* ================================= */
-/* SERVICE WORKER */
-/* ================================= */
+window.addEventListener(
+    "beforeinstallprompt",
+    event => {
+
+        event.preventDefault();
+
+        deferredPrompt = event;
+
+    }
+);
+
+
+installBtn.addEventListener(
+    "click",
+    async () => {
+
+        if (!deferredPrompt) {
+
+            toast(
+                "Откройте меню браузера и выберите «Установить приложение»"
+            );
+
+            return;
+        }
+
+
+        deferredPrompt.prompt();
+
+        await deferredPrompt.userChoice;
+
+        deferredPrompt = null;
+
+    }
+);
+
+
+/* =========================
+   SERVICE WORKER
+========================= */
 
 if ("serviceWorker" in navigator) {
 
     window.addEventListener(
         "load",
-        function() {
+        () => {
 
             navigator.serviceWorker
-                .register(
-                    "./sw.js?v=5"
-                )
-                .catch(function(error) {
+                .register("./sw.js?v=7")
+                .catch(error => {
 
                     console.log(
-                        "Service Worker:",
+                        "Service Worker error:",
                         error
                     );
 
                 });
 
         }
+    );
+
+}
+
+
+/* =========================
+   ВОССТАНОВЛЕНИЕ СЕССИИ
+========================= */
+
+try {
+
+    const saved =
+        localStorage.getItem(USER_KEY);
+
+
+    if (saved) {
+
+        const user =
+            JSON.parse(saved);
+
+
+        if (
+            user &&
+            user.entered
+        ) {
+
+            showScreen(
+                "chatsScreen"
+            );
+
+        }
+
+    }
+
+} catch (error) {
+
+    localStorage.removeItem(
+        USER_KEY
     );
 
 }
