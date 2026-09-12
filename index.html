@@ -2,532 +2,595 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <title>Nexgram</title>
 
-    <meta name="theme-color" content="#38aaf5">
-    <meta name="description" content="Nexgram — умный мессенджер">
+    <meta name="theme-color" content="#1677ff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
-    <link rel="manifest" href="./manifest.json?v=7">
-    <link rel="icon" href="./icon.svg?v=7">
-
-    <link rel="stylesheet" href="./style.css?v=7">
+    <link rel="manifest" href="./manifest.json?v=8">
+    <link rel="stylesheet" href="./style.css?v=8">
 </head>
 
 <body>
 
-    <!-- ПЕРЕЛИВАЮЩИЙСЯ ФОН -->
+<div class="background">
+    <div class="aurora aurora-one"></div>
+    <div class="aurora aurora-two"></div>
+    <div class="aurora aurora-three"></div>
+    <div class="aurora aurora-four"></div>
+</div>
 
-    <div class="aurora">
-        <div class="aurora-ball ball-one"></div>
-        <div class="aurora-ball ball-two"></div>
-        <div class="aurora-ball ball-three"></div>
-        <div class="aurora-ball ball-four"></div>
+<header class="topbar">
+    <div class="brand">
+        <div class="brand-logo">N</div>
+        <div>
+            <div class="brand-name">Nexgram</div>
+            <div class="brand-status">Messenger</div>
+        </div>
     </div>
 
-    <div class="noise"></div>
+    <button id="installBtn" class="install-btn">
+        ↓ Скачать
+    </button>
+</header>
 
 
-    <!-- ШАПКА -->
+<main>
 
-    <header class="topbar">
+    <!-- AUTH -->
 
-        <div class="brand">
-            <div class="brand-mark">N</div>
-            <span>Nexgram</span>
+    <section id="authScreen" class="screen active">
+
+        <div class="auth-card">
+
+            <div class="small-label">NEXGRAM MESSENGER</div>
+
+            <h1>Общение.<br><span>По-новому.</span></h1>
+
+            <p class="auth-description">
+                Современный мессенджер со своим дизайном,
+                умными функциями и характером.
+            </p>
+
+            <button id="registerOpen" class="primary-btn">
+                Создать аккаунт
+            </button>
+
+            <button id="loginOpen" class="secondary-btn">
+                Войти
+            </button>
+
+            <div class="or">
+                <span></span>
+                или
+                <span></span>
+            </div>
+
+            <button id="anonymousOpen" class="anonymous-btn">
+                <span>Зайти анонимно</span>
+                <small>Ограниченный режим</small>
+            </button>
+
+            <div class="auth-footer">
+                Nexgram создаётся с нуля.<br>
+                Это только начало.
+            </div>
+
         </div>
 
-        <button id="installBtn" class="install-btn">
-            <span>↓</span>
-            Скачать приложение
+    </section>
+
+
+    <!-- REGISTER -->
+
+    <section id="registerScreen" class="screen">
+
+        <div class="form-card">
+
+            <button class="back-btn" data-back="authScreen">
+                ← Назад
+            </button>
+
+            <div class="small-label">РЕГИСТРАЦИЯ</div>
+
+            <h2>Создать аккаунт</h2>
+
+            <p class="form-description">
+                Зарегистрируйтесь в Nexgram
+            </p>
+
+            <label>Имя</label>
+            <input id="registerName" type="text" placeholder="Ваше имя">
+
+            <label>Email</label>
+            <input id="registerEmail" type="email" placeholder="example@mail.com">
+
+            <label>Пароль</label>
+            <input id="registerPassword" type="password" placeholder="Минимум 6 символов">
+
+            <button id="registerBtn" class="primary-btn">
+                Создать аккаунт
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- LOGIN -->
+
+    <section id="loginScreen" class="screen">
+
+        <div class="form-card">
+
+            <button class="back-btn" data-back="authScreen">
+                ← Назад
+            </button>
+
+            <div class="small-label">ВХОД</div>
+
+            <h2>С возвращением</h2>
+
+            <p class="form-description">
+                Войдите в свой Nexgram
+            </p>
+
+            <label>Email</label>
+            <input id="loginEmail" type="email" placeholder="example@mail.com">
+
+            <label>Пароль</label>
+            <input id="loginPassword" type="password" placeholder="Ваш пароль">
+
+            <button id="loginBtn" class="primary-btn">
+                Войти
+            </button>
+
+            <button id="forgotPassword" class="text-btn">
+                Забыли пароль?
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- CHATS NOT READY -->
+
+    <section id="notReadyScreen" class="screen">
+
+        <div class="not-ready-card">
+
+            <div class="not-ready-icon">💬</div>
+
+            <div class="small-label">NEXGRAM</div>
+
+            <h2>Чаты ещё не готовы</h2>
+
+            <p>
+                Мы пока собираем эту часть приложения.
+                Здесь скоро появятся настоящие чаты,
+                контакты и сообщения.
+            </p>
+
+            <button id="continueBtn" class="primary-btn">
+                Продолжить
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- APP -->
+
+    <section id="appScreen" class="screen app-screen">
+
+        <div class="app-content">
+
+            <!-- CHATS -->
+
+            <div id="chatsPage" class="page active-page">
+
+                <div class="page-header">
+                    <div>
+                        <div class="small-label">NEXGRAM</div>
+                        <h2>Чаты</h2>
+                    </div>
+
+                    <button class="round-btn" id="newChatBtn">＋</button>
+                </div>
+
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input id="chatSearch" placeholder="Поиск">
+                </div>
+
+                <div id="chatEmpty" class="empty-chat">
+
+                    <div class="empty-icon">💬</div>
+
+                    <h3>Пока здесь пусто</h3>
+
+                    <p>
+                        Когда чаты будут готовы,
+                        они появятся здесь.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SETTINGS -->
+
+            <div id="settingsPage" class="page">
+
+                <div class="page-header">
+                    <div>
+                        <div class="small-label">NEXGRAM</div>
+                        <h2>Настройки</h2>
+                    </div>
+                </div>
+
+
+                <!-- PROFILE -->
+
+                <div class="settings-profile">
+
+                    <div class="profile-avatar" id="profileAvatar">
+                        N
+                    </div>
+
+                    <div class="profile-info">
+                        <strong id="profileName">
+                            Пользователь
+                        </strong>
+
+                        <span id="profileEmail">
+                            Nexgram
+                        </span>
+                    </div>
+
+                    <button id="editProfileBtn" class="round-btn">
+                        ✎
+                    </button>
+
+                </div>
+
+
+                <!-- APPEARANCE -->
+
+                <div class="settings-section">
+
+                    <div class="section-title">
+                        Внешний вид
+                    </div>
+
+                    <div class="setting-card">
+
+                        <div class="setting-title">
+                            <span class="setting-icon">🎨</span>
+
+                            <div>
+                                <strong>Тема</strong>
+                                <small>Выберите оформление</small>
+                            </div>
+                        </div>
+
+                        <div class="theme-grid">
+
+                            <button class="theme-option" data-theme="light">
+                                <span class="theme-preview light-preview"></span>
+                                <b>Светлая</b>
+                            </button>
+
+                            <button class="theme-option" data-theme="dark">
+                                <span class="theme-preview dark-preview"></span>
+                                <b>Тёмная</b>
+                            </button>
+
+                            <button class="theme-option" data-theme="blue">
+                                <span class="theme-preview blue-preview"></span>
+                                <b>Синяя</b>
+                            </button>
+
+                            <button class="theme-option" data-theme="midnight">
+                                <span class="theme-preview midnight-preview"></span>
+                                <b>Ночная</b>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="setting-card">
+
+                        <div class="setting-title">
+
+                            <span class="setting-icon">Aa</span>
+
+                            <div>
+                                <strong>Размер текста</strong>
+                                <small id="fontSizeText">
+                                    Средний
+                                </small>
+                            </div>
+
+                        </div>
+
+                        <input
+                            id="fontSizeRange"
+                            class="range"
+                            type="range"
+                            min="14"
+                            max="20"
+                            value="16"
+                        >
+
+                        <div class="range-labels">
+                            <span>Маленький</span>
+                            <span>Большой</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- GENERAL -->
+
+                <div class="settings-section">
+
+                    <div class="section-title">
+                        Основные
+                    </div>
+
+                    <div class="setting-card">
+
+                        <div class="setting-row">
+
+                            <div class="setting-title">
+                                <span class="setting-icon">🔔</span>
+
+                                <div>
+                                    <strong>Уведомления</strong>
+                                    <small>Получать уведомления</small>
+                                </div>
+                            </div>
+
+                            <label class="switch">
+                                <input id="notificationsToggle" type="checkbox">
+                                <span></span>
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-row">
+
+                            <div class="setting-title">
+                                <span class="setting-icon">📳</span>
+
+                                <div>
+                                    <strong>Вибрация</strong>
+                                    <small>Вибрация при действиях</small>
+                                </div>
+                            </div>
+
+                            <label class="switch">
+                                <input id="vibrationToggle" type="checkbox">
+                                <span></span>
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-row">
+
+                            <div class="setting-title">
+                                <span class="setting-icon">✨</span>
+
+                                <div>
+                                    <strong>Анимации</strong>
+                                    <small>Плавные эффекты интерфейса</small>
+                                </div>
+                            </div>
+
+                            <label class="switch">
+                                <input id="animationsToggle" type="checkbox">
+                                <span></span>
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LANGUAGE -->
+
+                <div class="settings-section">
+
+                    <div class="section-title">
+                        Язык
+                    </div>
+
+                    <div class="setting-card clickable" id="languageSetting">
+
+                        <div class="setting-title">
+
+                            <span class="setting-icon">🌐</span>
+
+                            <div>
+                                <strong>Язык приложения</strong>
+                                <small id="languageValue">
+                                    Русский
+                                </small>
+                            </div>
+
+                        </div>
+
+                        <span class="arrow">›</span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ABOUT -->
+
+                <div class="settings-section">
+
+                    <div class="section-title">
+                        Дополнительно
+                    </div>
+
+                    <div class="setting-card">
+
+                        <div class="setting-row clickable" id="aboutBtn">
+
+                            <div class="setting-title">
+                                <span class="setting-icon">ℹ️</span>
+
+                                <div>
+                                    <strong>О Nexgram</strong>
+                                    <small>Версия 1.0</small>
+                                </div>
+                            </div>
+
+                            <span class="arrow">›</span>
+
+                        </div>
+
+
+                        <div class="setting-row clickable" id="privacyBtn">
+
+                            <div class="setting-title">
+                                <span class="setting-icon">🔐</span>
+
+                                <div>
+                                    <strong>Приватность</strong>
+                                    <small>Ваши данные и безопасность</small>
+                                </div>
+                            </div>
+
+                            <span class="arrow">›</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <button id="logoutBtn" class="logout-btn">
+                    Выйти из аккаунта
+                </button>
+
+                <div class="settings-version">
+                    Nexgram Messenger · 1.0.0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- BOTTOM NAVIGATION -->
+
+        <nav class="bottom-nav">
+
+            <button class="nav-item active" data-page="chatsPage">
+
+                <span class="nav-icon">💬</span>
+                <span>Чаты</span>
+
+            </button>
+
+            <button class="nav-item" data-page="settingsPage">
+
+                <span class="nav-icon">⚙️</span>
+                <span>Настройки</span>
+
+            </button>
+
+        </nav>
+
+    </section>
+
+</main>
+
+
+<!-- ANONYMOUS MODAL -->
+
+<div id="anonymousModal" class="modal">
+
+    <div class="modal-card">
+
+        <div class="modal-label">АНОНИМНЫЙ РЕЖИМ</div>
+
+        <h2>Это не совсем удобно</h2>
+
+        <p>
+            В анонимном режиме возможности Nexgram
+            будут сильно ограничены.
+        </p>
+
+        <ul>
+            <li>Нет полноценного профиля</li>
+            <li>Нет настроек аккаунта</li>
+            <li>Ограниченная функциональность</li>
+            <li>Данные могут не сохраняться</li>
+        </ul>
+
+        <div class="modal-actions">
+
+            <button id="anonymousBack" class="secondary-btn">
+                Назад
+            </button>
+
+            <button id="anonymousContinue" class="primary-btn">
+                Продолжить
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- SIMPLE MODAL -->
+
+<div id="infoModal" class="modal">
+
+    <div class="modal-card">
+
+        <div class="modal-label">NEXGRAM</div>
+
+        <h2 id="infoTitle">Nexgram</h2>
+
+        <p id="infoText">
+            Современный мессенджер нового поколения.
+        </p>
+
+        <button id="infoClose" class="primary-btn">
+            Закрыть
         </button>
 
-    </header>
+    </div>
 
+</div>
 
-    <main class="app">
 
+<div id="toast" class="toast"></div>
 
-        <!-- АВТОРИЗАЦИЯ -->
 
-        <section id="authScreen" class="screen active">
-
-            <div class="auth-card">
-
-                <div class="top-glow"></div>
-
-                <div class="mini-label">
-                    <span class="live-dot"></span>
-                    Nexgram Messenger
-                </div>
-
-                <h1>
-                    Общение.<br>
-                    <span>По-новому.</span>
-                </h1>
-
-                <p class="subtitle">
-                    Современный умный мессенджер
-                    со своим характером.
-                </p>
-
-
-                <div class="auth-actions">
-
-                    <button
-                        id="registerBtn"
-                        class="main-btn">
-
-                        <span>
-                            Создать аккаунт
-                        </span>
-
-                        <b>→</b>
-
-                    </button>
-
-
-                    <button
-                        id="loginBtn"
-                        class="outline-btn">
-
-                        Войти в Nexgram
-
-                    </button>
-
-                </div>
-
-
-                <div class="divider">
-                    <span></span>
-                    или
-                    <span></span>
-                </div>
-
-
-                <button
-                    id="anonymousBtn"
-                    class="anonymous-btn">
-
-                    <div class="anonymous-left">
-
-                        <div class="anonymous-icon">
-                            ◌
-                        </div>
-
-                        <div>
-                            <strong>
-                                Зайти анонимно
-                            </strong>
-
-                            <small>
-                                Ограниченный режим
-                            </small>
-                        </div>
-
-                    </div>
-
-                    <b>›</b>
-
-                </button>
-
-
-                <div class="bottom-text">
-                    Nexgram создаётся с нуля.
-                    <br>
-                    Свой стиль. Свои возможности. Своя идея.
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- РЕГИСТРАЦИЯ -->
-
-        <section id="registerScreen" class="screen">
-
-            <div class="form-card">
-
-                <button
-                    class="back-btn"
-                    data-back="authScreen">
-
-                    ← Назад
-
-                </button>
-
-
-                <div class="form-heading">
-
-                    <div class="heading-symbol">
-                        +
-                    </div>
-
-                    <div>
-                        <div class="heading-overline">
-                            NEXGRAM
-                        </div>
-
-                        <h2>
-                            Новый аккаунт
-                        </h2>
-                    </div>
-
-                </div>
-
-
-                <p class="form-description">
-                    Создайте свой аккаунт и получите
-                    доступ к полноценному Nexgram.
-                </p>
-
-
-                <label>
-                    Имя
-                </label>
-
-                <div class="input-wrap">
-
-                    <span>✦</span>
-
-                    <input
-                        id="registerName"
-                        type="text"
-                        placeholder="Как вас зовут?"
-                        autocomplete="name">
-
-                </div>
-
-
-                <label>
-                    Электронная почта
-                </label>
-
-                <div class="input-wrap">
-
-                    <span>@</span>
-
-                    <input
-                        id="registerEmail"
-                        type="email"
-                        placeholder="example@mail.com"
-                        autocomplete="email">
-
-                </div>
-
-
-                <label>
-                    Пароль
-                </label>
-
-                <div class="input-wrap">
-
-                    <span>••</span>
-
-                    <input
-                        id="registerPassword"
-                        type="password"
-                        placeholder="Минимум 6 символов"
-                        autocomplete="new-password">
-
-                </div>
-
-
-                <button
-                    id="registerSubmit"
-                    class="main-btn large">
-
-                    <span>
-                        Создать аккаунт
-                    </span>
-
-                    <b>→</b>
-
-                </button>
-
-
-                <p class="secure-note">
-                    ✦ Данные формы используются только
-                    для текущей версии приложения.
-                </p>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ВХОД -->
-
-        <section id="loginScreen" class="screen">
-
-            <div class="form-card">
-
-                <button
-                    class="back-btn"
-                    data-back="authScreen">
-
-                    ← Назад
-
-                </button>
-
-
-                <div class="form-heading">
-
-                    <div class="heading-symbol">
-                        →
-                    </div>
-
-                    <div>
-                        <div class="heading-overline">
-                            NEXGRAM
-                        </div>
-
-                        <h2>
-                            С возвращением
-                        </h2>
-                    </div>
-
-                </div>
-
-
-                <p class="form-description">
-                    Войдите в свой аккаунт
-                    через электронную почту.
-                </p>
-
-
-                <label>
-                    Электронная почта
-                </label>
-
-                <div class="input-wrap">
-
-                    <span>@</span>
-
-                    <input
-                        id="loginEmail"
-                        type="email"
-                        placeholder="example@mail.com"
-                        autocomplete="email">
-
-                </div>
-
-
-                <label>
-                    Пароль
-                </label>
-
-                <div class="input-wrap">
-
-                    <span>••</span>
-
-                    <input
-                        id="loginPassword"
-                        type="password"
-                        placeholder="Ваш пароль"
-                        autocomplete="current-password">
-
-                </div>
-
-
-                <button
-                    id="loginSubmit"
-                    class="main-btn large">
-
-                    <span>
-                        Войти
-                    </span>
-
-                    <b>→</b>
-
-                </button>
-
-
-                <button
-                    id="forgotPassword"
-                    class="link-btn">
-
-                    Не помню пароль
-
-                </button>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- АНОНИМНО -->
-
-        <div id="anonymousModal" class="modal">
-
-            <div class="modal-card">
-
-                <button
-                    id="anonymousBack"
-                    class="modal-close">
-
-                    ×
-
-                </button>
-
-
-                <div class="warning-symbol">
-                    !
-                </div>
-
-
-                <div class="modal-overline">
-                    АНОНИМНЫЙ РЕЖИМ
-                </div>
-
-                <h2>
-                    Это не совсем удобно
-                </h2>
-
-                <p>
-                    Вы можете продолжить без аккаунта,
-                    но получите только ограниченный
-                    доступ к Nexgram.
-                </p>
-
-
-                <div class="limitations">
-
-                    <div>
-                        <span>×</span>
-                        Полноценный профиль недоступен
-                    </div>
-
-                    <div>
-                        <span>×</span>
-                        Настройки аккаунта недоступны
-                    </div>
-
-                    <div>
-                        <span>×</span>
-                        Возможности будут ограничены
-                    </div>
-
-                    <div>
-                        <span>×</span>
-                        Данные могут не сохраниться
-                    </div>
-
-                </div>
-
-
-                <div class="modal-info">
-                    <strong>
-                        Совет
-                    </strong>
-
-                    <span>
-                        Если вы собираетесь пользоваться
-                        Nexgram регулярно, лучше создать
-                        обычный аккаунт.
-                    </span>
-                </div>
-
-
-                <div class="modal-buttons">
-
-                    <button
-                        id="anonymousContinue"
-                        class="main-btn">
-
-                        Продолжить
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- ЧАТЫ -->
-
-        <section id="chatsScreen" class="screen">
-
-            <div class="status-card">
-
-                <div class="status-number">
-                    01
-                </div>
-
-                <div class="status-line"></div>
-
-                <h2>
-                    Чаты ещё не готовы
-                </h2>
-
-                <p>
-                    Nexgram постепенно собирается
-                    в полноценный мессенджер.
-                    Раздел чатов появится
-                    в следующих версиях.
-                </p>
-
-                <button
-                    id="continueBtn"
-                    class="main-btn large">
-
-                    <span>
-                        Продолжить
-                    </span>
-
-                    <b>→</b>
-
-                </button>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ГЛАВНЫЙ ЭКРАН -->
-
-        <section id="homeScreen" class="screen">
-
-            <div class="home-card">
-
-                <div class="home-small">
-                    NEXGRAM
-                </div>
-
-                <h2>
-                    Добро пожаловать.
-                </h2>
-
-                <p>
-                    Ваше пространство
-                    для общения уже создаётся.
-                </p>
-
-                <div class="home-badge">
-                    ✦ Больше возможностей скоро
-                </div>
-
-            </div>
-
-        </section>
-
-
-    </main>
-
-
-    <div id="toast" class="toast"></div>
-
-
-    <script src="./app.js?v=7"></script>
+<script src="./app.js?v=8"></script>
 
 </body>
 </html>
