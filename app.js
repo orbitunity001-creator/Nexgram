@@ -1,68 +1,132 @@
-const USER_KEY = "nexgram_user_v8";
-const SETTINGS_KEY = "nexgram_settings_v8";
+const USER_KEY = "nexgram_user_v10";
+const SETTINGS_KEY = "nexgram_settings_v10";
 
 let deferredPrompt = null;
 
 
-/* -------------------------
+/* =========================
    HELPERS
-------------------------- */
+========================= */
 
 const $ = id => document.getElementById(id);
 
 
-function showScreen(id) {
-
-    document.querySelectorAll(".screen").forEach(screen => {
-        screen.classList.remove("active");
-    });
-
-    const screen = $(id);
-
-    if (screen) {
-        screen.classList.add("active");
-    }
-}
-
-
 function toast(message) {
 
-    const element = $("toast");
+    const el = $("toast");
 
-    element.textContent = message;
-    element.classList.add("show");
+    el.textContent = message;
 
-    setTimeout(() => {
-        element.classList.remove("show");
+    el.classList.add("show");
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer = setTimeout(() => {
+
+        el.classList.remove("show");
+
     }, 2500);
 }
 
 
+function showScreen(id) {
+
+    document
+        .querySelectorAll(".screen")
+        .forEach(screen => {
+
+            screen.classList.remove("active");
+
+        });
+
+
+    const target = $(id);
+
+    if (target) {
+        target.classList.add("active");
+    }
+
+}
+
+
+function showModal(id) {
+
+    const modal = $(id);
+
+    if (modal) {
+        modal.classList.add("show");
+    }
+
+}
+
+
+function closeModal(id) {
+
+    const modal = $(id);
+
+    if (modal) {
+        modal.classList.remove("show");
+    }
+
+}
+
+
+/* =========================
+   USER
+========================= */
+
 function getUser() {
 
     try {
-        return JSON.parse(localStorage.getItem(USER_KEY));
+
+        return JSON.parse(
+            localStorage.getItem(USER_KEY)
+        );
+
     } catch {
+
         return null;
+
     }
+
 }
 
 
 function saveUser(user) {
-    localStorage.setItem(USER_KEY, JSON.stringify(user));
+
+    localStorage.setItem(
+        USER_KEY,
+        JSON.stringify(user)
+    );
+
 }
 
 
-function getSettings() {
+/* =========================
+   SETTINGS
+========================= */
 
-    const defaults = {
-        theme: "light",
-        fontSize: 16,
-        notifications: true,
-        vibration: true,
-        animations: true,
-        language: "ru"
-    };
+const defaultSettings = {
+
+    theme: "light",
+
+    fontSize: 16,
+
+    font:
+        "system",
+
+    notifications: true,
+
+    vibration: true,
+
+    animations: true,
+
+    language: "ru"
+
+};
+
+
+function getSettings() {
 
     try {
 
@@ -71,85 +135,290 @@ function getSettings() {
         );
 
         return {
-            ...defaults,
+            ...defaultSettings,
             ...(saved || {})
         };
 
     } catch {
 
-        return defaults;
+        return {
+            ...defaultSettings
+        };
+
     }
+
 }
 
 
-function saveSettings(settings) {
+let settings = getSettings();
+
+
+function saveSettings() {
+
     localStorage.setItem(
         SETTINGS_KEY,
         JSON.stringify(settings)
     );
+
 }
 
 
-/* -------------------------
+/* =========================
+   FONT
+========================= */
+
+const fonts = {
+
+    system:
+        `Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`,
+
+    rounded:
+        `"Trebuchet MS", Arial, sans-serif`,
+
+    mono:
+        `"Courier New", monospace`,
+
+    serif:
+        `Georgia, "Times New Roman", serif`
+
+};
+
+
+function fontName(font) {
+
+    const names = {
+
+        system: "Системный",
+
+        rounded: "Rounded",
+
+        mono: "Mono",
+
+        serif: "Serif"
+
+    };
+
+    return names[font] || "Системный";
+
+}
+
+
+function fontSizeName(size) {
+
+    if (size <= 14) {
+        return "Маленький";
+    }
+
+    if (size >= 20) {
+        return "Очень большой";
+    }
+
+    if (size >= 18) {
+        return "Большой";
+    }
+
+    return "Средний";
+
+}
+
+
+/* =========================
+   THEME NAMES
+========================= */
+
+const themeNames = {
+
+    light: "Светлая",
+
+    dark: "Тёмная",
+
+    ocean: "Океан",
+
+    midnight: "Midnight",
+
+    purple: "Фиолетовая",
+
+    sunset: "Sunset",
+
+    forest: "Forest",
+
+    rose: "Rose"
+
+};
+
+
+/* =========================
+   APPLY SETTINGS
+========================= */
+
+function applySettings() {
+
+    document.body.dataset.theme =
+        settings.theme;
+
+
+    document.documentElement
+        .style
+        .setProperty(
+            "--font-size",
+            `${settings.fontSize}px`
+        );
+
+
+    document.documentElement
+        .style
+        .setProperty(
+            "--font-family",
+            fonts[settings.font] ||
+            fonts.system
+        );
+
+
+    document.body.classList.toggle(
+        "no-animations",
+        !settings.animations
+    );
+
+
+    $("notificationsToggle").checked =
+        settings.notifications;
+
+
+    $("vibrationToggle").checked =
+        settings.vibration;
+
+
+    $("animationsToggle").checked =
+        settings.animations;
+
+
+    $("currentThemeText").textContent =
+        themeNames[settings.theme] ||
+        "Светлая";
+
+
+    $("currentFontText").textContent =
+        `${fontSizeName(settings.fontSize)} · ${fontName(settings.font)}`;
+
+
+    $("languageValue").textContent =
+        languageNames[settings.language] ||
+        "Русский";
+
+
+    updateThemeButtons();
+    updateFontButtons();
+    updateLanguageButtons();
+
+}
+
+
+/* =========================
    AUTH
-------------------------- */
+========================= */
 
 $("registerOpen").onclick = () => {
+
     showScreen("registerScreen");
+
 };
 
 
 $("loginOpen").onclick = () => {
+
     showScreen("loginScreen");
+
 };
 
 
-document.querySelectorAll("[data-back]").forEach(button => {
+document
+    .querySelectorAll("[data-back]")
+    .forEach(button => {
 
-    button.onclick = () => {
-        showScreen(button.dataset.back);
-    };
+        button.onclick = () => {
 
-});
+            showScreen(
+                button.dataset.back
+            );
+
+        };
+
+    });
 
 
 /* REGISTER */
 
 $("registerBtn").onclick = () => {
 
-    const name = $("registerName").value.trim();
-    const email = $("registerEmail").value.trim();
-    const password = $("registerPassword").value;
+    const name =
+        $("registerName")
+            .value
+            .trim();
+
+    const email =
+        $("registerEmail")
+            .value
+            .trim();
+
+    const password =
+        $("registerPassword")
+            .value;
+
 
     if (!name) {
+
         toast("Введите имя");
+
         return;
+
     }
 
-    if (!email || !email.includes("@")) {
+
+    if (
+        !email ||
+        !email.includes("@")
+    ) {
+
         toast("Введите корректный email");
+
         return;
+
     }
+
 
     if (password.length < 6) {
-        toast("Пароль должен быть минимум 6 символов");
+
+        toast(
+            "Пароль должен быть минимум 6 символов"
+        );
+
         return;
+
     }
 
-    const user = {
-        name,
-        email,
-        anonymous: false,
-        entered: true
-    };
 
-    saveUser(user);
+    saveUser({
+
+        name,
+
+        email,
+
+        anonymous: false,
+
+        entered: true
+
+    });
+
 
     toast("Аккаунт создан");
 
+
     setTimeout(() => {
-        openNotReady();
+
+        showScreen("notReadyScreen");
+
     }, 500);
+
 };
 
 
@@ -157,88 +426,126 @@ $("registerBtn").onclick = () => {
 
 $("loginBtn").onclick = () => {
 
-    const email = $("loginEmail").value.trim();
-    const password = $("loginPassword").value;
+    const email =
+        $("loginEmail")
+            .value
+            .trim();
 
-    if (!email || !email.includes("@")) {
+    const password =
+        $("loginPassword")
+            .value;
+
+
+    if (
+        !email ||
+        !email.includes("@")
+    ) {
+
         toast("Введите email");
+
         return;
+
     }
+
 
     if (!password) {
+
         toast("Введите пароль");
+
         return;
+
     }
 
-    const user = {
-        name: "Пользователь Nexgram",
-        email,
-        anonymous: false,
-        entered: true
-    };
 
-    saveUser(user);
+    saveUser({
+
+        name:
+            "Пользователь Nexgram",
+
+        email,
+
+        anonymous: false,
+
+        entered: true
+
+    });
+
 
     toast("Вход выполнен");
 
+
     setTimeout(() => {
-        openNotReady();
+
+        showScreen("notReadyScreen");
+
     }, 500);
+
 };
 
 
-/* FORGOT */
+/* PASSWORD */
 
 $("forgotPassword").onclick = () => {
 
     showInfo(
-        "Восстановление пароля",
-        "Эта функция появится после подключения настоящей системы аккаунтов."
+        "Восстановление",
+        "Восстановление пароля появится после подключения настоящей системы аккаунтов."
     );
+
 };
 
 
-/* -------------------------
+/* =========================
    ANONYMOUS
-------------------------- */
+========================= */
 
 $("anonymousOpen").onclick = () => {
-    $("anonymousModal").classList.add("show");
+
+    showModal("anonymousModal");
+
 };
 
 
 $("anonymousBack").onclick = () => {
-    $("anonymousModal").classList.remove("show");
+
+    closeModal("anonymousModal");
+
 };
 
 
 $("anonymousContinue").onclick = () => {
 
-    $("anonymousModal").classList.remove("show");
+    closeModal("anonymousModal");
+
 
     saveUser({
+
         name: "Аноним",
+
         email: "",
+
         anonymous: true,
+
         entered: true
+
     });
+
 
     toast("Анонимный режим включён");
 
+
     setTimeout(() => {
-        openNotReady();
+
+        showScreen("notReadyScreen");
+
     }, 500);
+
 };
 
 
-/* -------------------------
-   NOT READY
-------------------------- */
-
-function openNotReady() {
-    showScreen("notReadyScreen");
-}
-
+/* =========================
+   APP
+========================= */
 
 $("continueBtn").onclick = () => {
 
@@ -258,30 +565,46 @@ function openApp() {
 }
 
 
-/* -------------------------
+/* =========================
    NAVIGATION
-------------------------- */
+========================= */
 
-document.querySelectorAll(".nav-item").forEach(item => {
+document
+    .querySelectorAll(".nav-item")
+    .forEach(item => {
 
-    item.addEventListener("click", () => {
+        item.onclick = () => {
 
-        switchPage(item.dataset.page);
+            switchPage(
+                item.dataset.page
+            );
+
+        };
 
     });
-
-});
 
 
 function switchPage(pageId) {
 
-    document.querySelectorAll(".page").forEach(page => {
-        page.classList.remove("active-page");
-    });
+    document
+        .querySelectorAll(".page")
+        .forEach(page => {
 
-    document.querySelectorAll(".nav-item").forEach(item => {
-        item.classList.remove("active");
-    });
+            page.classList.remove(
+                "active-page"
+            );
+
+        });
+
+
+    document
+        .querySelectorAll(".nav-item")
+        .forEach(item => {
+
+            item.classList.remove("active");
+
+        });
+
 
     const page = $(pageId);
 
@@ -289,9 +612,12 @@ function switchPage(pageId) {
         page.classList.add("active-page");
     }
 
-    const nav = document.querySelector(
-        `.nav-item[data-page="${pageId}"]`
-    );
+
+    const nav =
+        document.querySelector(
+            `.nav-item[data-page="${pageId}"]`
+        );
+
 
     if (nav) {
         nav.classList.add("active");
@@ -300,121 +626,269 @@ function switchPage(pageId) {
 }
 
 
-/* -------------------------
-   SETTINGS
-------------------------- */
+/* =========================
+   THEMES
+========================= */
 
-let settings = getSettings();
+$("themesSetting").onclick = () => {
 
+    showModal("themesModal");
 
-function applySettings() {
-
-    document.body.dataset.theme = settings.theme;
-
-    document.documentElement.style.setProperty(
-        "--font-size",
-        `${settings.fontSize}px`
-    );
-
-    document.body.classList.toggle(
-        "no-animations",
-        !settings.animations
-    );
+};
 
 
-    $("fontSizeRange").value =
-        settings.fontSize;
+document
+    .querySelectorAll(".theme-choice")
+    .forEach(button => {
 
-    updateFontSizeLabel();
+        button.onclick = () => {
+
+            settings.theme =
+                button.dataset.theme;
+
+            saveSettings();
+
+            applySettings();
+
+            toast(
+                `Тема: ${themeNames[settings.theme]}`
+            );
+
+        };
+
+    });
 
 
-    $("notificationsToggle").checked =
-        settings.notifications;
+function updateThemeButtons() {
 
-    $("vibrationToggle").checked =
-        settings.vibration;
-
-    $("animationsToggle").checked =
-        settings.animations;
-
-
-    document.querySelectorAll(".theme-option")
+    document
+        .querySelectorAll(".theme-choice")
         .forEach(button => {
 
             button.classList.toggle(
                 "active",
-                button.dataset.theme === settings.theme
+                button.dataset.theme ===
+                settings.theme
+            );
+
+        });
+
+}
+
+
+/* =========================
+   FONT
+========================= */
+
+$("fontSetting").onclick = () => {
+
+    showModal("fontModal");
+
+};
+
+
+document
+    .querySelectorAll("[data-size]")
+    .forEach(button => {
+
+        button.onclick = () => {
+
+            settings.fontSize =
+                Number(
+                    button.dataset.size
+                );
+
+            saveSettings();
+
+            applySettings();
+
+            toast("Размер текста изменён");
+
+        };
+
+    });
+
+
+document
+    .querySelectorAll("[data-font]")
+    .forEach(button => {
+
+        button.onclick = () => {
+
+            settings.font =
+                button.dataset.font;
+
+            saveSettings();
+
+            applySettings();
+
+            toast("Шрифт изменён");
+
+        };
+
+    });
+
+
+function updateFontButtons() {
+
+    document
+        .querySelectorAll("[data-size]")
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                Number(button.dataset.size) ===
+                settings.fontSize
             );
 
         });
 
 
-    $("languageValue").textContent =
-        settings.language === "ru"
-            ? "Русский"
-            : "English";
-}
+    document
+        .querySelectorAll("[data-font]")
+        .forEach(button => {
 
-
-function updateFontSizeLabel() {
-
-    let label = "Средний";
-
-    if (settings.fontSize <= 15) {
-        label = "Маленький";
-    }
-
-    if (settings.fontSize >= 18) {
-        label = "Большой";
-    }
-
-    $("fontSizeText").textContent = label;
-}
-
-
-/* THEME */
-
-document.querySelectorAll(".theme-option")
-    .forEach(button => {
-
-        button.addEventListener("click", () => {
-
-            settings.theme =
-                button.dataset.theme;
-
-            saveSettings(settings);
-            applySettings();
-
-            toast("Тема изменена");
+            button.classList.toggle(
+                "active",
+                button.dataset.font ===
+                settings.font
+            );
 
         });
+
+}
+
+
+/* =========================
+   LANGUAGES
+========================= */
+
+const languageNames = {
+
+    ru: "Русский",
+
+    en: "English",
+
+    uk: "Українська",
+
+    de: "Deutsch",
+
+    fr: "Français",
+
+    es: "Español",
+
+    it: "Italiano",
+
+    pt: "Português",
+
+    pl: "Polski",
+
+    tr: "Türkçe",
+
+    ar: "العربية",
+
+    hi: "हिन्दी",
+
+    zh: "中文",
+
+    ja: "日本語",
+
+    ko: "한국어"
+
+};
+
+
+$("languageSetting").onclick = () => {
+
+    showModal("languageModal");
+
+};
+
+
+document
+    .querySelectorAll("[data-lang]")
+    .forEach(button => {
+
+        button.onclick = () => {
+
+            settings.language =
+                button.dataset.lang;
+
+            saveSettings();
+
+            applySettings();
+
+            toast(
+                `Язык: ${languageNames[settings.language]}`
+            );
+
+        };
 
     });
 
 
-/* FONT SIZE */
+function updateLanguageButtons() {
 
-$("fontSizeRange").addEventListener("input", event => {
+    document
+        .querySelectorAll("[data-lang]")
+        .forEach(button => {
 
-    settings.fontSize =
-        Number(event.target.value);
+            button.classList.toggle(
+                "active",
+                button.dataset.lang ===
+                settings.language
+            );
 
-    saveSettings(settings);
-    applySettings();
+        });
 
-});
+}
 
 
-/* NOTIFICATIONS */
+/* SEARCH LANGUAGES */
 
-$("notificationsToggle").addEventListener(
-    "change",
+$("languageSearch").addEventListener(
+    "input",
+    event => {
+
+        const query =
+            event.target.value
+                .toLowerCase()
+                .trim();
+
+
+        document
+            .querySelectorAll(
+                "#languageList button"
+            )
+            .forEach(button => {
+
+                const text =
+                    button.textContent
+                        .toLowerCase();
+
+                button.style.display =
+                    !query ||
+                    text.includes(query)
+                        ? "flex"
+                        : "none";
+
+            });
+
+    }
+);
+
+
+/* =========================
+   TOGGLES
+========================= */
+
+$("notificationsToggle").onchange =
     event => {
 
         settings.notifications =
             event.target.checked;
 
-        saveSettings(settings);
+        saveSettings();
 
         toast(
             settings.notifications
@@ -422,27 +896,27 @@ $("notificationsToggle").addEventListener(
                 : "Уведомления выключены"
         );
 
-    }
-);
+    };
 
 
-/* VIBRATION */
-
-$("vibrationToggle").addEventListener(
-    "change",
+$("vibrationToggle").onchange =
     event => {
 
         settings.vibration =
             event.target.checked;
 
-        saveSettings(settings);
+        saveSettings();
+
 
         if (
             settings.vibration &&
             navigator.vibrate
         ) {
+
             navigator.vibrate(40);
+
         }
+
 
         toast(
             settings.vibration
@@ -450,20 +924,17 @@ $("vibrationToggle").addEventListener(
                 : "Вибрация выключена"
         );
 
-    }
-);
+    };
 
 
-/* ANIMATIONS */
-
-$("animationsToggle").addEventListener(
-    "change",
+$("animationsToggle").onchange =
     event => {
 
         settings.animations =
             event.target.checked;
 
-        saveSettings(settings);
+        saveSettings();
+
         applySettings();
 
         toast(
@@ -472,56 +943,31 @@ $("animationsToggle").addEventListener(
                 : "Анимации выключены"
         );
 
-    }
-);
+    };
 
 
-/* LANGUAGE */
-
-$("languageSetting").onclick = () => {
-
-    if (settings.language === "ru") {
-        settings.language = "en";
-    } else {
-        settings.language = "ru";
-    }
-
-    saveSettings(settings);
-    applySettings();
-
-    toast(
-        settings.language === "ru"
-            ? "Русский язык"
-            : "English language"
-    );
-};
-
-
-/* -------------------------
+/* =========================
    INFO
-------------------------- */
+========================= */
 
 function showInfo(title, text) {
 
-    $("infoTitle").textContent = title;
-    $("infoText").textContent = text;
+    $("infoTitle").textContent =
+        title;
 
-    $("infoModal").classList.add("show");
+    $("infoText").textContent =
+        text;
+
+    showModal("infoModal");
+
 }
-
-
-$("infoClose").onclick = () => {
-
-    $("infoModal").classList.remove("show");
-
-};
 
 
 $("aboutBtn").onclick = () => {
 
     showInfo(
         "О Nexgram",
-        "Nexgram — собственный современный мессенджер. Сейчас проект находится в разработке."
+        "Nexgram — собственный современный мессенджер. Проект находится в активной разработке."
     );
 
 };
@@ -531,7 +977,27 @@ $("privacyBtn").onclick = () => {
 
     showInfo(
         "Приватность",
-        "Настоящая система безопасности и серверного хранения данных будет добавлена вместе с backend."
+        "Настройки приватности будут расширяться вместе с серверной частью Nexgram."
+    );
+
+};
+
+
+$("securityBtn").onclick = () => {
+
+    showInfo(
+        "Безопасность",
+        "Защита аккаунтов, сессий и сообщений будет реализована при подключении backend."
+    );
+
+};
+
+
+$("dataBtn").onclick = () => {
+
+    showInfo(
+        "Данные приложения",
+        "Текущие настройки интерфейса и локальная сессия сохраняются в памяти браузера."
     );
 
 };
@@ -543,17 +1009,68 @@ $("editProfileBtn").onclick = () => {
 
     if (!user) return;
 
+
     showInfo(
         "Профиль",
-        `Ваш профиль: ${user.name || "Пользователь Nexgram"}`
+        `Ваше имя: ${user.name || "Пользователь Nexgram"}`
     );
 
 };
 
 
-/* -------------------------
+/* =========================
+   CLOSE MODALS
+========================= */
+
+document
+    .querySelectorAll("[data-close]")
+    .forEach(button => {
+
+        button.onclick = () => {
+
+            closeModal(
+                button.dataset.close
+            );
+
+        };
+
+    });
+
+
+document
+    .querySelectorAll(".modal")
+    .forEach(modal => {
+
+        modal.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target === modal
+                ) {
+
+                    modal.classList.remove(
+                        "show"
+                    );
+
+                }
+
+            }
+        );
+
+    });
+
+
+$("infoClose").onclick = () => {
+
+    closeModal("infoModal");
+
+};
+
+
+/* =========================
    PROFILE
-------------------------- */
+========================= */
 
 function updateProfile() {
 
@@ -561,31 +1078,40 @@ function updateProfile() {
 
     if (!user) return;
 
+
     $("profileName").textContent =
-        user.name || "Пользователь Nexgram";
+        user.name ||
+        "Пользователь Nexgram";
+
 
     $("profileEmail").textContent =
-        user.email || "Анонимный режим";
+        user.email ||
+        "Анонимный режим";
 
-    const firstLetter =
-        (user.name || "N")
-            .charAt(0)
-            .toUpperCase();
 
     $("profileAvatar").textContent =
-        firstLetter;
+        (
+            user.name ||
+            "N"
+        )
+        .charAt(0)
+        .toUpperCase();
+
 }
 
 
-/* -------------------------
+/* =========================
    LOGOUT
-------------------------- */
+========================= */
 
 $("logoutBtn").onclick = () => {
 
-    localStorage.removeItem(USER_KEY);
+    localStorage.removeItem(
+        USER_KEY
+    );
 
     toast("Вы вышли из аккаунта");
+
 
     setTimeout(() => {
 
@@ -596,9 +1122,9 @@ $("logoutBtn").onclick = () => {
 };
 
 
-/* -------------------------
-   NEW CHAT
-------------------------- */
+/* =========================
+   CHAT
+========================= */
 
 $("newChatBtn").onclick = () => {
 
@@ -610,33 +1136,39 @@ $("newChatBtn").onclick = () => {
 };
 
 
-/* -------------------------
-   SEARCH
-------------------------- */
-
 $("chatSearch").addEventListener(
     "input",
     event => {
 
         const value =
-            event.target.value.trim();
+            event.target.value
+                .trim();
+
+
+        const title =
+            $("chatEmpty")
+                .querySelector("h3");
+
+
+        const text =
+            $("chatEmpty")
+                .querySelector("p");
+
 
         if (value) {
 
-            $("chatEmpty").querySelector("h3")
-                .textContent = "Ничего не найдено";
+            title.textContent =
+                "Ничего не найдено";
 
-            $("chatEmpty").querySelector("p")
-                .textContent =
-                "Чаты появятся здесь после добавления функции сообщений.";
+            text.textContent =
+                "Настоящие чаты появятся после разработки серверной части.";
 
         } else {
 
-            $("chatEmpty").querySelector("h3")
-                .textContent = "Пока здесь пусто";
+            title.textContent =
+                "Пока здесь пусто";
 
-            $("chatEmpty").querySelector("p")
-                .textContent =
+            text.textContent =
                 "Когда чаты будут готовы, они появятся здесь.";
 
         }
@@ -645,9 +1177,9 @@ $("chatSearch").addEventListener(
 );
 
 
-/* -------------------------
-   PWA INSTALL
-------------------------- */
+/* =========================
+   PWA
+========================= */
 
 window.addEventListener(
     "beforeinstallprompt",
@@ -656,9 +1188,6 @@ window.addEventListener(
         event.preventDefault();
 
         deferredPrompt = event;
-
-        $("installBtn").style.display =
-            "block";
 
     }
 );
@@ -670,11 +1199,13 @@ $("installBtn").onclick = async () => {
 
         showInfo(
             "Установка Nexgram",
-            "Если кнопка установки недоступна, откройте меню браузера и выберите «Добавить на главный экран» или «Установить приложение»."
+            "Откройте меню браузера и выберите «Установить приложение» или «Добавить на главный экран»."
         );
 
         return;
+
     }
+
 
     deferredPrompt.prompt();
 
@@ -685,39 +1216,48 @@ $("installBtn").onclick = async () => {
 };
 
 
-/* -------------------------
+/* =========================
    SERVICE WORKER
-------------------------- */
+========================= */
 
 if ("serviceWorker" in navigator) {
 
-    window.addEventListener("load", () => {
+    window.addEventListener(
+        "load",
+        () => {
 
-        navigator.serviceWorker
-            .register("./sw.js?v=8")
-            .catch(error => {
-                console.log(
-                    "Service Worker error:",
-                    error
-                );
-            });
+            navigator.serviceWorker
+                .register(
+                    "./sw.js?v=10"
+                )
+                .catch(error => {
 
-    });
+                    console.log(
+                        "SW error:",
+                        error
+                    );
+
+                });
+
+        }
+    );
 
 }
 
 
-/* -------------------------
+/* =========================
    START
-------------------------- */
+========================= */
 
 applySettings();
 
+
 const user = getUser();
+
 
 if (user && user.entered) {
 
-    openNotReady();
+    showScreen("notReadyScreen");
 
 } else {
 
