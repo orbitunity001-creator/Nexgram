@@ -1,157 +1,124 @@
-<svg xmlns="http://www.w3.org/2000/svg"
-     viewBox="0 0 512 512"
-     width="512"
-     height="512">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 
   <defs>
-    <!-- Основной синий градиент -->
-    <radialGradient id="bg" cx="35%" cy="25%" r="80%">
-      <stop offset="0%" stop-color="#3b82f6"/>
-      <stop offset="45%" stop-color="#1769e8"/>
-      <stop offset="100%" stop-color="#073b9c"/>
-    </radialGradient>
+    <linearGradient id="blue" x1="80" y1="60" x2="430" y2="450" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#163B73"/>
+      <stop offset="1" stop-color="#071D3D"/>
+    </linearGradient>
 
-    <!-- Свечение ракеты -->
-    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur stdDeviation="9" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-
-    <!-- Свечение звёзд -->
-    <filter id="starGlow" x="-200%" y="-200%" width="400%" height="400%">
-      <feGaussianBlur stdDeviation="3"/>
-    </filter>
+    <linearGradient id="silver" x1="210" y1="130" x2="320" y2="390" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#DCE7F5"/>
+    </linearGradient>
   </defs>
 
-  <!-- Белая карточка -->
-  <rect width="512" height="512"
-        rx="115"
-        fill="#ffffff"/>
+  <!-- White premium background -->
+  <rect width="512" height="512" rx="118" fill="#FFFFFF"/>
 
-  <!-- Синий круг -->
-  <circle cx="256" cy="256" r="196"
-          fill="url(#bg)"/>
+  <!-- Main emblem -->
+  <circle cx="256" cy="256" r="190" fill="url(#blue)"/>
 
-  <!-- Мягкое внутреннее свечение -->
-  <circle cx="256" cy="256" r="170"
-          fill="none"
-          stroke="#60a5fa"
-          stroke-opacity=".18"
-          stroke-width="3"/>
+  <!-- Subtle inner border -->
+  <circle
+    cx="256"
+    cy="256"
+    r="176"
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-opacity=".10"
+    stroke-width="2"
+  />
 
-  <!-- ЗВЁЗДЫ -->
-
-  <g fill="#ffffff">
-    <circle cx="145" cy="172" r="5"/>
-    <circle cx="365" cy="150" r="4"/>
-    <circle cx="387" cy="287" r="5"/>
-    <circle cx="135" cy="319" r="4"/>
-    <circle cx="335" cy="365" r="3"/>
-    <circle cx="181" cy="379" r="3"/>
+  <!-- Minimal stars -->
+  <g fill="#FFFFFF">
+    <circle cx="155" cy="174" r="4"/>
+    <circle cx="365" cy="178" r="4"/>
+    <circle cx="381" cy="315" r="3"/>
+    <circle cx="142" cy="326" r="3"/>
   </g>
 
-  <!-- Большие звёзды -->
-  <g fill="#ffffff" filter="url(#starGlow)">
-    <path d="M165 238 L170 253 L185 258 L170 263 L165 278 L160 263 L145 258 L160 253 Z"/>
-    <path d="M359 208 L363 220 L375 224 L363 228 L359 240 L355 228 L343 224 L355 220 Z"/>
+  <!-- Main rocket -->
+  <g transform="translate(256 256) rotate(-42)">
+
+    <!-- Rocket body -->
+    <path
+      d="
+        M 0 -112
+        C -42 -82 -57 -30 -54 28
+        C -52 65 -27 89 0 101
+        C 27 89 52 65 54 28
+        C 57 -30 42 -82 0 -112
+        Z
+      "
+      fill="url(#silver)"
+    />
+
+    <!-- Nose -->
+    <path
+      d="
+        M 0 -112
+        C -20 -96 -32 -78 -39 -55
+        C -25 -60 -13 -63 0 -63
+        C 13 -63 25 -60 39 -55
+        C 32 -78 20 -96 0 -112
+        Z
+      "
+      fill="#FFFFFF"
+    />
+
+    <!-- Window -->
+    <circle cx="0" cy="-25" r="23" fill="#0B2B58"/>
+
+    <circle
+      cx="0"
+      cy="-25"
+      r="15"
+      fill="#FFFFFF"
+      opacity=".9"
+    />
+
+    <circle
+      cx="-5"
+      cy="-30"
+      r="5"
+      fill="#DCE7F5"
+    />
+
+    <!-- Left wing -->
+    <path
+      d="
+        M -48 24
+        C -71 34 -82 51 -80 73
+        C -61 68 -44 59 -30 45
+        Z
+      "
+      fill="#D7E2F0"
+    />
+
+    <!-- Right wing -->
+    <path
+      d="
+        M 48 24
+        C 71 34 82 51 80 73
+        C 61 68 44 59 30 45
+        Z
+      "
+      fill="#D7E2F0"
+    />
+
+    <!-- Engine -->
+    <path
+      d="
+        M -23 67
+        C -20 88 -11 103 0 117
+        C 11 103 20 88 23 67
+        C 15 73 8 76 0 76
+        C -8 76 -15 73 -23 67
+        Z
+      "
+      fill="#FFFFFF"
+    />
+
   </g>
-
-  <g fill="#ffffff">
-    <path d="M165 238 L170 253 L185 258 L170 263 L165 278 L160 263 L145 258 L160 253 Z"/>
-    <path d="M359 208 L363 220 L375 224 L363 228 L359 240 L355 228 L343 224 L355 220 Z"/>
-  </g>
-
-  <!-- РАКЕТА -->
-  <g transform="translate(256 256) rotate(-42)"
-     filter="url(#glow)">
-
-    <!-- Пламя -->
-    <path d="
-      M-20 72
-      C-35 91 -31 111 -18 126
-      C-12 112 -4 105 0 89
-      C7 106 14 113 20 126
-      C33 108 35 88 20 72
-      Z"
-      fill="#60a5fa"/>
-
-    <path d="
-      M-10 75
-      C-17 91 -13 102 0 113
-      C13 102 17 91 10 75
-      Z"
-      fill="#ffffff"/>
-
-    <!-- Корпус ракеты -->
-    <path d="
-      M0-105
-      C-48-74 -58-22 -55 39
-      C-53 66 -30 84 0 94
-      C30 84 53 66 55 39
-      C58-22 48-74 0-105
-      Z"
-      fill="#ffffff"/>
-
-    <!-- Нос -->
-    <path d="
-      M0-105
-      C-20-91 -32-73 -39-51
-      C-22-57 -10-60 0-60
-      C10-60 22-57 39-51
-      C32-73 20-91 0-105
-      Z"
-      fill="#eaf3ff"/>
-
-    <!-- Иллюминатор -->
-    <circle cx="0" cy="-25" r="22"
-            fill="#1769e8"/>
-
-    <circle cx="0" cy="-25" r="14"
-            fill="#8ec5ff"/>
-
-    <circle cx="-5" cy="-31" r="5"
-            fill="#ffffff"
-            opacity=".75"/>
-
-    <!-- Левое крыло -->
-    <path d="
-      M-47 25
-      C-69 37 -79 56 -77 76
-      C-58 70 -43 61 -31 49
-      Z"
-      fill="#dcecff"/>
-
-    <!-- Правое крыло -->
-    <path d="
-      M47 25
-      C69 37 79 56 77 76
-      C58 70 43 61 31 49
-      Z"
-      fill="#dcecff"/>
-
-    <!-- Нижняя деталь -->
-    <path d="
-      M-28 67
-      C-17 79 -8 84 0 88
-      C8 84 17 79 28 67
-      C19 72 10 74 0 74
-      C-10 74 -19 72 -28 67
-      Z"
-      fill="#bcdcff"/>
-  </g>
-
-  <!-- Лёгкий блик круга -->
-  <path d="
-    M120 188
-    C150 118 218 87 285 90
-    C218 105 167 145 145 205
-    C136 228 130 251 128 276
-    C115 247 113 216 120 188
-    Z"
-    fill="#ffffff"
-    opacity=".07"/>
 
 </svg>
