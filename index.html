@@ -2,264 +2,221 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <title>Nexgram Messenger</title>
+    <title>NEX</title>
 
-    <meta name="theme-color" content="#eaf5ff">
-    <meta name="background-color" content="#eaf5ff">
-    <meta name="description" content="Nexgram — современный мессенджер со своим характером.">
+    <link rel="stylesheet" href="./style.css?v=10">
+    <link rel="manifest" href="./manifest.json">
 
-    <link rel="manifest" href="./manifest.json?v=8">
-    <link rel="icon" href="./icon.svg?v=8">
-
-    <link rel="stylesheet" href="./style.css?v=8">
+    <meta name="theme-color" content="#ffffff">
 </head>
 
 <body>
 
-<div class="aurora"></div>
+    <div class="aurora">
+        <div class="aurora-ball ball-1"></div>
+        <div class="aurora-ball ball-2"></div>
+        <div class="aurora-ball ball-3"></div>
+    </div>
 
-<div class="aurora-ball ball-one"></div>
-<div class="aurora-ball ball-two"></div>
-<div class="aurora-ball ball-three"></div>
-<div class="aurora-ball ball-four"></div>
+    <div class="noise"></div>
 
-<div class="noise"></div>
+    <!-- Шапка -->
 
-<header class="topbar">
+    <header class="topbar">
+        <div class="brand">NEX</div>
 
-    <button class="brand" id="brandBtn" type="button">
-        <span class="brand-logo">N</span>
-
-        <span>
-            <strong>Nexgram</strong>
-            <small>Messenger</small>
-        </span>
-    </button>
-
-    <button class="install-btn" id="installBtn" type="button">
-        ↓ Скачать приложение
-    </button>
-
-</header>
+        <button id="installBtn"
+                class="install-btn"
+                hidden>
+            Установить
+        </button>
+    </header>
 
 
-<main>
+    <!-- ========================= -->
+    <!-- АВТОРИЗАЦИЯ -->
+    <!-- ========================= -->
 
-    <!-- AUTH -->
+    <main class="auth-page">
 
-    <section id="authScreen" class="screen auth-screen">
+        <section class="auth-card">
 
-        <div class="auth-card">
+            <div class="auth-header">
 
-            <div class="eyebrow">
-                NEXGRAM MESSENGER
-            </div>
+                <div class="mini-logo">NEX</div>
 
-            <h1>
-                Общение.
-                <span>По-новому.</span>
-            </h1>
+                <h1 id="authTitle">
+                    Добро пожаловать
+                </h1>
 
-            <p class="auth-description">
-                Современный умный мессенджер со своим дизайном,
-                функциями и характером.
-            </p>
-
-            <div class="auth-buttons">
-
-                <button id="openRegister" class="primary-btn">
-                    Создать аккаунт
-                </button>
-
-                <button id="openLogin" class="secondary-btn">
-                    Войти
-                </button>
-
-            </div>
-
-            <div class="or-divider">
-                <span></span>
-                <small>или</small>
-                <span></span>
-            </div>
-
-            <button id="anonymousBtn" class="anonymous-row">
-
-                <span class="anonymous-icon">◌</span>
-
-                <span class="anonymous-info">
-                    <strong>Зайти анонимно</strong>
-                    <small>Ограниченный режим</small>
-                </span>
-
-                <span class="arrow">›</span>
-
-            </button>
-
-            <p class="auth-footnote">
-                Nexgram создаётся с нуля.
-                Мы делаем свой продукт, а не копию других мессенджеров.
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <!-- REGISTER -->
-
-    <section id="registerScreen" class="screen form-screen hidden">
-
-        <div class="form-card">
-
-            <button class="back-btn" data-back-auth>
-                ← Назад
-            </button>
-
-            <div class="form-heading">
-                <span class="mini-label">NEXGRAM</span>
-                <h2>Создание аккаунта</h2>
-                <p>
-                    Создай свой профиль Nexgram.
+                <p id="authSubtitle">
+                    Войдите в свой NEX аккаунт
                 </p>
+
             </div>
 
-            <form id="registerForm">
+
+            <!-- ========================= -->
+            <!-- ВХОД -->
+            <!-- ========================= -->
+
+            <form id="loginForm"
+                  class="auth-form">
 
                 <label>
-                    Имя
+                    NEX ID
+
                     <input
-                        id="registerName"
+                        id="loginId"
                         type="text"
-                        placeholder="Как тебя называть?"
-                        maxlength="32"
-                        autocomplete="name"
-                        required
-                    >
+                        placeholder="NEX-000001"
+                        autocomplete="username"
+                        required>
                 </label>
 
-                <label>
-                    Email
-                    <input
-                        id="registerEmail"
-                        type="email"
-                        placeholder="you@example.com"
-                        autocomplete="email"
-                        required
-                    >
-                </label>
 
                 <label>
                     Пароль
-                    <input
-                        id="registerPassword"
-                        type="password"
-                        placeholder="Минимум 6 символов"
-                        minlength="6"
-                        autocomplete="new-password"
-                        required
-                    >
-                </label>
 
-                <button class="primary-btn full-btn" type="submit">
-                    Создать аккаунт
-                </button>
-
-            </form>
-
-        </div>
-
-    </section>
-
-
-    <!-- LOGIN -->
-
-    <section id="loginScreen" class="screen form-screen hidden">
-
-        <div class="form-card">
-
-            <button class="back-btn" data-back-auth>
-                ← Назад
-            </button>
-
-            <div class="form-heading">
-                <span class="mini-label">NEXGRAM</span>
-                <h2>С возвращением</h2>
-                <p>
-                    Войди в свой аккаунт Nexgram.
-                </p>
-            </div>
-
-            <form id="loginForm">
-
-                <label>
-                    Email
-                    <input
-                        id="loginEmail"
-                        type="email"
-                        placeholder="you@example.com"
-                        autocomplete="email"
-                        required
-                    >
-                </label>
-
-                <label>
-                    Пароль
                     <input
                         id="loginPassword"
                         type="password"
-                        placeholder="Твой пароль"
+                        placeholder="Введите пароль"
                         autocomplete="current-password"
-                        required
-                    >
+                        required>
                 </label>
 
-                <button
-                    id="forgotPassword"
-                    class="text-btn"
-                    type="button"
-                >
-                    Забыли пароль?
+
+                <button type="submit"
+                        class="main-btn">
+                    Войти
                 </button>
 
-                <button class="primary-btn full-btn" type="submit">
-                    Войти
+
+                <button type="button"
+                        id="openRegister"
+                        class="secondary-btn">
+                    Создать аккаунт
+                </button>
+
+
+                <button type="button"
+                        id="anonymousBtn"
+                        class="anonymous-btn">
+                    Продолжить как Аноним
                 </button>
 
             </form>
 
-        </div>
 
-    </section>
+            <!-- ========================= -->
+            <!-- РЕГИСТРАЦИЯ -->
+            <!-- ========================= -->
+
+            <form id="registerForm"
+                  class="auth-form hidden">
+
+                <label>
+                    Ник
+                    <span class="optional">
+                        необязательно
+                    </span>
+
+                    <input
+                        id="registerNickname"
+                        type="text"
+                        maxlength="32"
+                        placeholder="Например, Alex">
+                </label>
 
 
-    <!-- CHATS NOT READY -->
+                <label>
+                    Пароль
 
-    <section id="notReadyScreen" class="screen centered-screen hidden">
+                    <input
+                        id="registerPassword"
+                        type="password"
+                        minlength="6"
+                        maxlength="128"
+                        placeholder="Придумайте пароль"
+                        autocomplete="new-password"
+                        required>
+                </label>
+
+
+                <label>
+                    Повторите пароль
+
+                    <input
+                        id="registerPassword2"
+                        type="password"
+                        minlength="6"
+                        maxlength="128"
+                        placeholder="Введите пароль ещё раз"
+                        autocomplete="new-password"
+                        required>
+                </label>
+
+
+                <button type="submit"
+                        class="main-btn">
+                    Зарегистрироваться
+                </button>
+
+
+                <button type="button"
+                        id="openLogin"
+                        class="secondary-btn">
+                    Уже есть аккаунт
+                </button>
+
+            </form>
+
+
+            <!-- Ошибка -->
+
+            <div id="authMessage"
+                 class="auth-message">
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ========================= -->
+    <!-- ЧАТЫ ЕЩЁ НЕ ГОТОВЫ -->
+    <!-- ========================= -->
+
+    <section id="notReadyScreen"
+             class="screen hidden">
 
         <div class="not-ready-card">
 
-            <div class="orbit-symbol">
-                N
+            <div class="not-ready-icon">
+                💬
             </div>
-
-            <span class="mini-label">
-                РАЗДЕЛ ЧАТОВ
-            </span>
 
             <h2>
                 Чаты ещё не готовы
             </h2>
 
             <p>
-                Мы пока строим эту часть Nexgram.
-                Остальные возможности уже можно посмотреть.
+                Мы уже работаем над чатами NEX.
+                Скоро здесь появится полноценный
+                школьный мессенджер.
             </p>
 
-            <button id="continueBtn" class="primary-btn full-btn">
-                Продолжить
+            <div id="accountInfo"
+                 class="account-info">
+            </div>
+
+            <button id="logoutBtn"
+                    class="main-btn">
+                Выйти
             </button>
 
         </div>
@@ -267,858 +224,7 @@
     </section>
 
 
-    <!-- APP -->
-
-    <section id="appScreen" class="app-shell hidden">
-
-        <div class="app-content">
-
-            <!-- CHATS -->
-
-            <div id="chatsView" class="app-view">
-
-                <div class="view-header">
-
-                    <div>
-                        <span class="mini-label">NEXGRAM</span>
-                        <h2>Чаты</h2>
-                    </div>
-
-                    <button class="round-button" id="newChatBtn">
-                        +
-                    </button>
-
-                </div>
-
-                <div class="empty-chats">
-
-                    <div class="empty-orbit">
-                        <span>✦</span>
-                        <span>•</span>
-                        <span>✧</span>
-                    </div>
-
-                    <h3>Здесь пока тихо</h3>
-
-                    <p>
-                        Чаты ещё находятся в разработке.
-                        А пока исследуй Premium, Orbit и свой профиль.
-                    </p>
-
-                    <button class="secondary-btn" id="goPremiumFromChats">
-                        Открыть Premium
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- PREMIUM -->
-
-            <div id="premiumView" class="app-view hidden">
-
-                <div class="view-header">
-
-                    <div>
-                        <span class="mini-label">NEXGRAM</span>
-                        <h2>Premium</h2>
-                    </div>
-
-                    <button class="rocket-balance" id="topRocketBalance">
-                        🚀 <span>0</span>
-                    </button>
-
-                </div>
-
-
-                <div class="premium-hero">
-
-                    <div class="premium-glow"></div>
-
-                    <div class="premium-hero-content">
-
-                        <div class="premium-badge">
-                            ✦ NEXGRAM PREMIUM
-                        </div>
-
-                        <h3>
-                            Больше возможностей.
-                            <span>Без оплаты.</span>
-                        </h3>
-
-                        <p>
-                            Выполняй задания, собирай ракеты,
-                            открывай подарки и собирай уникальную коллекцию.
-                        </p>
-
-                        <div class="premium-stats">
-
-                            <div>
-                                <strong id="premiumRocketCount">0</strong>
-                                <small>ракет</small>
-                            </div>
-
-                            <div>
-                                <strong id="premiumGiftCount">0</strong>
-                                <small>подарков</small>
-                            </div>
-
-                            <div>
-                                <strong id="premiumTaskCount">0</strong>
-                                <small>заданий</small>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="premium-section-head">
-
-                    <div>
-                        <span class="mini-label">EARN</span>
-                        <h3>Задания</h3>
-                    </div>
-
-                    <span class="section-counter" id="tasksCounter">
-                        0 выполнено
-                    </span>
-
-                </div>
-
-                <div id="tasksList" class="tasks-list"></div>
-
-
-                <div class="premium-section-head gift-head">
-
-                    <div>
-                        <span class="mini-label">COLLECTION</span>
-                        <h3>Подарки</h3>
-                    </div>
-
-                    <button class="small-link" id="openCollectionBtn">
-                        Коллекция
-                    </button>
-
-                </div>
-
-                <div id="giftsGrid" class="gifts-grid"></div>
-
-            </div>
-
-
-            <!-- PROFILE -->
-
-            <div id="profileView" class="app-view hidden">
-
-                <div class="view-header">
-
-                    <div>
-                        <span class="mini-label">NEXGRAM</span>
-                        <h2>Профиль</h2>
-                    </div>
-
-                    <button class="round-button" id="editProfileBtn">
-                        ✎
-                    </button>
-
-                </div>
-
-
-                <div class="profile-card">
-
-                    <div class="profile-avatar-wrap">
-
-                        <div
-                            id="profileAvatar"
-                            class="profile-avatar"
-                        >
-                            N
-                        </div>
-
-                        <label class="avatar-edit">
-                            +
-                            <input
-                                id="avatarInput"
-                                type="file"
-                                accept="image/*"
-                                hidden
-                            >
-                        </label>
-
-                    </div>
-
-                    <div class="profile-main">
-
-                        <div class="profile-name-row">
-
-                            <h2 id="profileName">
-                                Пользователь Nexgram
-                            </h2>
-
-                            <span
-                                id="profilePremium"
-                                class="premium-check hidden"
-                                title="Nexgram Premium"
-                            >
-                                ✓
-                            </span>
-
-                        </div>
-
-                        <div
-                            id="profileNickSticker"
-                            class="profile-sticker"
-                        ></div>
-
-                        <p id="profileEmail">
-                            —
-                        </p>
-
-                    </div>
-
-                    <div class="profile-rockets">
-                        🚀
-                        <strong id="profileRocketCount">0</strong>
-                        <span>ракет</span>
-                    </div>
-
-                </div>
-
-
-                <div class="profile-grid">
-
-                    <div class="profile-stat">
-                        <strong id="profileGiftCount">0</strong>
-                        <span>Подарков</span>
-                    </div>
-
-                    <div class="profile-stat">
-                        <strong id="profileTaskCount">0</strong>
-                        <span>Заданий</span>
-                    </div>
-
-                    <div class="profile-stat">
-                        <strong id="profileOrbitCount">0</strong>
-                        <span>Orbit</span>
-                    </div>
-
-                </div>
-
-
-                <div class="profile-section">
-
-                    <div class="section-title">
-                        <span>Твой статус</span>
-                    </div>
-
-                    <div
-                        id="profileStatusCard"
-                        class="status-card"
-                    ></div>
-
-                </div>
-
-
-                <div class="profile-section">
-
-                    <div class="section-title">
-                        <span>Уникальный ник</span>
-                    </div>
-
-                    <div
-                        id="nickStickerList"
-                        class="sticker-list"
-                    ></div>
-
-                </div>
-
-            </div>
-
-
-            <!-- SETTINGS -->
-
-            <div id="settingsView" class="app-view hidden">
-
-                <div class="view-header">
-
-                    <div>
-                        <span class="mini-label">NEXGRAM</span>
-                        <h2>Настройки</h2>
-                    </div>
-
-                </div>
-
-
-                <div class="settings-card">
-
-                    <div class="settings-group-title">
-                        Внешний вид
-                    </div>
-
-                    <div class="setting-row">
-
-                        <div>
-                            <strong>Анимации</strong>
-                            <small>Живые градиенты и эффекты</small>
-                        </div>
-
-                        <label class="switch">
-                            <input
-                                type="checkbox"
-                                id="animationsSetting"
-                                checked
-                            >
-                            <span></span>
-                        </label>
-
-                    </div>
-
-
-                    <div class="setting-row">
-
-                        <div>
-                            <strong>Звуки</strong>
-                            <small>Звуки интерфейса</small>
-                        </div>
-
-                        <label class="switch">
-                            <input
-                                type="checkbox"
-                                id="soundsSetting"
-                            >
-                            <span></span>
-                        </label>
-
-                    </div>
-
-
-                    <div class="setting-row">
-
-                        <div>
-                            <strong>Уведомления</strong>
-                            <small>Системные уведомления</small>
-                        </div>
-
-                        <label class="switch">
-                            <input
-                                type="checkbox"
-                                id="notificationsSetting"
-                                checked
-                            >
-                            <span></span>
-                        </label>
-
-                    </div>
-
-                </div>
-
-
-                <div class="settings-card">
-
-                    <div class="settings-group-title">
-                        Размер текста
-                    </div>
-
-                    <div class="font-size-buttons">
-
-                        <button data-font="small">
-                            A
-                        </button>
-
-                        <button
-                            class="active"
-                            data-font="normal"
-                        >
-                            A
-                        </button>
-
-                        <button data-font="large">
-                            A
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <div class="settings-card">
-
-                    <div class="settings-group-title">
-                        Приватность
-                    </div>
-
-                    <div class="setting-row">
-
-                        <div>
-                            <strong>Показывать Premium</strong>
-                            <small>Premium-галочка в профиле</small>
-                        </div>
-
-                        <label class="switch">
-                            <input
-                                type="checkbox"
-                                id="showPremiumSetting"
-                                checked
-                            >
-                            <span></span>
-                        </label>
-
-                    </div>
-
-                </div>
-
-
-                <button
-                    id="adminPanelBtn"
-                    class="admin-open-btn hidden"
-                >
-                    ⚡ Открыть админ-панель
-                </button>
-
-
-                <button
-                    id="logoutBtn"
-                    class="danger-btn"
-                >
-                    Выйти из аккаунта
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- BOTTOM NAV -->
-
-        <nav class="bottom-nav">
-
-            <button
-                class="nav-item active"
-                data-view="chatsView"
-            >
-                <span>⌂</span>
-                <small>Чаты</small>
-            </button>
-
-            <button
-                class="nav-item"
-                data-view="premiumView"
-            >
-                <span>🚀</span>
-                <small>Premium</small>
-            </button>
-
-            <button
-                class="nav-item"
-                data-view="profileView"
-            >
-                <span>◉</span>
-                <small>Профиль</small>
-            </button>
-
-            <button
-                class="nav-item"
-                data-view="settingsView"
-            >
-                <span>⚙</span>
-                <small>Настройки</small>
-            </button>
-
-        </nav>
-
-    </section>
-
-</main>
-
-
-<!-- ORBIT FLOATING BUTTON -->
-
-<button
-    id="orbitButton"
-    class="orbit-button hidden"
-    aria-label="Nexgram Orbit"
->
-    <span>🚀</span>
-</button>
-
-
-<!-- ORBIT NAVIGATOR -->
-
-<div id="orbitModal" class="modal-overlay hidden">
-
-    <div class="modal-card orbit-modal">
-
-        <button class="modal-close" data-close-modal>
-            ×
-        </button>
-
-        <div class="orbit-header">
-
-            <div class="orbit-big-icon">
-                🚀
-            </div>
-
-            <div>
-                <span class="mini-label">NEXGRAM ORBIT</span>
-                <h3>Навигатор</h3>
-            </div>
-
-        </div>
-
-        <p class="modal-description">
-            Быстрый центр управления Nexgram.
-            Напиши, куда хочешь попасть, или выбери действие.
-        </p>
-
-        <div class="orbit-input-wrap">
-
-            <input
-                id="orbitInput"
-                type="text"
-                placeholder="Например: подарки, профиль..."
-            >
-
-            <button id="orbitSearchBtn">
-                →
-            </button>
-
-        </div>
-
-        <div class="orbit-actions">
-
-            <button data-orbit="chats">
-                <span>⌂</span>
-                Чаты
-            </button>
-
-            <button data-orbit="premium">
-                <span>🚀</span>
-                Premium
-            </button>
-
-            <button data-orbit="tasks">
-                <span>✦</span>
-                Задания
-            </button>
-
-            <button data-orbit="gifts">
-                <span>🎁</span>
-                Подарки
-            </button>
-
-            <button data-orbit="profile">
-                <span>◉</span>
-                Профиль
-            </button>
-
-            <button data-orbit="settings">
-                <span>⚙</span>
-                Настройки
-            </button>
-
-        </div>
-
-        <div class="orbit-progress">
-
-            <div class="orbit-progress-head">
-                <span>Твоя орбита</span>
-                <strong id="orbitProgressText">0%</strong>
-            </div>
-
-            <div class="progress-track">
-                <div
-                    id="orbitProgressBar"
-                    class="progress-fill"
-                ></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- ANONYMOUS MODAL -->
-
-<div id="anonymousModal" class="modal-overlay hidden">
-
-    <div class="modal-card">
-
-        <button class="modal-close" data-close-modal>
-            ×
-        </button>
-
-        <div class="modal-icon warning">
-            !
-        </div>
-
-        <span class="mini-label">
-            АНОНИМНЫЙ РЕЖИМ
-        </span>
-
-        <h3>
-            Это не совсем удобно
-        </h3>
-
-        <p class="modal-description">
-            В анонимном режиме Nexgram работает с ограничениями.
-        </p>
-
-        <ul class="limitations">
-
-            <li>
-                <span>×</span>
-                Нет полноценного профиля
-            </li>
-
-            <li>
-                <span>×</span>
-                Нет настроек аккаунта
-            </li>
-
-            <li>
-                <span>×</span>
-                Ограниченные возможности
-            </li>
-
-            <li>
-                <span>×</span>
-                Данные могут не сохраниться
-            </li>
-
-        </ul>
-
-        <p class="modal-advice">
-            Если хочешь пользоваться Nexgram нормально,
-            лучше создать обычный аккаунт.
-        </p>
-
-        <div class="modal-actions">
-
-            <button
-                class="secondary-btn"
-                data-close-modal
-            >
-                Назад
-            </button>
-
-            <button
-                id="continueAnonymous"
-                class="primary-btn"
-            >
-                Продолжить
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- GIFT OPEN MODAL -->
-
-<div id="giftModal" class="modal-overlay hidden">
-
-    <div class="modal-card gift-modal">
-
-        <button class="modal-close" data-close-modal>
-            ×
-        </button>
-
-        <div
-            id="giftOpening"
-            class="gift-opening"
-        >
-            🎁
-        </div>
-
-        <span
-            id="giftRarity"
-            class="gift-rarity"
-        >
-            Обычный
-        </span>
-
-        <h3 id="giftTitle">
-            Подарок
-        </h3>
-
-        <p id="giftDescription" class="modal-description">
-            Открывай подарки и собирай коллекцию.
-        </p>
-
-        <div id="giftReward" class="gift-reward hidden"></div>
-
-        <button
-            id="giftCloseBtn"
-            class="primary-btn full-btn"
-        >
-            Отлично
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- COLLECTION MODAL -->
-
-<div id="collectionModal" class="modal-overlay hidden">
-
-    <div class="modal-card collection-modal">
-
-        <button class="modal-close" data-close-modal>
-            ×
-        </button>
-
-        <span class="mini-label">
-            COLLECTION
-        </span>
-
-        <h3>
-            Моя коллекция
-        </h3>
-
-        <div
-            id="collectionList"
-            class="collection-list"
-        ></div>
-
-    </div>
-
-</div>
-
-
-<!-- ADMIN MODAL -->
-
-<div id="adminModal" class="modal-overlay hidden">
-
-    <div class="modal-card admin-modal">
-
-        <button class="modal-close" data-close-modal>
-            ×
-        </button>
-
-        <div class="admin-title">
-
-            <div class="admin-icon">
-                ⚡
-            </div>
-
-            <div>
-                <span class="mini-label">DEVELOPER</span>
-                <h3>Админ-панель</h3>
-            </div>
-
-        </div>
-
-        <div class="admin-warning">
-            Локальная версия. Изменения действуют только
-            на этом устройстве.
-        </div>
-
-
-        <label>
-            Email пользователя
-            <input
-                id="adminTargetEmail"
-                type="email"
-                placeholder="user@example.com"
-            >
-        </label>
-
-
-        <div class="admin-actions-grid">
-
-            <button id="adminPremiumBtn">
-                ✓ Premium
-            </button>
-
-            <button id="adminRemovePremiumBtn">
-                × Premium
-            </button>
-
-            <button id="adminRocketsBtn">
-                🚀 +100 ракет
-            </button>
-
-            <button id="adminGiftBtn">
-                🎁 Подарок
-            </button>
-
-            <button id="adminStickerBtn">
-                ✦ Стикер
-            </button>
-
-        </div>
-
-
-        <div class="admin-divider"></div>
-
-        <div class="admin-users-title">
-            Локальные пользователи
-        </div>
-
-        <div id="adminUsersList"></div>
-
-    </div>
-
-</div>
-
-
-<!-- EDIT PROFILE MODAL -->
-
-<div id="editProfileModal" class="modal-overlay hidden">
-
-    <div class="modal-card">
-
-        <button class="modal-close" data-close-modal>
-            ×
-        </button>
-
-        <span class="mini-label">
-            PROFILE
-        </span>
-
-        <h3>
-            Изменить профиль
-        </h3>
-
-        <label>
-            Имя
-            <input
-                id="editNameInput"
-                type="text"
-                maxlength="32"
-            >
-        </label>
-
-        <button
-            id="saveProfileBtn"
-            class="primary-btn full-btn"
-        >
-            Сохранить
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- TOAST -->
-
-<div id="toast" class="toast">
-    Готово
-</div>
-
-
-<script src="./app.js?v=8"></script>
+    <script src="./app.js?v=10"></script>
 
 </body>
 </html>
