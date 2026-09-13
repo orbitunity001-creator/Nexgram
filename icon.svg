@@ -1,94 +1,101 @@
 <svg xmlns="http://www.w3.org/2000/svg"
-     viewBox="0 0 512 512">
+     viewBox="0 0 512 512"
+     width="512"
+     height="512">
 
+  <defs>
+    <!-- Белое стекло -->
+    <linearGradient id="glass"
+      x1="80" y1="40"
+      x2="430" y2="470"
+      gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.55" stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#E8EDF3"/>
+    </linearGradient>
+
+    <!-- Тень -->
+    <filter id="shadow"
+      x="-40%"
+      y="-40%"
+      width="180%"
+      height="180%">
+      <feDropShadow
+        dx="0"
+        dy="8"
+        stdDeviation="10"
+        flood-color="#000000"
+        flood-opacity=".18"/>
+    </filter>
+
+    <!-- Блик -->
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+
+  <!-- Белая основа -->
+  <rect
+    x="18"
+    y="18"
+    width="476"
+    height="476"
+    rx="125"
+    fill="#FFFFFF"/>
+
+  <!-- Стеклянная поверхность -->
   <rect
     x="32"
     y="32"
     width="448"
     height="448"
-    rx="112"
-    fill="#ffffff"/>
+    rx="110"
+    fill="url(#glass)"/>
 
-  <!-- Уникальный переплетающийся знак -->
+  <!-- Свет сверху -->
+  <ellipse
+    cx="160"
+    cy="95"
+    rx="145"
+    ry="65"
+    fill="#FFFFFF"
+    opacity=".8"
+    filter="url(#blur)"/>
+
+  <!-- ЧЁРНЫЙ ^_^ ПО ЦЕНТРУ -->
   <g
     fill="none"
-    stroke="#111111"
+    stroke="#050505"
     stroke-width="32"
     stroke-linecap="round"
-    stroke-linejoin="round">
+    stroke-linejoin="round"
+    filter="url(#shadow)">
 
-    <!-- Верхняя лента -->
-    <path d="
-      M256 112
-      C202 112 158 147 147 198
-      C137 243 158 284 199 306
-      L256 337
-    "/>
+    <!-- Левая "крышечка" -->
+    <path d="M155 205 L185 175"/>
 
-    <!-- Правая лента -->
-    <path d="
-      M256 112
-      C310 112 354 147 365 198
-      C375 243 354 284 313 306
-      L256 337
-    "/>
+    <!-- Правая "крышечка" -->
+    <path d="M327 175 L357 205"/>
 
-    <!-- Нижняя левая лента -->
+    <!-- Улыбка -->
     <path d="
-      M147 198
-      C118 229 116 275 137 311
-      C160 351 205 373 248 362
-      C274 356 296 340 313 317
-    "/>
-
-    <!-- Нижняя правая лента -->
-    <path d="
-      M365 198
-      C394 229 396 275 375 311
-      C352 351 307 373 264 362
-      C238 356 216 340 199 317
-    "/>
-
-    <!-- Центральная связь -->
-    <path d="
-      M199 306
-      L256 337
-      L313 306
+      M155 275
+      C180 330 220 355 256 355
+      C292 355 332 330 357 275
     "/>
 
   </g>
 
-  <!-- Переплетение -->
-  <path
-    d="
-      M222 291
-      L256 309
-      L290 291
-      L307 308
-      L256 336
-      L205 308
-      Z
-    "
-    fill="#111111"/>
-
-  <!-- Центральное отверстие -->
-  <path
-    d="
-      M256 194
-      L292 214
-      L292 256
-      L256 277
-      L220 256
-      L220 214
-      Z
-    "
-    fill="#ffffff"/>
-
-  <!-- Маленький центральный элемент -->
-  <circle
-    cx="256"
-    cy="235"
-    r="7"
-    fill="#111111"/>
+  <!-- Стеклянная рамка -->
+  <rect
+    x="33"
+    y="33"
+    width="446"
+    height="446"
+    rx="109"
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="3"
+    opacity=".95"/>
 
 </svg>
