@@ -2,52 +2,54 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <meta name="theme-color" content="#eef7ff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
     <title>Nexgram Messenger</title>
 
-    <meta name="theme-color" content="#1677ff">
-
-    <link rel="manifest" href="./manifest.json?v=11">
-    <link rel="stylesheet" href="./style.css?v=11">
+    <link rel="manifest" href="./manifest.json?v=8">
+    <link rel="icon" href="./icon.svg?v=8">
+    <link rel="stylesheet" href="./style.css?v=8">
 </head>
 
 <body>
 
-<div class="background">
-    <div class="aurora aurora-one"></div>
-    <div class="aurora aurora-two"></div>
-    <div class="aurora aurora-three"></div>
-    <div class="aurora aurora-four"></div>
+<div class="app-bg">
+    <div class="aurora"></div>
+    <div class="aurora-ball ball-one"></div>
+    <div class="aurora-ball ball-two"></div>
+    <div class="aurora-ball ball-three"></div>
+    <div class="aurora-ball ball-four"></div>
+    <div class="noise"></div>
 </div>
 
 <header class="topbar">
+    <button class="brand" id="brandBtn">
+        <span class="brand-logo">N</span>
 
-    <div class="brand">
-        <div class="brand-logo">N</div>
-
-        <div>
-            <div class="brand-name">Nexgram</div>
-            <div class="brand-status">Messenger</div>
-        </div>
-    </div>
-
-    <button id="installBtn" class="install-btn">
-        ↓ Скачать
+        <span>
+            <strong>Nexgram</strong>
+            <small>Messenger</small>
+        </span>
     </button>
 
+    <button class="install-btn" id="installBtn">
+        ↓ Скачать приложение
+    </button>
 </header>
 
 
-<main>
+<!-- ================= AUTH ================= -->
 
-<!-- AUTH -->
+<main id="authScreen" class="screen auth-screen">
 
-<section id="authScreen" class="screen active">
+    <section class="auth-card">
 
-    <div class="auth-card">
-
-        <div class="small-label">
+        <div class="eyebrow">
             NEXGRAM MESSENGER
         </div>
 
@@ -57,710 +59,222 @@
         </h1>
 
         <p class="auth-description">
-            Современный умный мессенджер
-            со своим дизайном и характером.
+            Современный мессенджер со своим характером,
+            интерфейсом и новыми идеями.
         </p>
 
-        <button id="registerOpen" class="primary-btn">
-            Создать аккаунт
+        <button class="primary-btn" id="registerOpen">
+            <span>Создать аккаунт</span>
+            <b>→</b>
         </button>
 
-        <button id="loginOpen" class="secondary-btn">
+        <button class="secondary-btn" id="loginOpen">
             Войти
         </button>
 
-        <div class="or">
+        <div class="auth-divider">
             <span></span>
-            или
+            <small>или</small>
             <span></span>
         </div>
 
-        <button id="anonymousOpen" class="anonymous-btn">
-            <span>Зайти анонимно</span>
-            <small>Ограниченный режим</small>
-        </button>
-
-        <div class="auth-footer">
-            Nexgram создаётся с нуля.<br>
-            Это только начало.
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- REGISTER -->
-
-<section id="registerScreen" class="screen">
-
-    <div class="form-card">
-
-        <button class="back-btn" data-back="authScreen">
-            ← Назад
-        </button>
-
-        <div class="small-label">
-            РЕГИСТРАЦИЯ
-        </div>
-
-        <h2>Создать аккаунт</h2>
-
-        <p class="form-description">
-            Зарегистрируйтесь в Nexgram.
-        </p>
-
-        <label>Имя</label>
-        <input id="registerName" type="text" placeholder="Ваше имя">
-
-        <label>Email</label>
-        <input id="registerEmail" type="email" placeholder="example@mail.com">
-
-        <label>Пароль</label>
-        <input id="registerPassword" type="password" placeholder="Минимум 6 символов">
-
-        <button id="registerBtn" class="primary-btn">
-            Создать аккаунт
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- LOGIN -->
-
-<section id="loginScreen" class="screen">
-
-    <div class="form-card">
-
-        <button class="back-btn" data-back="authScreen">
-            ← Назад
-        </button>
-
-        <div class="small-label">
-            ВХОД
-        </div>
-
-        <h2>С возвращением</h2>
-
-        <p class="form-description">
-            Войдите в свой Nexgram.
-        </p>
-
-        <label>Email</label>
-        <input id="loginEmail" type="email" placeholder="example@mail.com">
-
-        <label>Пароль</label>
-        <input id="loginPassword" type="password" placeholder="Ваш пароль">
-
-        <button id="loginBtn" class="primary-btn">
-            Войти
-        </button>
-
-        <button id="forgotPassword" class="text-btn">
-            Забыли пароль?
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- NOT READY -->
-
-<section id="notReadyScreen" class="screen">
-
-    <div class="not-ready-card">
-
-        <div class="not-ready-icon">💬</div>
-
-        <div class="small-label">
-            NEXGRAM
-        </div>
-
-        <h2>
-            Чаты ещё не готовы
-        </h2>
-
-        <p>
-            Мы пока собираем эту часть приложения.
-            Скоро здесь появятся настоящие чаты,
-            контакты и сообщения.
-        </p>
-
-        <button id="continueBtn" class="primary-btn">
-            Продолжить
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- APP -->
-
-<section id="appScreen" class="screen app-screen">
-
-<div class="app-content">
-
-
-<!-- CHATS -->
-
-<div id="chatsPage" class="page active-page">
-
-    <div class="page-header">
-
-        <div>
-            <div class="small-label">NEXGRAM</div>
-            <h2>Чаты</h2>
-        </div>
-
-        <button id="newChatBtn" class="round-btn">
-            ＋
-        </button>
-
-    </div>
-
-    <div class="search-box">
-        <span>⌕</span>
-        <input id="chatSearch" placeholder="Поиск">
-    </div>
-
-    <div id="chatEmpty" class="empty-chat">
-
-        <div class="empty-icon">💬</div>
-
-        <h3>Пока здесь пусто</h3>
-
-        <p>
-            Когда чаты будут готовы,
-            они появятся здесь.
-        </p>
-
-    </div>
-
-</div>
-
-
-<!-- SETTINGS -->
-
-<div id="settingsPage" class="page">
-
-    <div class="settings-top">
-
-        <div>
-            <div class="small-label">
-                PERSONAL SPACE
-            </div>
-
-            <h2>
-                Настройки
-            </h2>
-
-            <p>
-                Настройте Nexgram под себя
-            </p>
-        </div>
-
-        <div class="settings-orb">
-            ✦
-        </div>
-
-    </div>
-
-
-    <!-- PROFILE -->
-
-    <div class="profile-card">
-
-        <div class="profile-glow"></div>
-
-        <div id="profileAvatar" class="profile-avatar">
-            N
-        </div>
-
-        <div class="profile-info">
-            <strong id="profileName">
-                Пользователь
-            </strong>
-
-            <span id="profileEmail">
-                Nexgram
+        <button class="anonymous-btn" id="anonymousOpen">
+            <span class="anonymous-icon">◌</span>
+
+            <span class="anonymous-info">
+                <strong>Зайти анонимно</strong>
+                <small>Ограниченный режим</small>
             </span>
 
-            <small>
-                ● В сети
-            </small>
-        </div>
-
-        <button id="editProfileBtn" class="edit-profile">
-            ✎
+            <b>›</b>
         </button>
 
-    </div>
-
-
-    <!-- QUICK SETTINGS -->
-
-    <div class="quick-grid">
-
-        <button class="quick-card" id="quickTheme">
-
-            <span class="quick-icon blue">
-                🎨
-            </span>
-
-            <strong>Тема</strong>
-
-            <small id="quickThemeText">
-                Светлая
-            </small>
-
-        </button>
-
-
-        <button class="quick-card" id="quickLanguage">
-
-            <span class="quick-icon purple">
-                🌐
-            </span>
-
-            <strong>Язык</strong>
-
-            <small id="quickLanguageText">
-                Русский
-            </small>
-
-        </button>
-
-
-        <button class="quick-card" id="quickFont">
-
-            <span class="quick-icon orange">
-                Aa
-            </span>
-
-            <strong>Шрифт</strong>
-
-            <small id="quickFontText">
-                Средний
-            </small>
-
-        </button>
-
-
-        <button class="quick-card" id="quickAnimation">
-
-            <span class="quick-icon green">
-                ✨
-            </span>
-
-            <strong>Эффекты</strong>
-
-            <small id="quickAnimationText">
-                Включены
-            </small>
-
-        </button>
-
-    </div>
-
-
-    <!-- APPEARANCE -->
-
-    <div class="settings-section">
-
-        <div class="section-heading">
-            <span>Внешний вид</span>
-            <small>Персонализация</small>
+        <div class="auth-note">
+            Nexgram создаётся с нуля и получает
+            собственный дизайн и функции.
         </div>
 
-
-        <div class="modern-settings-card">
-
-            <button class="modern-setting" id="themesSetting">
-
-                <span class="setting-icon blue">
-                    🎨
-                </span>
-
-                <span class="setting-content">
-                    <strong>Темы оформления</strong>
-                    <small id="currentThemeText">
-                        Светлая
-                    </small>
-                </span>
-
-                <span class="setting-arrow">›</span>
-
-            </button>
-
-
-            <button class="modern-setting" id="fontSetting">
-
-                <span class="setting-icon orange">
-                    Aa
-                </span>
-
-                <span class="setting-content">
-                    <strong>Шрифт и размер</strong>
-                    <small id="currentFontText">
-                        Средний · Системный
-                    </small>
-                </span>
-
-                <span class="setting-arrow">›</span>
-
-            </button>
-
-
-            <button class="modern-setting" id="languageSetting">
-
-                <span class="setting-icon purple">
-                    🌐
-                </span>
-
-                <span class="setting-content">
-                    <strong>Язык приложения</strong>
-                    <small id="languageValue">
-                        Русский
-                    </small>
-                </span>
-
-                <span class="setting-arrow">›</span>
-
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- NOTIFICATIONS -->
-
-    <div class="settings-section">
-
-        <div class="section-heading">
-            <span>Удобство</span>
-            <small>Основные параметры</small>
-        </div>
-
-
-        <div class="modern-settings-card">
-
-            <div class="modern-setting">
-
-                <span class="setting-icon pink">
-                    🔔
-                </span>
-
-                <span class="setting-content">
-                    <strong>Уведомления</strong>
-                    <small>Новые сообщения и события</small>
-                </span>
-
-                <label class="switch">
-                    <input id="notificationsToggle" type="checkbox">
-                    <span></span>
-                </label>
-
-            </div>
-
-
-            <div class="modern-setting">
-
-                <span class="setting-icon blue">
-                    📳
-                </span>
-
-                <span class="setting-content">
-                    <strong>Вибрация</strong>
-                    <small>Тактильный отклик</small>
-                </span>
-
-                <label class="switch">
-                    <input id="vibrationToggle" type="checkbox">
-                    <span></span>
-                </label>
-
-            </div>
-
-
-            <div class="modern-setting">
-
-                <span class="setting-icon purple">
-                    ✨
-                </span>
-
-                <span class="setting-content">
-                    <strong>Анимации</strong>
-                    <small>Плавные переходы интерфейса</small>
-                </span>
-
-                <label class="switch">
-                    <input id="animationsToggle" type="checkbox">
-                    <span></span>
-                </label>
-
-            </div>
-
-
-            <div class="modern-setting">
-
-                <span class="setting-icon green">
-                    ⚡
-                </span>
-
-                <span class="setting-content">
-                    <strong>Быстрый интерфейс</strong>
-                    <small>Минимум лишних эффектов</small>
-                </span>
-
-                <label class="switch">
-                    <input id="performanceToggle" type="checkbox">
-                    <span></span>
-                </label>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- LAB -->
-
-    <div class="settings-section">
-
-        <div class="section-heading lab-heading">
-
-            <div>
-                <span>Nexgram Lab</span>
-                <small>Экспериментальные функции</small>
-            </div>
-
-            <b>NEW</b>
-
-        </div>
-
-
-        <div class="lab-card">
-
-            <div class="lab-top">
-
-                <div class="lab-icon">
-                    ✦
-                </div>
-
-                <div>
-                    <strong>Умный интерфейс</strong>
-                    <p>
-                        Новые экспериментальные
-                        элементы Nexgram.
-                    </p>
-                </div>
-
-            </div>
-
-
-            <div class="lab-options">
-
-                <button
-                    class="lab-option"
-                    data-lab="smart"
-                >
-                    <span>🧠</span>
-                    Умные функции
-                </button>
-
-                <button
-                    class="lab-option"
-                    data-lab="blur"
-                >
-                    <span>◈</span>
-                    Стекло
-                </button>
-
-                <button
-                    class="lab-option"
-                    data-lab="particles"
-                >
-                    <span>✧</span>
-                    Частицы
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- PRIVACY -->
-
-    <div class="settings-section">
-
-        <div class="section-heading">
-            <span>Безопасность</span>
-            <small>Ваш аккаунт</small>
-        </div>
-
-
-        <div class="modern-settings-card">
-
-            <button class="modern-setting" id="privacyBtn">
-
-                <span class="setting-icon green">
-                    🔐
-                </span>
-
-                <span class="setting-content">
-                    <strong>Приватность</strong>
-                    <small>Настройки личных данных</small>
-                </span>
-
-                <span class="setting-arrow">›</span>
-
-            </button>
-
-
-            <button class="modern-setting" id="securityBtn">
-
-                <span class="setting-icon blue">
-                    🛡️
-                </span>
-
-                <span class="setting-content">
-                    <strong>Безопасность</strong>
-                    <small>Защита аккаунта</small>
-                </span>
-
-                <span class="setting-arrow">›</span>
-
-            </button>
-
-
-            <button class="modern-setting" id="dataBtn">
-
-                <span class="setting-icon orange">
-                    💾
-                </span>
-
-                <span class="setting-content">
-                    <strong>Данные приложения</strong>
-                    <small>Локальные настройки</small>
-                </span>
-
-                <span class="setting-arrow">›</span>
-
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- ABOUT -->
-
-    <div class="about-nexgram">
-
-        <div class="about-logo">
-            N
-        </div>
-
-        <div>
-            <strong>Nexgram</strong>
-            <small>
-                Messenger · Version 1.0.0
-            </small>
-        </div>
-
-        <button id="aboutBtn">
-            ›
-        </button>
-
-    </div>
-
-
-    <button id="logoutBtn" class="logout-btn">
-        Выйти из аккаунта
-    </button>
-
-
-    <div class="settings-version">
-        Сделано с идеей. Сделано с нуля.
-    </div>
-
-</div>
-
-</div>
-
-
-<!-- BOTTOM -->
-
-<nav class="bottom-nav">
-
-    <button
-        class="nav-item active"
-        data-page="chatsPage"
-    >
-        <span class="nav-icon">💬</span>
-        <span>Чаты</span>
-    </button>
-
-
-    <button
-        class="nav-item"
-        data-page="settingsPage"
-    >
-        <span class="nav-icon">⚙️</span>
-        <span>Настройки</span>
-    </button>
-
-</nav>
-
-</section>
+    </section>
 
 </main>
 
 
-<!-- ANONYMOUS -->
+<!-- ================= REGISTER ================= -->
 
-<div id="anonymousModal" class="modal">
+<section id="registerScreen" class="screen form-screen hidden">
+
+    <div class="form-card">
+
+        <button class="back-btn" data-back-auth>
+            ← Назад
+        </button>
+
+        <div class="form-icon">✦</div>
+
+        <h2>Создать аккаунт</h2>
+
+        <p>
+            Создайте свой профиль Nexgram.
+        </p>
+
+        <form id="registerForm">
+
+            <label>
+                Имя
+                <input
+                    id="registerName"
+                    type="text"
+                    placeholder="Ваше имя"
+                    maxlength="32"
+                    required
+                >
+            </label>
+
+            <label>
+                Email
+                <input
+                    id="registerEmail"
+                    type="email"
+                    placeholder="name@example.com"
+                    required
+                >
+            </label>
+
+            <label>
+                Пароль
+                <input
+                    id="registerPassword"
+                    type="password"
+                    placeholder="Минимум 6 символов"
+                    minlength="6"
+                    required
+                >
+            </label>
+
+            <button class="primary-btn full-btn" type="submit">
+                Создать аккаунт
+                <b>→</b>
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- ================= LOGIN ================= -->
+
+<section id="loginScreen" class="screen form-screen hidden">
+
+    <div class="form-card">
+
+        <button class="back-btn" data-back-auth>
+            ← Назад
+        </button>
+
+        <div class="form-icon">N</div>
+
+        <h2>Войти</h2>
+
+        <p>
+            Войдите в свой Nexgram.
+        </p>
+
+        <form id="loginForm">
+
+            <label>
+                Email
+                <input
+                    id="loginEmail"
+                    type="email"
+                    placeholder="name@example.com"
+                    required
+                >
+            </label>
+
+            <label>
+                Пароль
+                <input
+                    id="loginPassword"
+                    type="password"
+                    placeholder="Ваш пароль"
+                    required
+                >
+            </label>
+
+            <button class="text-link" type="button" id="forgotPassword">
+                Забыли пароль?
+            </button>
+
+            <button class="primary-btn full-btn" type="submit">
+                Войти
+                <b>→</b>
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ANONYMOUS ================= -->
+
+<div class="modal-overlay hidden" id="anonymousModal">
 
     <div class="modal-card">
 
-        <div class="modal-label">
-            АНОНИМНЫЙ РЕЖИМ
-        </div>
+        <button class="modal-close" data-close-modal>
+            ×
+        </button>
 
-        <h2>
-            Это не совсем удобно
-        </h2>
+        <div class="modal-symbol">◌</div>
+
+        <span class="modal-label">
+            АНОНИМНЫЙ РЕЖИМ
+        </span>
+
+        <h2>Это не совсем удобно</h2>
 
         <p>
-            В анонимном режиме возможности
-            Nexgram будут ограничены.
+            В анонимном режиме часть возможностей Nexgram
+            будет недоступна.
         </p>
 
-        <ul>
-            <li>Нет полноценного профиля</li>
-            <li>Нет настроек аккаунта</li>
-            <li>Ограниченная функциональность</li>
-            <li>Данные могут не сохраняться</li>
-        </ul>
+        <div class="limit-list">
+
+            <div>
+                <span>×</span>
+                Нет полноценного профиля
+            </div>
+
+            <div>
+                <span>×</span>
+                Ограниченные настройки
+            </div>
+
+            <div>
+                <span>×</span>
+                Данные могут не сохраниться
+            </div>
+
+            <div>
+                <span>×</span>
+                Часть функций будет недоступна
+            </div>
+
+        </div>
 
         <div class="modal-actions">
-
-            <button id="anonymousBack" class="secondary-btn">
+            <button class="secondary-btn" data-close-modal>
                 Назад
             </button>
 
-            <button id="anonymousContinue" class="primary-btn">
+            <button class="primary-btn" id="anonymousContinue">
                 Продолжить
+                <b>→</b>
             </button>
-
         </div>
 
     </div>
@@ -768,332 +282,781 @@
 </div>
 
 
-<!-- THEMES -->
+<!-- ================= APP ================= -->
 
-<div id="themesModal" class="modal">
+<main id="appScreen" class="app-screen hidden">
 
-    <div class="modal-card settings-modal">
+    <!-- CHATS -->
 
-        <button class="modal-close" data-close="themesModal">
+    <section id="chatsPage" class="app-page active-page">
+
+        <div class="page-header">
+
+            <div>
+                <span class="page-overline">NEXGRAM</span>
+                <h1>Чаты</h1>
+            </div>
+
+            <button class="round-btn" id="chatSearchBtn">
+                ⌕
+            </button>
+
+        </div>
+
+        <div class="empty-chat-card">
+
+            <div class="empty-orbit">
+                <div class="orbit-core">N</div>
+                <span class="orbit-dot dot-a"></span>
+                <span class="orbit-dot dot-b"></span>
+                <span class="orbit-dot dot-c"></span>
+            </div>
+
+            <h2>Чаты ещё не готовы</h2>
+
+            <p>
+                Серверная часть Nexgram пока находится
+                в разработке. Но приложение уже готово
+                для твоего личного пространства.
+            </p>
+
+            <button class="primary-btn" id="openOrbitFromChats">
+                Открыть Nexgram Orbit
+                <b>↗</b>
+            </button>
+
+        </div>
+
+        <div class="feature-grid">
+
+            <button class="feature-card" id="openCapsulesFromChats">
+                <span>◈</span>
+                <strong>Капсулы</strong>
+                <small>Личные идеи и заметки</small>
+            </button>
+
+            <button class="feature-card" id="openNavigatorFromChats">
+                <span>🚀</span>
+                <strong>Навигатор</strong>
+                <small>Помощь по Nexgram</small>
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ORBIT -->
+
+    <section id="orbitPage" class="app-page">
+
+        <div class="page-header">
+
+            <div>
+                <span class="page-overline">PERSONAL SPACE</span>
+                <h1>Orbit</h1>
+            </div>
+
+            <button class="round-btn" id="orbitSettings">
+                ⚙
+            </button>
+
+        </div>
+
+        <div class="orbit-main-card">
+
+            <div class="orbit-planet">
+
+                <div class="planet-glow"></div>
+
+                <div class="planet">
+                    N
+                </div>
+
+                <div class="planet-ring ring-one"></div>
+                <div class="planet-ring ring-two"></div>
+
+                <span class="star s1">✦</span>
+                <span class="star s2">·</span>
+                <span class="star s3">✦</span>
+                <span class="star s4">·</span>
+
+            </div>
+
+            <span class="orbit-label">
+                NEXGRAM ORBIT
+            </span>
+
+            <h2>
+                Твоё личное<br>
+                пространство
+            </h2>
+
+            <p>
+                Центр Nexgram, где находятся твой профиль,
+                капсулы, быстрые действия и персональные настройки.
+            </p>
+
+        </div>
+
+
+        <div class="orbit-actions">
+
+            <button class="orbit-action" id="openProfileFromOrbit">
+                <span>👤</span>
+                <strong>Профиль</strong>
+                <small>Настроить себя</small>
+            </button>
+
+            <button class="orbit-action" id="openCapsulesFromOrbit">
+                <span>◈</span>
+                <strong>Капсулы</strong>
+                <small>Сохранить мысль</small>
+            </button>
+
+            <button class="orbit-action" id="openSettingsFromOrbit">
+                <span>⚙</span>
+                <strong>Настройки</strong>
+                <small>Изменить Nexgram</small>
+            </button>
+
+            <button class="orbit-action" id="openNavigatorFromOrbit">
+                <span>🚀</span>
+                <strong>Навигатор</strong>
+                <small>Исследовать приложение</small>
+            </button>
+
+        </div>
+
+        <div class="unique-card">
+
+            <div class="unique-icon">
+                ◉
+            </div>
+
+            <div>
+                <span>УНИКАЛЬНАЯ ФУНКЦИЯ</span>
+                <h3>Orbit Identity</h3>
+
+                <p>
+                    Твой профиль существует не как обычная
+                    карточка пользователя, а как персональная
+                    точка в пространстве Nexgram.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PROFILE -->
+
+    <section id="profilePage" class="app-page">
+
+        <div class="page-header">
+
+            <div>
+                <span class="page-overline">ACCOUNT</span>
+                <h1>Профиль</h1>
+            </div>
+
+            <button class="round-btn" id="profileEditTop">
+                ✎
+            </button>
+
+        </div>
+
+
+        <div class="profile-hero-card">
+
+            <button class="avatar-large" id="avatarButton">
+
+                <img id="profileAvatar" alt="Аватар">
+
+                <span id="avatarLetter">
+                    N
+                </span>
+
+                <i>✎</i>
+
+            </button>
+
+            <h2 id="profileName">
+                Пользователь Nexgram
+            </h2>
+
+            <div class="profile-username" id="profileUsername">
+                @nexuser
+            </div>
+
+            <p id="profileBio">
+                В Nexgram с нуля.
+            </p>
+
+            <div class="profile-stats">
+
+                <div>
+                    <strong id="profileCapsuleCount">0</strong>
+                    <span>Капсул</span>
+                </div>
+
+                <div>
+                    <strong>∞</strong>
+                    <span>Идей</span>
+                </div>
+
+                <div>
+                    <strong>N</strong>
+                    <span>Nexgram</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="settings-section">
+
+            <div class="section-title">
+                Мой профиль
+            </div>
+
+            <button class="setting-row" id="editProfileBtn">
+                <span class="setting-icon blue">✎</span>
+
+                <span class="setting-text">
+                    <strong>Редактировать профиль</strong>
+                    <small>Имя, username, описание</small>
+                </span>
+
+                <b>›</b>
+            </button>
+
+            <button class="setting-row" id="changeAvatarBtn">
+                <span class="setting-icon purple">◉</span>
+
+                <span class="setting-text">
+                    <strong>Изменить аватар</strong>
+                    <small>Выбрать изображение</small>
+                </span>
+
+                <b>›</b>
+            </button>
+
+        </div>
+
+
+        <button class="danger-btn" id="logoutBtn">
+            Выйти из аккаунта
+        </button>
+
+    </section>
+
+
+    <!-- SETTINGS -->
+
+    <section id="settingsPage" class="app-page">
+
+        <div class="page-header">
+
+            <div>
+                <span class="page-overline">CONTROL CENTER</span>
+                <h1>Настройки</h1>
+            </div>
+
+        </div>
+
+
+        <!-- Appearance -->
+
+        <div class="settings-section">
+
+            <div class="section-title">
+                Внешний вид
+            </div>
+
+            <button class="setting-row" id="themeSetting">
+
+                <span class="setting-icon gradient">
+                    ◐
+                </span>
+
+                <span class="setting-text">
+                    <strong>Тема</strong>
+                    <small id="currentThemeText">
+                        Небо
+                    </small>
+                </span>
+
+                <b>›</b>
+
+            </button>
+
+
+            <button class="setting-row" id="fontSetting">
+
+                <span class="setting-icon blue">
+                    Aa
+                </span>
+
+                <span class="setting-text">
+                    <strong>Размер текста</strong>
+                    <small id="currentFontText">
+                        Обычный
+                    </small>
+                </span>
+
+                <b>›</b>
+
+            </button>
+
+
+            <button class="setting-row toggle-row" id="animationsSetting">
+
+                <span class="setting-icon purple">
+                    ✦
+                </span>
+
+                <span class="setting-text">
+                    <strong>Анимации</strong>
+                    <small>Живой интерфейс Nexgram</small>
+                </span>
+
+                <span class="toggle" id="animationsToggle">
+                    <i></i>
+                </span>
+
+            </button>
+
+
+            <button class="setting-row toggle-row" id="glassSetting">
+
+                <span class="setting-icon cyan">
+                    ◇
+                </span>
+
+                <span class="setting-text">
+                    <strong>Стеклянный интерфейс</strong>
+                    <small>Прозрачность карточек</small>
+                </span>
+
+                <span class="toggle" id="glassToggle">
+                    <i></i>
+                </span>
+
+            </button>
+
+        </div>
+
+
+        <!-- Language -->
+
+        <div class="settings-section">
+
+            <div class="section-title">
+                Язык
+            </div>
+
+            <button class="setting-row" id="languageSetting">
+
+                <span class="setting-icon green">
+                    文
+                </span>
+
+                <span class="setting-text">
+                    <strong>Язык приложения</strong>
+                    <small id="currentLanguageText">
+                        Русский
+                    </small>
+                </span>
+
+                <b>›</b>
+
+            </button>
+
+        </div>
+
+
+        <!-- Notifications -->
+
+        <div class="settings-section">
+
+            <div class="section-title">
+                Уведомления
+            </div>
+
+            <button class="setting-row toggle-row" data-toggle-setting="notifications">
+
+                <span class="setting-icon orange">
+                    ♢
+                </span>
+
+                <span class="setting-text">
+                    <strong>Уведомления</strong>
+                    <small>Оповещения Nexgram</small>
+                </span>
+
+                <span class="toggle" data-toggle="notifications">
+                    <i></i>
+                </span>
+
+            </button>
+
+
+            <button class="setting-row toggle-row" data-toggle-setting="sounds">
+
+                <span class="setting-icon blue">
+                    ♪
+                </span>
+
+                <span class="setting-text">
+                    <strong>Звуки</strong>
+                    <small>Звуки интерфейса</small>
+                </span>
+
+                <span class="toggle" data-toggle="sounds">
+                    <i></i>
+                </span>
+
+            </button>
+
+
+            <button class="setting-row toggle-row" data-toggle-setting="vibration">
+
+                <span class="setting-icon purple">
+                    ≋
+                </span>
+
+                <span class="setting-text">
+                    <strong>Вибрация</strong>
+                    <small>Тактильный отклик</small>
+                </span>
+
+                <span class="toggle" data-toggle="vibration">
+                    <i></i>
+                </span>
+
+            </button>
+
+        </div>
+
+
+        <!-- Privacy -->
+
+        <div class="settings-section">
+
+            <div class="section-title">
+                Приватность
+            </div>
+
+            <button class="setting-row" id="profileVisibilitySetting">
+
+                <span class="setting-icon blue">
+                    ◉
+                </span>
+
+                <span class="setting-text">
+                    <strong>Видимость профиля</strong>
+                    <small id="visibilityText">Все пользователи</small>
+                </span>
+
+                <b>›</b>
+
+            </button>
+
+
+            <button class="setting-row toggle-row" data-toggle-setting="readReceipts">
+
+                <span class="setting-icon green">
+                    ✓
+                </span>
+
+                <span class="setting-text">
+                    <strong>Прочитано</strong>
+                    <small>Показывать статус прочтения</small>
+                </span>
+
+                <span class="toggle" data-toggle="readReceipts">
+                    <i></i>
+                </span>
+
+            </button>
+
+
+            <button class="setting-row toggle-row" data-toggle-setting="onlineStatus">
+
+                <span class="setting-icon cyan">
+                    ●
+                </span>
+
+                <span class="setting-text">
+                    <strong>Статус онлайн</strong>
+                    <small>Показывать присутствие</small>
+                </span>
+
+                <span class="toggle" data-toggle="onlineStatus">
+                    <i></i>
+                </span>
+
+            </button>
+
+        </div>
+
+
+        <!-- Experimental -->
+
+        <div class="settings-section">
+
+            <div class="section-title">
+                Nexgram Lab
+            </div>
+
+            <div class="lab-card">
+
+                <div class="lab-top">
+                    <span class="lab-badge">LAB</span>
+                    <span>Экспериментальные функции</span>
+                </div>
+
+                <h3>
+                    Попробовать новое
+                </h3>
+
+                <p>
+                    Включает будущие возможности интерфейса,
+                    которые ещё находятся в разработке.
+                </p>
+
+                <button class="lab-button" id="labButton">
+                    Открыть лабораторию →
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Storage -->
+
+        <div class="settings-section">
+
+            <div class="section-title">
+                Данные
+            </div>
+
+            <button class="setting-row" id="clearCapsulesBtn">
+
+                <span class="setting-icon orange">
+                    □
+                </span>
+
+                <span class="setting-text">
+                    <strong>Очистить капсулы</strong>
+                    <small>Удалить локальные заметки</small>
+                </span>
+
+                <b>›</b>
+
+            </button>
+
+
+            <button class="setting-row" id="resetSettingsBtn">
+
+                <span class="setting-icon red">
+                    ↻
+                </span>
+
+                <span class="setting-text">
+                    <strong>Сбросить настройки</strong>
+                    <small>Вернуть стандартный вид</small>
+                </span>
+
+                <b>›</b>
+
+            </button>
+
+        </div>
+
+
+        <div class="about-nexgram">
+            <strong>Nexgram Messenger</strong>
+            <span>Версия 1.0 • создан с нуля</span>
+        </div>
+
+    </section>
+
+
+    <!-- CAPSULES -->
+
+    <section id="capsulesPage" class="app-page">
+
+        <div class="page-header">
+
+            <div>
+                <span class="page-overline">PRIVATE SPACE</span>
+                <h1>Капсулы</h1>
+            </div>
+
+            <button class="round-btn" id="addCapsuleBtn">
+                +
+            </button>
+
+        </div>
+
+        <div class="capsule-intro">
+
+            <div class="capsule-icon">
+                ◈
+            </div>
+
+            <div>
+                <strong>Твои мысли не должны теряться.</strong>
+                <p>
+                    Сохраняй идеи, планы и сообщения
+                    в личные капсулы. Пока они хранятся
+                    только на этом устройстве.
+                </p>
+            </div>
+
+        </div>
+
+        <div id="capsulesList" class="capsules-list">
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================= BOTTOM NAV ================= -->
+
+<nav id="bottomNav" class="bottom-nav hidden">
+
+    <button class="nav-item active" data-page="chatsPage">
+        <span>▱</span>
+        <small>Чаты</small>
+    </button>
+
+    <button class="nav-item" data-page="orbitPage">
+        <span>◉</span>
+        <small>Orbit</small>
+    </button>
+
+    <button class="nav-item" data-page="profilePage">
+        <span id="navAvatar">
+            N
+        </span>
+        <small>Профиль</small>
+    </button>
+
+</nav>
+
+
+<!-- ================= ROCKET NAVIGATOR ================= -->
+
+<button id="rocketButton" class="rocket-button hidden">
+    <span>🚀</span>
+    <i></i>
+</button>
+
+
+<!-- ================= NAVIGATOR MODAL ================= -->
+
+<div class="modal-overlay hidden" id="navigatorModal">
+
+    <div class="navigator-card">
+
+        <button class="modal-close" data-close-navigator>
             ×
         </button>
 
-        <div class="modal-label">
-            PERSONALIZATION
-        </div>
+        <div class="navigator-head">
 
-        <h2>
-            Тема Nexgram
-        </h2>
-
-        <p>
-            Выберите настроение интерфейса.
-        </p>
-
-
-        <div class="theme-list">
-
-            <button class="theme-choice" data-theme="light">
-                <span class="theme-demo theme-light"></span>
-                <span>
-                    <strong>Светлая</strong>
-                    <small>Чистая и воздушная</small>
-                </span>
-                <i>✓</i>
-            </button>
-
-
-            <button class="theme-choice" data-theme="dark">
-                <span class="theme-demo theme-dark"></span>
-                <span>
-                    <strong>Тёмная</strong>
-                    <small>Комфортная вечером</small>
-                </span>
-                <i>✓</i>
-            </button>
-
-
-            <button class="theme-choice" data-theme="ocean">
-                <span class="theme-demo theme-ocean"></span>
-                <span>
-                    <strong>Ocean</strong>
-                    <small>Фирменный синий</small>
-                </span>
-                <i>✓</i>
-            </button>
-
-
-            <button class="theme-choice" data-theme="midnight">
-                <span class="theme-demo theme-midnight"></span>
-                <span>
-                    <strong>Midnight</strong>
-                    <small>Глубокая ночь</small>
-                </span>
-                <i>✓</i>
-            </button>
-
-
-            <button class="theme-choice" data-theme="purple">
-                <span class="theme-demo theme-purple"></span>
-                <span>
-                    <strong>Purple</strong>
-                    <small>Фиолетовая энергия</small>
-                </span>
-                <i>✓</i>
-            </button>
-
-
-            <button class="theme-choice" data-theme="sunset">
-                <span class="theme-demo theme-sunset"></span>
-                <span>
-                    <strong>Sunset</strong>
-                    <small>Тёплая атмосфера</small>
-                </span>
-                <i>✓</i>
-            </button>
-
-
-            <button class="theme-choice" data-theme="forest">
-                <span class="theme-demo theme-forest"></span>
-                <span>
-                    <strong>Forest</strong>
-                    <small>Спокойный зелёный</small>
-                </span>
-                <i>✓</i>
-            </button>
-
-
-            <button class="theme-choice" data-theme="rose">
-                <span class="theme-demo theme-rose"></span>
-                <span>
-                    <strong>Rose</strong>
-                    <small>Мягкий розовый</small>
-                </span>
-                <i>✓</i>
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- FONT -->
-
-<div id="fontModal" class="modal">
-
-    <div class="modal-card settings-modal">
-
-        <button class="modal-close" data-close="fontModal">
-            ×
-        </button>
-
-        <div class="modal-label">
-            TYPOGRAPHY
-        </div>
-
-        <h2>
-            Шрифт
-        </h2>
-
-        <p>
-            Сделайте текст удобным для себя.
-        </p>
-
-
-        <div class="font-preview">
-            <b>Aa</b>
-            <span>Так выглядит Nexgram</span>
-        </div>
-
-
-        <div class="font-block">
-
-            <div class="font-heading">
-                Размер
+            <div class="rocket-big">
+                🚀
             </div>
 
-            <div class="font-buttons">
-
-                <button data-size="14">
-                    Маленький
-                </button>
-
-                <button data-size="16">
-                    Средний
-                </button>
-
-                <button data-size="18">
-                    Большой
-                </button>
-
-                <button data-size="20">
-                    Очень большой
-                </button>
-
+            <div>
+                <span> NEXGRAM NAVIGATOR</span>
+                <h2>Куда отправимся?</h2>
             </div>
 
         </div>
 
+        <div class="navigator-search">
 
-        <div class="font-block">
+            <span>⌕</span>
 
-            <div class="font-heading">
-                Стиль
-            </div>
-
-            <div class="font-buttons">
-
-                <button data-font="system">
-                    Системный
-                </button>
-
-                <button data-font="rounded">
-                    Rounded
-                </button>
-
-                <button data-font="mono">
-                    Mono
-                </button>
-
-                <button data-font="serif">
-                    Serif
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- LANGUAGE -->
-
-<div id="languageModal" class="modal">
-
-    <div class="modal-card language-modal">
-
-        <button class="modal-close" data-close="languageModal">
-            ×
-        </button>
-
-        <div class="modal-label">
-            LANGUAGE
-        </div>
-
-        <h2>
-            Язык
-        </h2>
-
-        <p>
-            Выберите язык интерфейса.
-        </p>
-
-
-        <div class="language-search">
-            🔎
             <input
-                id="languageSearch"
-                placeholder="Поиск языка..."
+                id="navigatorInput"
+                type="text"
+                placeholder="Например: хочу поменять тему"
             >
+
         </div>
 
+        <div id="navigatorResults" class="navigator-results">
 
-        <div id="languageList" class="language-list">
-
-            <button data-lang="ru">
-                <span>🇷🇺</span>
-                <strong>Русский</strong>
-                <i>✓</i>
+            <button class="navigator-result" data-nav-action="profile">
+                <span>👤</span>
+                <div>
+                    <strong>Профиль</strong>
+                    <small>Имя, username и аватар</small>
+                </div>
+                <b>›</b>
             </button>
 
-            <button data-lang="en">
-                <span>🇬🇧</span>
-                <strong>English</strong>
-                <i>✓</i>
+            <button class="navigator-result" data-nav-action="theme">
+                <span>🎨</span>
+                <div>
+                    <strong>Темы</strong>
+                    <small>Изменить внешний вид</small>
+                </div>
+                <b>›</b>
             </button>
 
-            <button data-lang="uk">
-                <span>🇺🇦</span>
-                <strong>Українська</strong>
-                <i>✓</i>
+            <button class="navigator-result" data-nav-action="font">
+                <span>Aa</span>
+                <div>
+                    <strong>Размер текста</strong>
+                    <small>Сделать шрифт больше или меньше</small>
+                </div>
+                <b>›</b>
             </button>
 
-            <button data-lang="de">
-                <span>🇩🇪</span>
-                <strong>Deutsch</strong>
-                <i>✓</i>
+            <button class="navigator-result" data-nav-action="language">
+                <span>文</span>
+                <div>
+                    <strong>Язык</strong>
+                    <small>Выбрать язык приложения</small>
+                </div>
+                <b>›</b>
             </button>
 
-            <button data-lang="fr">
-                <span>🇫🇷</span>
-                <strong>Français</strong>
-                <i>✓</i>
+            <button class="navigator-result" data-nav-action="capsules">
+                <span>◈</span>
+                <div>
+                    <strong>Капсулы</strong>
+                    <small>Личные заметки</small>
+                </div>
+                <b>›</b>
             </button>
 
-            <button data-lang="es">
-                <span>🇪🇸</span>
-                <strong>Español</strong>
-                <i>✓</i>
+            <button class="navigator-result" data-nav-action="settings">
+                <span>⚙</span>
+                <div>
+                    <strong>Настройки</strong>
+                    <small>Все параметры Nexgram</small>
+                </div>
+                <b>›</b>
             </button>
 
-            <button data-lang="it">
-                <span>🇮🇹</span>
-                <strong>Italiano</strong>
-                <i>✓</i>
-            </button>
+        </div>
 
-            <button data-lang="pt">
-                <span>🇵🇹</span>
-                <strong>Português</strong>
-                <i>✓</i>
-            </button>
-
-            <button data-lang="pl">
-                <span>🇵🇱</span>
-                <strong>Polski</strong>
-                <i>✓</i>
-            </button>
-
-            <button data-lang="tr">
-                <span>🇹🇷</span>
-                <strong>Türkçe</strong>
-                <i>✓</i>
-            </button>
-
-            <button data-lang="ar">
-                <span>🇸🇦</span>
-                <strong>العربية</strong>
-                <i>✓</i>
-            </button>
-
-            <button data-lang="hi">
-                <span>🇮🇳</span>
-                <strong>हिन्दी</strong>
-                <i>✓</i>
-            </button>
-
-            <button data-lang="zh">
-                <span>🇨🇳</span>
-                <strong>中文</strong>
-                <i>✓</i>
-            </button>
-
-            <button data-lang="ja">
-                <span>🇯🇵</span>
-                <strong>日本語</strong>
-                <i>✓</i>
-            </button>
-
-            <button data-lang="ko">
-                <span>🇰🇷</span>
-                <strong>한국어</strong>
-                <i>✓</i>
-            </button>
-
+        <div class="navigator-tip">
+            <span>✦</span>
+            Напиши своими словами, что хочешь найти.
         </div>
 
     </div>
@@ -1101,30 +1064,311 @@
 </div>
 
 
-<!-- INFO -->
+<!-- ================= THEME MODAL ================= -->
 
-<div id="infoModal" class="modal">
+<div class="modal-overlay hidden" id="themeModal">
 
-    <div class="modal-card">
+    <div class="choice-card">
 
-        <button class="modal-close" data-close="infoModal">
+        <button class="modal-close" data-close-theme>
             ×
         </button>
 
-        <div class="modal-label">
-            NEXGRAM
-        </div>
+        <span class="modal-label">
+            ВНЕШНИЙ ВИД
+        </span>
 
-        <h2 id="infoTitle">
-            Nexgram
-        </h2>
+        <h2>Выбери свою тему</h2>
 
-        <p id="infoText">
-            Современный мессенджер нового поколения.
+        <p>
+            Nexgram можно полностью настроить под себя.
         </p>
 
-        <button id="infoClose" class="primary-btn">
-            Понятно
+        <div class="theme-grid">
+
+            <button class="theme-option theme-sky" data-theme="sky">
+                <i></i>
+                <strong>Небо</strong>
+                <small>Светлая</small>
+            </button>
+
+            <button class="theme-option theme-ocean" data-theme="ocean">
+                <i></i>
+                <strong>Океан</strong>
+                <small>Синяя</small>
+            </button>
+
+            <button class="theme-option theme-night" data-theme="night">
+                <i></i>
+                <strong>Ночь</strong>
+                <small>Тёмная</small>
+            </button>
+
+            <button class="theme-option theme-graphite" data-theme="graphite">
+                <i></i>
+                <strong>Графит</strong>
+                <small>Строгая</small>
+            </button>
+
+            <button class="theme-option theme-purple" data-theme="purple">
+                <i></i>
+                <strong>Фиолет</strong>
+                <small>Неоновая</small>
+            </button>
+
+            <button class="theme-option theme-green" data-theme="green">
+                <i></i>
+                <strong>Изумруд</strong>
+                <small>Свежая</small>
+            </button>
+
+            <button class="theme-option theme-sunset" data-theme="sunset">
+                <i></i>
+                <strong>Закат</strong>
+                <small>Тёплая</small>
+            </button>
+
+            <button class="theme-option theme-ice" data-theme="ice">
+                <i></i>
+                <strong>Лёд</strong>
+                <small>Минимал</small>
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= FONT MODAL ================= -->
+
+<div class="modal-overlay hidden" id="fontModal">
+
+    <div class="choice-card">
+
+        <button class="modal-close" data-close-font>
+            ×
+        </button>
+
+        <span class="modal-label">
+            ТИПОГРАФИКА
+        </span>
+
+        <h2>Размер текста</h2>
+
+        <div class="font-options">
+
+            <button data-font="small">
+                <span>A</span>
+                <div>
+                    <strong>Маленький</strong>
+                    <small>Компактный интерфейс</small>
+                </div>
+            </button>
+
+            <button data-font="normal">
+                <span>Aa</span>
+                <div>
+                    <strong>Обычный</strong>
+                    <small>Стандартный размер</small>
+                </div>
+            </button>
+
+            <button data-font="large">
+                <span>Aa</span>
+                <div>
+                    <strong>Большой</strong>
+                    <small>Удобнее читать</small>
+                </div>
+            </button>
+
+            <button data-font="xl">
+                <span>Aa</span>
+                <div>
+                    <strong>Очень большой</strong>
+                    <small>Максимальная читаемость</small>
+                </div>
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= LANGUAGE MODAL ================= -->
+
+<div class="modal-overlay hidden" id="languageModal">
+
+    <div class="choice-card language-card">
+
+        <button class="modal-close" data-close-language>
+            ×
+        </button>
+
+        <span class="modal-label">
+            LANGUAGE
+        </span>
+
+        <h2>Язык Nexgram</h2>
+
+        <p>
+            Выбери язык интерфейса.
+        </p>
+
+        <div class="language-list">
+
+            <button data-language="Русский">
+                🇷🇺
+                <span>Русский</span>
+                <small>Русский</small>
+            </button>
+
+            <button data-language="English">
+                🇬🇧
+                <span>English</span>
+                <small>English</small>
+            </button>
+
+            <button data-language="Українська">
+                🇺🇦
+                <span>Українська</span>
+                <small>Українська</small>
+            </button>
+
+            <button data-language="Беларуская">
+                🇧🇾
+                <span>Беларуская</span>
+                <small>Беларуская</small>
+            </button>
+
+            <button data-language="Қазақша">
+                🇰🇿
+                <span>Қазақша</span>
+                <small>Қазақша</small>
+            </button>
+
+            <button data-language="O‘zbekcha">
+                🇺🇿
+                <span>O‘zbekcha</span>
+                <small>O‘zbekcha</small>
+            </button>
+
+            <button data-language="Türkçe">
+                🇹🇷
+                <span>Türkçe</span>
+                <small>Türkçe</small>
+            </button>
+
+            <button data-language="Deutsch">
+                🇩🇪
+                <span>Deutsch</span>
+                <small>Deutsch</small>
+            </button>
+
+            <button data-language="Français">
+                🇫🇷
+                <span>Français</span>
+                <small>Français</small>
+            </button>
+
+            <button data-language="Español">
+                🇪🇸
+                <span>Español</span>
+                <small>Español</small>
+            </button>
+
+            <button data-language="Italiano">
+                🇮🇹
+                <span>Italiano</span>
+                <small>Italiano</small>
+            </button>
+
+            <button data-language="Português">
+                🇵🇹
+                <span>Português</span>
+                <small>Português</small>
+            </button>
+
+            <button data-language="Polski">
+                🇵🇱
+                <span>Polski</span>
+                <small>Polski</small>
+            </button>
+
+            <button data-language="中文">
+                🇨🇳
+                <span>中文</span>
+                <small>简体中文</small>
+            </button>
+
+            <button data-language="日本語">
+                🇯🇵
+                <span>日本語</span>
+                <small>日本語</small>
+            </button>
+
+            <button data-language="한국어">
+                🇰🇷
+                <span>한국어</span>
+                <small>한국어</small>
+            </button>
+
+            <button data-language="العربية">
+                🇸🇦
+                <span>العربية</span>
+                <small>العربية</small>
+            </button>
+
+            <button data-language="हिन्दी">
+                🇮🇳
+                <span>हिन्दी</span>
+                <small>हिन्दी</small>
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= PROFILE EDIT MODAL ================= -->
+
+<div class="modal-overlay hidden" id="profileEditModal">
+
+    <div class="choice-card profile-edit-card">
+
+        <button class="modal-close" data-close-profile>
+            ×
+        </button>
+
+        <span class="modal-label">
+            PROFILE
+        </span>
+
+        <h2>Изменить профиль</h2>
+
+        <label>
+            Имя
+            <input id="editNameInput" type="text" maxlength="32">
+        </label>
+
+        <label>
+            Username
+            <input id="editUsernameInput" type="text" maxlength="24">
+        </label>
+
+        <label>
+            О себе
+            <textarea id="editBioInput" maxlength="120"></textarea>
+        </label>
+
+        <button class="primary-btn full-btn" id="saveProfileBtn">
+            Сохранить
+            <b>✓</b>
         </button>
 
     </div>
@@ -1132,10 +1376,129 @@
 </div>
 
 
-<div id="toast" class="toast"></div>
+<!-- ================= CAPSULE MODAL ================= -->
+
+<div class="modal-overlay hidden" id="capsuleModal">
+
+    <div class="choice-card">
+
+        <button class="modal-close" data-close-capsule>
+            ×
+        </button>
+
+        <span class="modal-label">
+            NEW CAPSULE
+        </span>
+
+        <h2>Создать капсулу</h2>
+
+        <p>
+            Сохрани здесь мысль, идею или что-нибудь важное.
+        </p>
+
+        <label>
+            Название
+            <input
+                id="capsuleTitle"
+                type="text"
+                maxlength="50"
+                placeholder="Например: Идея для Nexgram"
+            >
+        </label>
+
+        <label>
+            Содержимое
+            <textarea
+                id="capsuleText"
+                maxlength="1000"
+                placeholder="Напиши что-нибудь..."
+            ></textarea>
+        </label>
+
+        <button class="primary-btn full-btn" id="saveCapsuleBtn">
+            Запечатать капсулу
+            <b>◈</b>
+        </button>
+
+    </div>
+
+</div>
 
 
-<script src="./app.js?v=11"></script>
+<!-- ================= LAB MODAL ================= -->
+
+<div class="modal-overlay hidden" id="labModal">
+
+    <div class="choice-card">
+
+        <button class="modal-close" data-close-lab>
+            ×
+        </button>
+
+        <div class="lab-big">
+            ✦
+        </div>
+
+        <span class="modal-label">
+            NEXGRAM LAB
+        </span>
+
+        <h2>Лаборатория открыта</h2>
+
+        <p>
+            Здесь будут появляться экспериментальные
+            возможности Nexgram до их официального релиза.
+        </p>
+
+        <div class="lab-feature">
+            <span>◉</span>
+            <div>
+                <strong>Orbit Identity</strong>
+                <small>Персональная визуальная система профиля</small>
+            </div>
+            <em>ACTIVE</em>
+        </div>
+
+        <div class="lab-feature">
+            <span>◈</span>
+            <div>
+                <strong>Capsules</strong>
+                <small>Локальное пространство для мыслей</small>
+            </div>
+            <em>ACTIVE</em>
+        </div>
+
+        <div class="lab-feature">
+            <span>🚀</span>
+            <div>
+                <strong>Navigator</strong>
+                <small>Навигация по Nexgram естественным языком</small>
+            </div>
+            <em>ACTIVE</em>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= TOAST ================= -->
+
+<div id="toast" class="toast">
+    <span>✓</span>
+    <p>Готово</p>
+</div>
+
+
+<input
+    id="avatarInput"
+    type="file"
+    accept="image/*"
+    hidden
+>
+
+
+<script src="./app.js?v=8"></script>
 
 </body>
 </html>
