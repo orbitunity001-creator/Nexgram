@@ -1,4 +1,4 @@
-const CACHE_NAME = "nexgram-2026-01";
+const CACHE_NAME = "nexgram-v8";
 
 const FILES = [
     "./",
@@ -12,14 +12,16 @@ const FILES = [
 
 self.addEventListener(
     "install",
-    function (event) {
+    event => {
 
         event.waitUntil(
+
             caches
                 .open(CACHE_NAME)
-                .then(function (cache) {
-                    return cache.addAll(FILES);
-                })
+                .then(cache =>
+                    cache.addAll(FILES)
+                )
+
         );
 
         self.skipWaiting();
@@ -29,25 +31,33 @@ self.addEventListener(
 
 self.addEventListener(
     "activate",
-    function (event) {
+    event => {
 
         event.waitUntil(
 
-            caches.keys().then(function (keys) {
+            caches
+                .keys()
+                .then(keys =>
 
-                return Promise.all(
+                    Promise.all(
 
-                    keys.map(function (key) {
+                        keys.map(key => {
 
-                        if (key !== CACHE_NAME) {
-                            return caches.delete(key);
-                        }
+                            if (
+                                key !== CACHE_NAME
+                            ) {
 
-                    })
+                                return caches.delete(
+                                    key
+                                );
 
-                );
+                            }
 
-            })
+                        })
+
+                    )
+
+                )
 
         );
 
@@ -58,24 +68,61 @@ self.addEventListener(
 
 self.addEventListener(
     "fetch",
-    function (event) {
+    event => {
+
+        if (
+            event.request.url.includes(
+                "icon.svg"
+            )
+        ) {
+
+            event.respondWith(
+
+                fetch(
+                    event.request,
+                    {
+                        cache: "no-store"
+                    }
+                )
+
+            );
+
+            return;
+        }
+
 
         event.respondWith(
 
             fetch(event.request)
-                .then(function (response) {
+
+                .then(response => {
+
+                    const copy =
+                        response.clone();
+
+                    caches
+                        .open(CACHE_NAME)
+                        .then(cache => {
+
+                            cache.put(
+                                event.request,
+                                copy
+                            );
+
+                        });
 
                     return response;
 
                 })
-                .catch(function () {
 
-                    return caches.match(
-                        event.request
-                    );
-
-                })
+                .catch(
+                    () =>
+                        caches.match(
+                            event.request
+                        )
+                )
 
         );
+
     }
 );
