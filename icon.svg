@@ -1,111 +1,94 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 512 512">
 
-  <defs>
-    <!-- Основной фирменный градиент -->
-    <linearGradient id="background"
-      x1="70" y1="40"
-      x2="450" y2="470"
-      gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#087CFF"/>
-      <stop offset="0.5" stop-color="#1557E8"/>
-      <stop offset="1" stop-color="#2436B8"/>
-    </linearGradient>
-
-    <!-- Буква -->
-    <linearGradient id="letter"
-      x1="145" y1="105"
-      x2="370" y2="400"
-      gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#FFFFFF"/>
-      <stop offset="1" stop-color="#DCEAFF"/>
-    </linearGradient>
-
-    <!-- Свет -->
-    <radialGradient id="light"
-      cx="0" cy="0" r="1"
-      gradientUnits="userSpaceOnUse"
-      gradientTransform="translate(150 115) rotate(45) scale(270)">
-      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".18"/>
-      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
-    </radialGradient>
-
-    <filter id="shadow"
-      x="-30%" y="-30%"
-      width="160%" height="170%">
-      <feDropShadow
-        dx="0"
-        dy="16"
-        stdDeviation="18"
-        flood-color="#00164D"
-        flood-opacity=".32"/>
-    </filter>
-  </defs>
-
-  <!-- Фон -->
   <rect
-    x="16"
-    y="16"
-    width="480"
-    height="480"
-    rx="124"
-    fill="url(#background)"/>
+    x="32"
+    y="32"
+    width="448"
+    height="448"
+    rx="112"
+    fill="#ffffff"/>
 
-  <!-- Деликатное верхнее свечение -->
-  <rect
-    x="16"
-    y="16"
-    width="480"
-    height="480"
-    rx="124"
-    fill="url(#light)"/>
-
-  <!-- Фирменная буква N -->
-  <path
-    d="
-      M126 374
-      V138
-      C126 125 136 115 149 115
-      H184
-      C197 115 207 121 215 133
-      L314 281
-      V138
-      C314 125 324 115 337 115
-      H386
-      V374
-      H351
-      C338 374 328 368 319 355
-      L198 207
-      V374
-      Z
-    "
-    fill="url(#letter)"
-    filter="url(#shadow)"/>
-
-  <!-- Внутренний фирменный разрыв -->
-  <path
-    d="
-      M198 207
-      L231 248
-      V374
-      H198
-      Z
-    "
-    fill="#1557E8"
-    opacity=".96"/>
-
-  <!-- Небольшая фирменная точка -->
-  <circle
-    cx="397"
-    cy="106"
-    r="8"
-    fill="#FFFFFF"/>
-
-  <!-- Тонкая нижняя линия -->
-  <path
-    d="M145 409 H367"
-    stroke="#FFFFFF"
-    stroke-width="5"
+  <!-- Уникальный переплетающийся знак -->
+  <g
+    fill="none"
+    stroke="#111111"
+    stroke-width="32"
     stroke-linecap="round"
-    opacity=".18"/>
+    stroke-linejoin="round">
+
+    <!-- Верхняя лента -->
+    <path d="
+      M256 112
+      C202 112 158 147 147 198
+      C137 243 158 284 199 306
+      L256 337
+    "/>
+
+    <!-- Правая лента -->
+    <path d="
+      M256 112
+      C310 112 354 147 365 198
+      C375 243 354 284 313 306
+      L256 337
+    "/>
+
+    <!-- Нижняя левая лента -->
+    <path d="
+      M147 198
+      C118 229 116 275 137 311
+      C160 351 205 373 248 362
+      C274 356 296 340 313 317
+    "/>
+
+    <!-- Нижняя правая лента -->
+    <path d="
+      M365 198
+      C394 229 396 275 375 311
+      C352 351 307 373 264 362
+      C238 356 216 340 199 317
+    "/>
+
+    <!-- Центральная связь -->
+    <path d="
+      M199 306
+      L256 337
+      L313 306
+    "/>
+
+  </g>
+
+  <!-- Переплетение -->
+  <path
+    d="
+      M222 291
+      L256 309
+      L290 291
+      L307 308
+      L256 336
+      L205 308
+      Z
+    "
+    fill="#111111"/>
+
+  <!-- Центральное отверстие -->
+  <path
+    d="
+      M256 194
+      L292 214
+      L292 256
+      L256 277
+      L220 256
+      L220 214
+      Z
+    "
+    fill="#ffffff"/>
+
+  <!-- Маленький центральный элемент -->
+  <circle
+    cx="256"
+    cy="235"
+    r="7"
+    fill="#111111"/>
 
 </svg>
