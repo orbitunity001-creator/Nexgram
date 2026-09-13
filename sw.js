@@ -3,10 +3,10 @@ const CACHE_NAME = "nexgram-v8";
 const FILES = [
     "./",
     "./index.html",
-    "./style.css",
-    "./app.js",
-    "./manifest.json",
-    "./icon.svg"
+    "./style.css?v=8",
+    "./app.js?v=8",
+    "./manifest.json?v=8",
+    "./icon.svg?v=8"
 ];
 
 
@@ -18,13 +18,15 @@ self.addEventListener(
 
             caches
                 .open(CACHE_NAME)
-                .then(cache =>
-                    cache.addAll(FILES)
+                .then(
+                    cache =>
+                        cache.addAll(FILES)
                 )
 
         );
 
         self.skipWaiting();
+
     }
 );
 
@@ -37,31 +39,37 @@ self.addEventListener(
 
             caches
                 .keys()
-                .then(keys =>
+                .then(
+                    keys =>
 
-                    Promise.all(
+                        Promise.all(
 
-                        keys.map(key => {
+                            keys.map(
+                                key => {
 
-                            if (
-                                key !== CACHE_NAME
-                            ) {
+                                    if (
+                                        key !==
+                                        CACHE_NAME
+                                    ) {
 
-                                return caches.delete(
-                                    key
-                                );
+                                        return caches
+                                            .delete(
+                                                key
+                                            );
 
-                            }
+                                    }
 
-                        })
+                                }
+                            )
 
-                    )
+                        )
 
                 )
 
         );
 
         self.clients.claim();
+
     }
 );
 
@@ -70,8 +78,21 @@ self.addEventListener(
     "fetch",
     event => {
 
+        const request =
+            event.request;
+
+
         if (
-            event.request.url.includes(
+            request.method !== "GET"
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            request.url.includes(
                 "icon.svg"
             )
         ) {
@@ -79,46 +100,63 @@ self.addEventListener(
             event.respondWith(
 
                 fetch(
-                    event.request,
+                    request,
                     {
-                        cache: "no-store"
+                        cache:
+                            "no-store"
                     }
                 )
 
             );
 
             return;
+
         }
 
 
         event.respondWith(
 
-            fetch(event.request)
+            fetch(request)
 
-                .then(response => {
+                .then(
+                    response => {
 
-                    const copy =
-                        response.clone();
+                        if (
+                            response &&
+                            response.status === 200
+                        ) {
 
-                    caches
-                        .open(CACHE_NAME)
-                        .then(cache => {
+                            const copy =
+                                response.clone();
 
-                            cache.put(
-                                event.request,
-                                copy
-                            );
 
-                        });
+                            caches
+                                .open(
+                                    CACHE_NAME
+                                )
+                                .then(
+                                    cache => {
 
-                    return response;
+                                        cache.put(
+                                            request,
+                                            copy
+                                        );
 
-                })
+                                    }
+                                );
+
+                        }
+
+
+                        return response;
+
+                    }
+                )
 
                 .catch(
                     () =>
                         caches.match(
-                            event.request
+                            request
                         )
                 )
 
