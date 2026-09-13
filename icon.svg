@@ -4,101 +4,357 @@
      height="512">
 
   <defs>
-    <!-- Белое стекло -->
-    <linearGradient id="glass"
-      x1="80" y1="40"
-      x2="430" y2="470"
-      gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#FFFFFF"/>
-      <stop offset="0.55" stop-color="#F8FAFC"/>
-      <stop offset="1" stop-color="#E8EDF3"/>
-    </linearGradient>
 
-    <!-- Тень -->
-    <filter id="shadow"
-      x="-40%"
-      y="-40%"
-      width="180%"
-      height="180%">
-      <feDropShadow
-        dx="0"
-        dy="8"
-        stdDeviation="10"
-        flood-color="#000000"
-        flood-opacity=".18"/>
-    </filter>
+    <!-- Почти белый фон -->
+    <radialGradient id="bg"
+      cx="50%" cy="45%"
+      r="75%">
+
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.55" stop-color="#FFFFFF"/>
+      <stop offset="0.78" stop-color="#F7FCFF"/>
+      <stop offset="1" stop-color="#ECFAFF"/>
+
+    </radialGradient>
+
+
+    <!-- Океан -->
+    <radialGradient id="ocean"
+      cx="32%" cy="25%"
+      r="75%">
+
+      <stop offset="0" stop-color="#72E9FF"/>
+      <stop offset="0.32" stop-color="#27C5EF"/>
+      <stop offset="0.65" stop-color="#078FD0"/>
+      <stop offset="0.88" stop-color="#0568AD"/>
+      <stop offset="1" stop-color="#034D89"/>
+
+    </radialGradient>
+
+
+    <!-- Свет Земли -->
+    <radialGradient id="earthLight"
+      cx="28%" cy="23%"
+      r="70%">
+
+      <stop offset="0"
+            stop-color="#FFFFFF"
+            stop-opacity=".5"/>
+
+      <stop offset=".35"
+            stop-color="#FFFFFF"
+            stop-opacity=".1"/>
+
+      <stop offset="1"
+            stop-color="#FFFFFF"
+            stop-opacity="0"/>
+
+    </radialGradient>
+
 
     <!-- Блик -->
-    <filter id="blur">
-      <feGaussianBlur stdDeviation="18"/>
+    <radialGradient id="shine">
+
+      <stop offset="0"
+            stop-color="#FFFFFF"
+            stop-opacity=".65"/>
+
+      <stop offset="1"
+            stop-color="#FFFFFF"
+            stop-opacity="0"/>
+
+    </radialGradient>
+
+
+    <!-- Свечение -->
+    <filter id="glow"
+      x="-60%"
+      y="-60%"
+      width="220%"
+      height="220%">
+
+      <feGaussianBlur
+        stdDeviation="12"
+        result="blur"/>
+
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+
     </filter>
+
+
+    <!-- Ограничение материков -->
+    <clipPath id="earthClip">
+
+      <circle
+        cx="256"
+        cy="256"
+        r="143"/>
+
+    </clipPath>
+
   </defs>
 
-  <!-- Белая основа -->
+
+  <!-- ===================== -->
+  <!-- БЕЛЫЙ ФОН -->
+  <!-- ===================== -->
+
   <rect
-    x="18"
-    y="18"
-    width="476"
-    height="476"
-    rx="125"
-    fill="#FFFFFF"/>
+    width="512"
+    height="512"
+    rx="120"
+    fill="url(#bg)"/>
 
-  <!-- Стеклянная поверхность -->
-  <rect
-    x="32"
-    y="32"
-    width="448"
-    height="448"
-    rx="110"
-    fill="url(#glass)"/>
 
-  <!-- Свет сверху -->
-  <ellipse
-    cx="160"
-    cy="95"
-    rx="145"
-    ry="65"
-    fill="#FFFFFF"
-    opacity=".8"
-    filter="url(#blur)"/>
+  <!-- Очень лёгкое голубое свечение -->
 
-  <!-- ^_^ НЕ МЕНЯЕМ -->
-  <!-- Только увеличен размер -->
+  <circle
+    cx="256"
+    cy="256"
+    r="178"
+    fill="#35D8FF"
+    opacity=".07"
+    filter="url(#glow)"/>
+
+  <circle
+    cx="256"
+    cy="256"
+    r="158"
+    fill="#9DEEFF"
+    opacity=".06"/>
+
+
+  <!-- ===================== -->
+  <!-- ЗЕМЛЯ -->
+  <!-- ===================== -->
+
+  <circle
+    cx="256"
+    cy="256"
+    r="143"
+    fill="url(#ocean)"
+    filter="url(#glow)"/>
+
+
+  <!-- ===================== -->
+  <!-- МАТЕРИКИ -->
+  <!-- ===================== -->
+
   <g
-    fill="none"
-    stroke="#050505"
-    stroke-width="38"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    filter="url(#shadow)">
+    clip-path="url(#earthClip)"
+    fill="#42B94B">
 
-    <!-- ^ -->
-    <path d="M105 210 L155 155"/>
-    <path d="M155 155 L205 210"/>
 
-    <!-- _ -->
+    <!-- Северная Америка -->
+
     <path d="
-      M105 285
-      C145 355 195 385 256 385
-      C317 385 367 355 407 285
-    "/>
+      M129 177
+      C122 163 130 149 146 140
+      C159 133 174 139 186 146
+      C198 153 210 157 216 168
+      C221 178 211 187 202 194
+      C194 201 190 212 180 216
+      C169 220 163 208 153 204
+      C142 200 137 190 129 177Z"/>
 
-    <!-- ^ -->
-    <path d="M307 210 L357 155"/>
-    <path d="M357 155 L407 210"/>
+
+    <!-- Центральная Америка -->
+
+    <path d="
+      M188 207
+      C199 204 210 210 214 219
+      C217 228 211 236 204 241
+      C197 238 191 231 187 223
+      C185 217 185 212 188 207Z"/>
+
+
+    <!-- Южная Америка -->
+
+    <path d="
+      M198 239
+      C211 234 225 241 228 254
+      C231 267 224 279 220 290
+      C216 304 211 319 202 333
+      C196 343 187 338 183 326
+      C179 315 183 303 181 291
+      C178 278 184 267 190 258
+      C195 251 192 244 198 239Z"/>
+
+
+    <!-- Европа -->
+
+    <path d="
+      M250 154
+      C262 148 277 150 287 157
+      C297 163 298 172 289 178
+      C280 182 271 176 263 180
+      C254 183 247 176 247 168
+      C247 162 248 157 250 154Z"/>
+
+
+    <!-- Африка -->
+
+    <path d="
+      M251 187
+      C268 181 288 186 299 200
+      C307 212 304 227 300 239
+      C296 253 291 269 282 282
+      C274 295 261 298 251 288
+      C240 277 237 262 239 247
+      C241 233 235 215 242 202
+      C245 195 248 190 251 187Z"/>
+
+
+    <!-- Азия -->
+
+    <path d="
+      M286 155
+      C303 149 325 152 342 161
+      C358 169 375 174 384 187
+      C392 198 383 207 370 206
+      C357 205 348 198 338 202
+      C328 207 322 217 310 213
+      C300 209 297 198 287 191
+      C277 183 277 163 286 155Z"/>
+
+
+    <!-- Индия -->
+
+    <path d="
+      M326 211
+      C337 211 346 219 345 229
+      C344 239 336 248 328 254
+      C322 246 318 235 319 225
+      C319 219 322 214 326 211Z"/>
+
+
+    <!-- Япония -->
+
+    <path d="
+      M391 190
+      C398 188 403 193 401 199
+      C399 205 394 209 389 207
+      C385 203 387 195 391 190Z"/>
+
+
+    <!-- Австралия -->
+
+    <path d="
+      M350 292
+      C363 284 383 288 393 299
+      C401 309 397 322 386 329
+      C375 336 357 333 347 324
+      C338 315 340 300 350 292Z"/>
+
+
+    <!-- Гренландия -->
+
+    <path d="
+      M181 105
+      C196 96 216 99 226 109
+      C233 117 228 129 216 134
+      C202 138 187 132 181 122
+      C178 116 178 110 181 105Z"/>
 
   </g>
 
-  <!-- Рамка -->
-  <rect
-    x="33"
-    y="33"
-    width="446"
-    height="446"
-    rx="109"
+
+  <!-- Светлые участки материков -->
+
+  <g
+    clip-path="url(#earthClip)"
+    fill="#65C94F"
+    opacity=".65">
+
+    <path d="
+      M143 164
+      C155 153 173 154 185 162
+      C193 168 193 179 184 187
+      C174 193 159 188 150 182
+      C145 176 142 170 143 164Z"/>
+
+    <path d="
+      M264 193
+      C278 189 292 198 296 211
+      C300 222 294 235 287 243
+      C278 249 268 241 263 230
+      C258 217 257 202 264 193Z"/>
+
+    <path d="
+      M356 298
+      C368 293 382 299 387 308
+      C391 316 383 323 374 324
+      C363 325 353 317 351 309
+      C351 304 353 301 356 298Z"/>
+
+  </g>
+
+
+  <!-- Мягкий свет внутри Земли -->
+  <circle
+    cx="256"
+    cy="256"
+    r="143"
+    fill="url(#earthLight)"/>
+
+
+  <!-- Атмосфера вокруг Земли -->
+  <circle
+    cx="256"
+    cy="256"
+    r="143"
     fill="none"
-    stroke="#FFFFFF"
-    stroke-width="3"
-    opacity=".95"/>
+    stroke="#B9F5FF"
+    stroke-width="8"
+    opacity=".7"/>
+
+
+  <!-- Большой мягкий блик -->
+
+  <ellipse
+    cx="205"
+    cy="172"
+    rx="92"
+    ry="62"
+    fill="url(#shine)"/>
+
+
+  <!-- Маленький блик -->
+
+  <ellipse
+    cx="188"
+    cy="145"
+    rx="32"
+    ry="17"
+    fill="#FFFFFF"
+    opacity=".3"/>
+
+
+  <!-- Мягкая тень под Землёй -->
+
+  <ellipse
+    cx="256"
+    cy="414"
+    rx="110"
+    ry="17"
+    fill="#008AC8"
+    opacity=".08"/>
+
+
+  <!-- Тонкая рамка -->
+
+  <rect
+    x="24"
+    y="24"
+    width="464"
+    height="464"
+    rx="112"
+    fill="none"
+    stroke="#DCEEF3"
+    stroke-width="2"
+    opacity=".4"/>
 
 </svg>
