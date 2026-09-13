@@ -1,12 +1,8 @@
-const USER_KEY = "nexgram_user_v10";
-const SETTINGS_KEY = "nexgram_settings_v10";
+const USER_KEY = "nexgram_user_v11";
+const SETTINGS_KEY = "nexgram_settings_v11";
 
 let deferredPrompt = null;
 
-
-/* =========================
-   HELPERS
-========================= */
 
 const $ = id => document.getElementById(id);
 
@@ -22,9 +18,7 @@ function toast(message) {
     clearTimeout(window.toastTimer);
 
     window.toastTimer = setTimeout(() => {
-
         el.classList.remove("show");
-
     }, 2500);
 }
 
@@ -34,18 +28,14 @@ function showScreen(id) {
     document
         .querySelectorAll(".screen")
         .forEach(screen => {
-
             screen.classList.remove("active");
-
         });
-
 
     const target = $(id);
 
     if (target) {
         target.classList.add("active");
     }
-
 }
 
 
@@ -56,7 +46,6 @@ function showModal(id) {
     if (modal) {
         modal.classList.add("show");
     }
-
 }
 
 
@@ -67,28 +56,20 @@ function closeModal(id) {
     if (modal) {
         modal.classList.remove("show");
     }
-
 }
 
 
-/* =========================
-   USER
-========================= */
+/* USER */
 
 function getUser() {
 
     try {
-
         return JSON.parse(
             localStorage.getItem(USER_KEY)
         );
-
     } catch {
-
         return null;
-
     }
-
 }
 
 
@@ -98,13 +79,10 @@ function saveUser(user) {
         USER_KEY,
         JSON.stringify(user)
     );
-
 }
 
 
-/* =========================
-   SETTINGS
-========================= */
+/* SETTINGS */
 
 const defaultSettings = {
 
@@ -112,8 +90,7 @@ const defaultSettings = {
 
     fontSize: 16,
 
-    font:
-        "system",
+    font: "system",
 
     notifications: true,
 
@@ -121,18 +98,32 @@ const defaultSettings = {
 
     animations: true,
 
-    language: "ru"
+    performance: false,
+
+    language: "ru",
+
+    labSmart: false,
+
+    labBlur: true,
+
+    labParticles: false
 
 };
+
+
+let settings = getSettings();
 
 
 function getSettings() {
 
     try {
 
-        const saved = JSON.parse(
-            localStorage.getItem(SETTINGS_KEY)
-        );
+        const saved =
+            JSON.parse(
+                localStorage.getItem(
+                    SETTINGS_KEY
+                )
+            );
 
         return {
             ...defaultSettings,
@@ -146,11 +137,7 @@ function getSettings() {
         };
 
     }
-
 }
-
-
-let settings = getSettings();
 
 
 function saveSettings() {
@@ -163,9 +150,7 @@ function saveSettings() {
 }
 
 
-/* =========================
-   FONT
-========================= */
+/* FONT */
 
 const fonts = {
 
@@ -184,47 +169,32 @@ const fonts = {
 };
 
 
-function fontName(font) {
+const fontNames = {
 
-    const names = {
+    system: "Системный",
 
-        system: "Системный",
+    rounded: "Rounded",
 
-        rounded: "Rounded",
+    mono: "Mono",
 
-        mono: "Mono",
+    serif: "Serif"
 
-        serif: "Serif"
-
-    };
-
-    return names[font] || "Системный";
-
-}
+};
 
 
 function fontSizeName(size) {
 
-    if (size <= 14) {
-        return "Маленький";
-    }
+    if (size <= 14) return "Маленький";
 
-    if (size >= 20) {
-        return "Очень большой";
-    }
+    if (size >= 20) return "Очень большой";
 
-    if (size >= 18) {
-        return "Большой";
-    }
+    if (size >= 18) return "Большой";
 
     return "Средний";
-
 }
 
 
-/* =========================
-   THEME NAMES
-========================= */
+/* THEMES */
 
 const themeNames = {
 
@@ -232,11 +202,11 @@ const themeNames = {
 
     dark: "Тёмная",
 
-    ocean: "Океан",
+    ocean: "Ocean",
 
     midnight: "Midnight",
 
-    purple: "Фиолетовая",
+    purple: "Purple",
 
     sunset: "Sunset",
 
@@ -247,87 +217,112 @@ const themeNames = {
 };
 
 
-/* =========================
-   APPLY SETTINGS
-========================= */
+/* LANGUAGES */
+
+const languageNames = {
+
+    ru: "Русский",
+    en: "English",
+    uk: "Українська",
+    de: "Deutsch",
+    fr: "Français",
+    es: "Español",
+    it: "Italiano",
+    pt: "Português",
+    pl: "Polski",
+    tr: "Türkçe",
+    ar: "العربية",
+    hi: "हिन्दी",
+    zh: "中文",
+    ja: "日本語",
+    ko: "한국어"
+
+};
+
+
+/* APPLY */
 
 function applySettings() {
 
     document.body.dataset.theme =
         settings.theme;
 
-
-    document.documentElement
-        .style
+    document.documentElement.style
         .setProperty(
             "--font-size",
             `${settings.fontSize}px`
         );
 
-
-    document.documentElement
-        .style
+    document.documentElement.style
         .setProperty(
             "--font-family",
-            fonts[settings.font] ||
-            fonts.system
+            fonts[settings.font] || fonts.system
         );
-
 
     document.body.classList.toggle(
         "no-animations",
-        !settings.animations
+        !settings.animations ||
+        settings.performance
     );
 
 
     $("notificationsToggle").checked =
         settings.notifications;
 
-
     $("vibrationToggle").checked =
         settings.vibration;
-
 
     $("animationsToggle").checked =
         settings.animations;
 
+    $("performanceToggle").checked =
+        settings.performance;
+
 
     $("currentThemeText").textContent =
-        themeNames[settings.theme] ||
-        "Светлая";
+        themeNames[settings.theme];
+
+    $("quickThemeText").textContent =
+        themeNames[settings.theme];
 
 
     $("currentFontText").textContent =
-        `${fontSizeName(settings.fontSize)} · ${fontName(settings.font)}`;
+        `${fontSizeName(settings.fontSize)} · ${fontNames[settings.font]}`;
+
+    $("quickFontText").textContent =
+        fontSizeName(settings.fontSize);
 
 
     $("languageValue").textContent =
-        languageNames[settings.language] ||
-        "Русский";
+        languageNames[settings.language];
+
+    $("quickLanguageText").textContent =
+        languageNames[settings.language];
+
+
+    $("quickAnimationText").textContent =
+        settings.animations
+            ? "Включены"
+            : "Выключены";
 
 
     updateThemeButtons();
     updateFontButtons();
     updateLanguageButtons();
+    updateLabButtons();
 
 }
 
 
-/* =========================
-   AUTH
-========================= */
+/* AUTH */
 
 $("registerOpen").onclick = () => {
-
     showScreen("registerScreen");
-
 };
 
 
 $("loginOpen").onclick = () => {
-
     showScreen("loginScreen");
-
 };
 
 
@@ -366,11 +361,8 @@ $("registerBtn").onclick = () => {
 
 
     if (!name) {
-
         toast("Введите имя");
-
         return;
-
     }
 
 
@@ -378,35 +370,24 @@ $("registerBtn").onclick = () => {
         !email ||
         !email.includes("@")
     ) {
-
         toast("Введите корректный email");
-
         return;
-
     }
 
 
     if (password.length < 6) {
-
         toast(
             "Пароль должен быть минимум 6 символов"
         );
-
         return;
-
     }
 
 
     saveUser({
-
         name,
-
         email,
-
         anonymous: false,
-
         entered: true
-
     });
 
 
@@ -414,9 +395,7 @@ $("registerBtn").onclick = () => {
 
 
     setTimeout(() => {
-
         showScreen("notReadyScreen");
-
     }, 500);
 
 };
@@ -440,20 +419,14 @@ $("loginBtn").onclick = () => {
         !email ||
         !email.includes("@")
     ) {
-
         toast("Введите email");
-
         return;
-
     }
 
 
     if (!password) {
-
         toast("Введите пароль");
-
         return;
-
     }
 
 
@@ -475,15 +448,13 @@ $("loginBtn").onclick = () => {
 
 
     setTimeout(() => {
-
         showScreen("notReadyScreen");
-
     }, 500);
 
 };
 
 
-/* PASSWORD */
+/* FORGOT */
 
 $("forgotPassword").onclick = () => {
 
@@ -495,21 +466,15 @@ $("forgotPassword").onclick = () => {
 };
 
 
-/* =========================
-   ANONYMOUS
-========================= */
+/* ANONYMOUS */
 
 $("anonymousOpen").onclick = () => {
-
     showModal("anonymousModal");
-
 };
 
 
 $("anonymousBack").onclick = () => {
-
     closeModal("anonymousModal");
-
 };
 
 
@@ -535,22 +500,16 @@ $("anonymousContinue").onclick = () => {
 
 
     setTimeout(() => {
-
         showScreen("notReadyScreen");
-
     }, 500);
 
 };
 
 
-/* =========================
-   APP
-========================= */
+/* APP */
 
 $("continueBtn").onclick = () => {
-
     openApp();
-
 };
 
 
@@ -565,9 +524,7 @@ function openApp() {
 }
 
 
-/* =========================
-   NAVIGATION
-========================= */
+/* NAVIGATION */
 
 document
     .querySelectorAll(".nav-item")
@@ -589,20 +546,16 @@ function switchPage(pageId) {
     document
         .querySelectorAll(".page")
         .forEach(page => {
-
             page.classList.remove(
                 "active-page"
             );
-
         });
 
 
     document
         .querySelectorAll(".nav-item")
         .forEach(item => {
-
             item.classList.remove("active");
-
         });
 
 
@@ -626,14 +579,15 @@ function switchPage(pageId) {
 }
 
 
-/* =========================
-   THEMES
-========================= */
+/* THEMES */
 
 $("themesSetting").onclick = () => {
-
     showModal("themesModal");
+};
 
+
+$("quickTheme").onclick = () => {
+    showModal("themesModal");
 };
 
 
@@ -676,14 +630,15 @@ function updateThemeButtons() {
 }
 
 
-/* =========================
-   FONT
-========================= */
+/* FONT */
 
 $("fontSetting").onclick = () => {
-
     showModal("fontModal");
+};
 
+
+$("quickFont").onclick = () => {
+    showModal("fontModal");
 };
 
 
@@ -759,49 +714,15 @@ function updateFontButtons() {
 }
 
 
-/* =========================
-   LANGUAGES
-========================= */
+/* LANGUAGE */
 
-const languageNames = {
-
-    ru: "Русский",
-
-    en: "English",
-
-    uk: "Українська",
-
-    de: "Deutsch",
-
-    fr: "Français",
-
-    es: "Español",
-
-    it: "Italiano",
-
-    pt: "Português",
-
-    pl: "Polski",
-
-    tr: "Türkçe",
-
-    ar: "العربية",
-
-    hi: "हिन्दी",
-
-    zh: "中文",
-
-    ja: "日本語",
-
-    ko: "한국어"
-
+$("languageSetting").onclick = () => {
+    showModal("languageModal");
 };
 
 
-$("languageSetting").onclick = () => {
-
+$("quickLanguage").onclick = () => {
     showModal("languageModal");
-
 };
 
 
@@ -844,8 +765,6 @@ function updateLanguageButtons() {
 }
 
 
-/* SEARCH LANGUAGES */
-
 $("languageSearch").addEventListener(
     "input",
     event => {
@@ -878,9 +797,7 @@ $("languageSearch").addEventListener(
 );
 
 
-/* =========================
-   TOGGLES
-========================= */
+/* TOGGLES */
 
 $("notificationsToggle").onchange =
     event => {
@@ -946,9 +863,126 @@ $("animationsToggle").onchange =
     };
 
 
-/* =========================
-   INFO
-========================= */
+$("performanceToggle").onchange =
+    event => {
+
+        settings.performance =
+            event.target.checked;
+
+        saveSettings();
+
+        applySettings();
+
+        toast(
+            settings.performance
+                ? "Режим производительности включён"
+                : "Режим производительности выключен"
+        );
+
+    };
+
+
+/* LAB */
+
+document
+    .querySelectorAll(".lab-option")
+    .forEach(button => {
+
+        button.onclick = () => {
+
+            const type =
+                button.dataset.lab;
+
+
+            if (type === "smart") {
+                settings.labSmart =
+                    !settings.labSmart;
+            }
+
+
+            if (type === "blur") {
+                settings.labBlur =
+                    !settings.labBlur;
+            }
+
+
+            if (type === "particles") {
+                settings.labParticles =
+                    !settings.labParticles;
+            }
+
+
+            saveSettings();
+
+            updateLabButtons();
+
+            toast(
+                "Экспериментальная функция изменена"
+            );
+
+        };
+
+    });
+
+
+function updateLabButtons() {
+
+    document
+        .querySelectorAll(".lab-option")
+        .forEach(button => {
+
+            const type =
+                button.dataset.lab;
+
+            let active = false;
+
+
+            if (type === "smart") {
+                active = settings.labSmart;
+            }
+
+
+            if (type === "blur") {
+                active = settings.labBlur;
+            }
+
+
+            if (type === "particles") {
+                active = settings.labParticles;
+            }
+
+
+            button.classList.toggle(
+                "active",
+                active
+            );
+
+        });
+
+}
+
+
+/* QUICK EFFECT */
+
+$("quickAnimation").onclick = () => {
+
+    settings.animations =
+        !settings.animations;
+
+    saveSettings();
+
+    applySettings();
+
+    toast(
+        settings.animations
+            ? "Эффекты включены"
+            : "Эффекты выключены"
+    );
+
+};
+
+
+/* INFO */
 
 function showInfo(title, text) {
 
@@ -966,7 +1000,7 @@ function showInfo(title, text) {
 $("aboutBtn").onclick = () => {
 
     showInfo(
-        "О Nexgram",
+        "Nexgram",
         "Nexgram — собственный современный мессенджер. Проект находится в активной разработке."
     );
 
@@ -977,7 +1011,7 @@ $("privacyBtn").onclick = () => {
 
     showInfo(
         "Приватность",
-        "Настройки приватности будут расширяться вместе с серверной частью Nexgram."
+        "Здесь будут находиться настройки видимости профиля, статуса онлайн, сообщений и других личных данных."
     );
 
 };
@@ -987,7 +1021,7 @@ $("securityBtn").onclick = () => {
 
     showInfo(
         "Безопасность",
-        "Защита аккаунтов, сессий и сообщений будет реализована при подключении backend."
+        "В будущем здесь появятся дополнительные способы защиты аккаунта и управления активными сессиями."
     );
 
 };
@@ -997,7 +1031,7 @@ $("dataBtn").onclick = () => {
 
     showInfo(
         "Данные приложения",
-        "Текущие настройки интерфейса и локальная сессия сохраняются в памяти браузера."
+        "Настройки Nexgram сейчас сохраняются локально в браузере устройства."
     );
 
 };
@@ -1018,9 +1052,7 @@ $("editProfileBtn").onclick = () => {
 };
 
 
-/* =========================
-   CLOSE MODALS
-========================= */
+/* CLOSE */
 
 document
     .querySelectorAll("[data-close]")
@@ -1062,15 +1094,11 @@ document
 
 
 $("infoClose").onclick = () => {
-
     closeModal("infoModal");
-
 };
 
 
-/* =========================
-   PROFILE
-========================= */
+/* PROFILE */
 
 function updateProfile() {
 
@@ -1100,15 +1128,11 @@ function updateProfile() {
 }
 
 
-/* =========================
-   LOGOUT
-========================= */
+/* LOGOUT */
 
 $("logoutBtn").onclick = () => {
 
-    localStorage.removeItem(
-        USER_KEY
-    );
+    localStorage.removeItem(USER_KEY);
 
     toast("Вы вышли из аккаунта");
 
@@ -1122,9 +1146,7 @@ $("logoutBtn").onclick = () => {
 };
 
 
-/* =========================
-   CHAT
-========================= */
+/* CHAT */
 
 $("newChatBtn").onclick = () => {
 
@@ -1141,8 +1163,7 @@ $("chatSearch").addEventListener(
     event => {
 
         const value =
-            event.target.value
-                .trim();
+            event.target.value.trim();
 
 
         const title =
@@ -1177,9 +1198,7 @@ $("chatSearch").addEventListener(
 );
 
 
-/* =========================
-   PWA
-========================= */
+/* PWA */
 
 window.addEventListener(
     "beforeinstallprompt",
@@ -1216,9 +1235,7 @@ $("installBtn").onclick = async () => {
 };
 
 
-/* =========================
-   SERVICE WORKER
-========================= */
+/* SERVICE WORKER */
 
 if ("serviceWorker" in navigator) {
 
@@ -1228,7 +1245,7 @@ if ("serviceWorker" in navigator) {
 
             navigator.serviceWorker
                 .register(
-                    "./sw.js?v=10"
+                    "./sw.js?v=11"
                 )
                 .catch(error => {
 
@@ -1245,9 +1262,7 @@ if ("serviceWorker" in navigator) {
 }
 
 
-/* =========================
-   START
-========================= */
+/* START */
 
 applySettings();
 
