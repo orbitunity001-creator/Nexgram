@@ -1,86 +1,425 @@
-const USER_KEY = "nexgram_user_v7";
-const SETTINGS_KEY = "nexgram_settings_v1";
-const CAPSULES_KEY = "nexgram_capsules_v1";
-
-const defaultSettings = {
-    theme: "sky",
-    font: "normal",
-
-    animations: true,
-    glass: true,
-
-    language: "Русский",
-
-    notifications: true,
-    sounds: true,
-    vibration: true,
-
-    readReceipts: true,
-    onlineStatus: true,
-
-    visibility: "Все пользователи"
-};
+/* =========================================================
+   NEXGRAM MESSENGER
+   Local prototype with Premium / Rockets / Gifts / Orbit
+   ========================================================= */
 
 
-let settings = loadSettings();
-let capsules = loadCapsules();
-let currentUser = loadUser();
+/* CHANGE THIS TO YOUR EMAIL */
+const ADMIN_EMAIL = "MeowlDevCat@gmail.com";
 
-let installPrompt = null;
+
+const USER_KEY = "nexgram_user_v8";
+const USERS_KEY = "nexgram_users_v8";
+const TASKS_KEY = "nexgram_tasks_v8";
+const SETTINGS_KEY = "nexgram_settings_v8";
 
 
 /* =========================================================
-   HELPERS
-========================================================= */
+   DATA
+   ========================================================= */
 
-function $(id) {
-    return document.getElementById(id);
-}
+const TASKS = [
+
+    {
+        id: "daily_open",
+        title: "Открыть Nexgram",
+        description: "Зайди в приложение сегодня.",
+        reward: 5,
+        icon: "✦",
+        type: "daily"
+    },
+
+    {
+        id: "profile",
+        title: "Настроить профиль",
+        description: "Установи своё имя и профиль.",
+        reward: 20,
+        icon: "◉",
+        type: "once"
+    },
+
+    {
+        id: "avatar",
+        title: "Установить аватар",
+        description: "Добавь изображение профиля.",
+        reward: 15,
+        icon: "▣",
+        type: "once"
+    },
+
+    {
+        id: "settings",
+        title: "Настроить Nexgram",
+        description: "Открой настройки и измени параметры.",
+        reward: 10,
+        icon: "⚙",
+        type: "once"
+    },
+
+    {
+        id: "premium",
+        title: "Исследовать Premium",
+        description: "Открой раздел Premium.",
+        reward: 5,
+        icon: "🚀",
+        type: "once"
+    },
+
+    {
+        id: "orbit",
+        title: "Запустить Orbit",
+        description: "Используй уникальный навигатор Nexgram.",
+        reward: 10,
+        icon: "✧",
+        type: "once"
+    },
+
+    {
+        id: "gift",
+        title: "Открыть подарок",
+        description: "Открой любой Premium-подарок.",
+        reward: 25,
+        icon: "🎁",
+        type: "once"
+    },
+
+    {
+        id: "collector",
+        title: "Стать коллекционером",
+        description: "Собери 3 уникальных предмета.",
+        reward: 50,
+        icon: "◇",
+        type: "achievement"
+    },
+
+    {
+        id: "rockets_100",
+        title: "Первые 100 ракет",
+        description: "Накопи минимум 100 🚀.",
+        reward: 35,
+        icon: "🚀",
+        type: "achievement"
+    },
+
+    {
+        id: "return",
+        title: "Вернуться завтра",
+        description: "Открой Nexgram в другой день.",
+        reward: 15,
+        icon: "↻",
+        type: "daily"
+    }
+
+];
 
 
-function loadUser() {
+const GIFTS = [
+
+    {
+        id: "sky",
+        name: "Небесная капсула",
+        rarity: "Обычный",
+        cost: 30,
+        icon: "🎁",
+        rewards: [
+            "sticker_star",
+            "sticker_blue",
+            "rockets_15"
+        ]
+    },
+
+    {
+        id: "moon",
+        name: "Лунный подарок",
+        rarity: "Редкий",
+        cost: 75,
+        icon: "🌙",
+        rewards: [
+            "sticker_moon",
+            "frame_sky",
+            "rockets_40"
+        ]
+    },
+
+    {
+        id: "quantum",
+        name: "Квантовый подарок",
+        rarity: "Эпический",
+        cost: 150,
+        icon: "💠",
+        rewards: [
+            "sticker_quantum",
+            "frame_quantum",
+            "badge_quantum",
+            "rockets_90"
+        ]
+    },
+
+    {
+        id: "supernova",
+        name: "Сверхновая",
+        rarity: "Легендарный",
+        cost: 300,
+        icon: "🌟",
+        rewards: [
+            "sticker_nova",
+            "frame_nova",
+            "badge_nova",
+            "rockets_180"
+        ]
+    },
+
+    {
+        id: "nexus",
+        name: "Нексус",
+        rarity: "Мифический",
+        cost: 600,
+        icon: "♾️",
+        rewards: [
+            "sticker_nexus",
+            "frame_nexus",
+            "badge_nexus",
+            "rockets_400"
+        ]
+    }
+
+];
+
+
+const STICKERS = [
+
+    {
+        id: "sticker_star",
+        name: "✦ Star",
+        symbol: "✦"
+    },
+
+    {
+        id: "sticker_blue",
+        name: "◆ Blue",
+        symbol: "◆"
+    },
+
+    {
+        id: "sticker_moon",
+        name: "☾ Moon",
+        symbol: "☾"
+    },
+
+    {
+        id: "sticker_quantum",
+        name: "◈ Quantum",
+        symbol: "◈"
+    },
+
+    {
+        id: "sticker_nova",
+        name: "☄ Nova",
+        symbol: "☄"
+    },
+
+    {
+        id: "sticker_nexus",
+        name: "∞ Nexus",
+        symbol: "∞"
+    }
+
+];
+
+
+const REWARD_NAMES = {
+
+    frame_sky: {
+        name: "Небесная рамка",
+        icon: "▣",
+        type: "frame"
+    },
+
+    frame_quantum: {
+        name: "Квантовая рамка",
+        icon: "◇",
+        type: "frame"
+    },
+
+    frame_nova: {
+        name: "Рамка Сверхновой",
+        icon: "🌟",
+        type: "frame"
+    },
+
+    frame_nexus: {
+        name: "Рамка Нексуса",
+        icon: "♾️",
+        type: "frame"
+    },
+
+    badge_quantum: {
+        name: "Квантовый значок",
+        icon: "💠",
+        type: "badge"
+    },
+
+    badge_nova: {
+        name: "Значок Сверхновой",
+        icon: "🌟",
+        type: "badge"
+    },
+
+    badge_nexus: {
+        name: "Значок Нексуса",
+        icon: "♾️",
+        type: "badge"
+    }
+
+};
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+let currentUser = null;
+
+let users = {};
+
+let taskState = {};
+
+let settings = {
+
+    animations: true,
+    sounds: false,
+    notifications: true,
+    showPremium: true,
+    fontSize: "normal"
+
+};
+
+
+let deferredInstallPrompt = null;
+
+
+/* =========================================================
+   DOM
+   ========================================================= */
+
+const $ = id => document.getElementById(id);
+
+
+const screens = [
+
+    "authScreen",
+    "registerScreen",
+    "loginScreen",
+    "notReadyScreen",
+    "appScreen"
+
+];
+
+
+const views = [
+
+    "chatsView",
+    "premiumView",
+    "profileView",
+    "settingsView"
+
+];
+
+
+/* =========================================================
+   STORAGE
+   ========================================================= */
+
+function loadStorage() {
 
     try {
-        return JSON.parse(
-            localStorage.getItem(USER_KEY)
-        );
+
+        currentUser =
+            JSON.parse(
+                localStorage.getItem(USER_KEY)
+            ) || null;
+
     } catch {
-        return null;
+
+        currentUser = null;
+
     }
+
+
+    try {
+
+        users =
+            JSON.parse(
+                localStorage.getItem(USERS_KEY)
+            ) || {};
+
+    } catch {
+
+        users = {};
+
+    }
+
+
+    try {
+
+        taskState =
+            JSON.parse(
+                localStorage.getItem(TASKS_KEY)
+            ) || {};
+
+    } catch {
+
+        taskState = {};
+
+    }
+
+
+    try {
+
+        settings = {
+            ...settings,
+            ...(JSON.parse(
+                localStorage.getItem(SETTINGS_KEY)
+            ) || {})
+        };
+
+    } catch {}
+
 }
 
 
-function saveUser(user) {
+function saveCurrentUser() {
 
-    currentUser = user;
+    if (!currentUser) return;
 
     localStorage.setItem(
         USER_KEY,
-        JSON.stringify(user)
+        JSON.stringify(currentUser)
     );
+
+    if (currentUser.email) {
+
+        users[
+            normalizeEmail(currentUser.email)
+        ] = currentUser;
+
+    }
+
+    localStorage.setItem(
+        USERS_KEY,
+        JSON.stringify(users)
+    );
+
 }
 
 
-function loadSettings() {
+function saveTasks() {
 
-    try {
+    localStorage.setItem(
+        TASKS_KEY,
+        JSON.stringify(taskState)
+    );
 
-        const saved =
-            JSON.parse(
-                localStorage.getItem(SETTINGS_KEY)
-            );
-
-        return {
-            ...defaultSettings,
-            ...(saved || {})
-        };
-
-    } catch {
-
-        return {
-            ...defaultSettings
-        };
-    }
 }
 
 
@@ -90,408 +429,390 @@ function saveSettings() {
         SETTINGS_KEY,
         JSON.stringify(settings)
     );
-}
 
-
-function loadCapsules() {
-
-    try {
-
-        const saved =
-            JSON.parse(
-                localStorage.getItem(CAPSULES_KEY)
-            );
-
-        return Array.isArray(saved)
-            ? saved
-            : [];
-
-    } catch {
-
-        return [];
-    }
-}
-
-
-function saveCapsules() {
-
-    localStorage.setItem(
-        CAPSULES_KEY,
-        JSON.stringify(capsules)
-    );
-}
-
-
-function toast(message) {
-
-    const el = $("toast");
-
-    el.querySelector("p").textContent =
-        message;
-
-    el.classList.add("show");
-
-    clearTimeout(
-        toast.timer
-    );
-
-    toast.timer = setTimeout(() => {
-
-        el.classList.remove("show");
-
-    }, 2600);
-}
-
-
-function show(id) {
-
-    $(id).classList.remove("hidden");
-}
-
-
-function hide(id) {
-
-    $(id).classList.add("hidden");
 }
 
 
 /* =========================================================
-   SETTINGS
-========================================================= */
+   HELPERS
+   ========================================================= */
 
-function applySettings() {
+function normalizeEmail(email) {
 
-    document.body.dataset.theme =
-        settings.theme;
+    return String(email || "")
+        .trim()
+        .toLowerCase();
 
-    document.documentElement.style
-        .setProperty(
-            "--font-scale",
-            getFontScale(settings.font)
+}
+
+
+function todayKey() {
+
+    const date = new Date();
+
+    return [
+        date.getFullYear(),
+        String(date.getMonth() + 1).padStart(2, "0"),
+        String(date.getDate()).padStart(2, "0")
+    ].join("-");
+
+}
+
+
+function ensureUserDefaults(user) {
+
+    if (!user) return null;
+
+    user.name ||= "Пользователь Nexgram";
+    user.email ||= "";
+    user.rockets ||= 0;
+    user.gifts ||= [];
+    user.stickers ||= [];
+    user.badges ||= [];
+    user.frames ||= [];
+    user.nickSticker ||= "";
+    user.equippedFrame ||= "";
+    user.premium = Boolean(user.premium);
+    user.anonymous = Boolean(user.anonymous);
+    user.admin =
+        normalizeEmail(user.email) ===
+        normalizeEmail(ADMIN_EMAIL);
+
+    user.stats ||= {
+        tasks: 0,
+        gifts: 0,
+        orbit: 0
+    };
+
+    return user;
+
+}
+
+
+function getTaskState() {
+
+    const email =
+        normalizeEmail(
+            currentUser?.email || "anonymous"
         );
 
-    document.body.classList.toggle(
-        "no-animations",
-        !settings.animations
-    );
+    if (!taskState[email]) {
 
-    document.body.classList.toggle(
-        "no-glass",
-        !settings.glass
-    );
+        taskState[email] = {};
 
-    updateSettingsUI();
+    }
 
-    saveSettings();
+    return taskState[email];
+
 }
 
 
-function getFontScale(font) {
+function isTaskCompleted(task) {
 
-    const values = {
-        small: .90,
-        normal: 1,
-        large: 1.10,
-        xl: 1.22
-    };
+    const state = getTaskState();
 
-    return values[font] || 1;
+    const value = state[task.id];
+
+    if (!value) return false;
+
+    if (task.type === "daily") {
+
+        return value === todayKey();
+
+    }
+
+    return Boolean(value);
+
 }
 
 
-function themeName(theme) {
+function markTask(taskId) {
 
-    const names = {
-        sky: "Небо",
-        ocean: "Океан",
-        night: "Ночь",
-        graphite: "Графит",
-        purple: "Фиолет",
-        green: "Изумруд",
-        sunset: "Закат",
-        ice: "Лёд"
-    };
-
-    return names[theme] || "Небо";
-}
-
-
-function fontName(font) {
-
-    const names = {
-        small: "Маленький",
-        normal: "Обычный",
-        large: "Большой",
-        xl: "Очень большой"
-    };
-
-    return names[font] || "Обычный";
-}
-
-
-function updateSettingsUI() {
-
-    $("currentThemeText").textContent =
-        themeName(settings.theme);
-
-    $("currentFontText").textContent =
-        fontName(settings.font);
-
-    $("currentLanguageText").textContent =
-        settings.language;
-
-    $("visibilityText").textContent =
-        settings.visibility;
-
-
-    const animationToggle =
-        $("animationsToggle");
-
-    animationToggle.classList.toggle(
-        "on",
-        settings.animations
+    const task = TASKS.find(
+        item => item.id === taskId
     );
 
+    if (!task) return;
 
-    const glassToggle =
-        $("glassToggle");
+    if (isTaskCompleted(task)) return;
 
-    glassToggle.classList.toggle(
-        "on",
-        settings.glass
+    const state = getTaskState();
+
+    state[taskId] =
+        task.type === "daily"
+            ? todayKey()
+            : true;
+
+    currentUser.rockets += task.reward;
+
+    currentUser.stats.tasks++;
+
+    saveTasks();
+    saveCurrentUser();
+
+    renderAll();
+
+    showToast(
+        `+${task.reward} 🚀 — ${task.title}`
     );
 
+}
 
-    document.querySelectorAll(
-        "[data-toggle]"
-    ).forEach(toggle => {
 
-        const key =
-            toggle.dataset.toggle;
+/* =========================================================
+   SCREENS
+   ========================================================= */
 
-        toggle.classList.toggle(
-            "on",
-            Boolean(settings[key])
-        );
+function showScreen(id) {
+
+    screens.forEach(screen => {
+
+        $(screen)?.classList.add("hidden");
 
     });
 
+    $(id)?.classList.remove("hidden");
 
-    document.querySelectorAll(
-        "[data-theme]"
-    ).forEach(button => {
+}
 
-        button.classList.toggle(
-            "active",
-            button.dataset.theme ===
-            settings.theme
-        );
+
+function openAuth() {
+
+    showScreen("authScreen");
+
+    $("orbitButton")?.classList.add("hidden");
+
+}
+
+
+function openApp() {
+
+    showScreen("appScreen");
+
+    $("orbitButton")?.classList.remove("hidden");
+
+    showView("chatsView");
+
+    renderAll();
+
+}
+
+
+/* =========================================================
+   VIEWS
+   ========================================================= */
+
+function showView(viewId) {
+
+    views.forEach(view => {
+
+        $(view)?.classList.add("hidden");
 
     });
 
+    $(viewId)?.classList.remove("hidden");
 
-    document.querySelectorAll(
-        "[data-font]"
-    ).forEach(button => {
 
-        button.classList.toggle(
-            "active",
-            button.dataset.font ===
-            settings.font
-        );
+    document
+        .querySelectorAll(".nav-item")
+        .forEach(button => {
 
-    });
+            button.classList.toggle(
+                "active",
+                button.dataset.view === viewId
+            );
+
+        });
+
+
+    if (viewId === "premiumView") {
+
+        markTask("premium");
+
+    }
+
+
+    if (viewId === "settingsView") {
+
+        markTask("settings");
+
+    }
+
+
+    if (viewId === "profileView") {
+
+        renderProfile();
+
+    }
+
 }
 
 
 /* =========================================================
    AUTH
-========================================================= */
+   ========================================================= */
 
-function openAuthScreen(id) {
+$("openRegister")?.addEventListener(
+    "click",
+    () => showScreen("registerScreen")
+);
 
-    [
-        "authScreen",
-        "registerScreen",
-        "loginScreen"
-    ].forEach(screen => {
 
-        $(screen).classList.add("hidden");
+$("openLogin")?.addEventListener(
+    "click",
+    () => showScreen("loginScreen")
+);
+
+
+document
+    .querySelectorAll("[data-back-auth]")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            openAuth
+        );
 
     });
 
-    $(id).classList.remove("hidden");
-}
 
-
-$("registerOpen").addEventListener(
-    "click",
-    () => openAuthScreen("registerScreen")
-);
-
-
-$("loginOpen").addEventListener(
-    "click",
-    () => openAuthScreen("loginScreen")
-);
-
-
-document.querySelectorAll(
-    "[data-back-auth]"
-).forEach(button => {
-
-    button.addEventListener(
-        "click",
-        () => openAuthScreen("authScreen")
-    );
-
-});
-
-
-$("registerForm").addEventListener(
+$("registerForm")?.addEventListener(
     "submit",
     event => {
 
         event.preventDefault();
 
         const name =
-            $("registerName")
-                .value
-                .trim();
+            $("registerName").value.trim();
 
         const email =
-            $("registerEmail")
-                .value
-                .trim()
-                .toLowerCase();
-
-        const password =
-            $("registerPassword")
-                .value;
-
-        if (!name || !email || password.length < 6) {
-
-            toast(
-                "Заполни все поля правильно"
+            normalizeEmail(
+                $("registerEmail").value
             );
 
+        const password =
+            $("registerPassword").value;
+
+        if (name.length < 2) {
+
+            showToast("Введи имя");
+
             return;
+
         }
 
 
-        const user = {
+        if (password.length < 6) {
 
-            name,
+            showToast(
+                "Пароль должен содержать минимум 6 символов"
+            );
 
-            username:
-                makeUsername(name),
+            return;
 
-            bio:
-                "В Nexgram с нуля.",
-
-            email,
-
-            password,
-
-            avatar: "",
-
-            anonymous: false,
-
-            createdAt:
-                new Date().toISOString(),
-
-            entered: true
-
-        };
+        }
 
 
-        saveUser(user);
+        if (users[email]) {
 
-        enterMessenger();
+            showToast(
+                "Такой аккаунт уже существует"
+            );
 
-        toast(
-            "Аккаунт Nexgram создан"
+            return;
+
+        }
+
+
+        currentUser =
+            ensureUserDefaults({
+
+                name,
+                email,
+                entered: true,
+                anonymous: false,
+                premium: false,
+                rockets: 20,
+                gifts: [],
+                stickers: [],
+                badges: [],
+                frames: [],
+                nickSticker: "",
+                equippedFrame: "",
+
+                stats: {
+                    tasks: 0,
+                    gifts: 0,
+                    orbit: 0
+                }
+
+            });
+
+
+        saveCurrentUser();
+
+        markTask("profile");
+
+        $("registerForm").reset();
+
+        showScreen("notReadyScreen");
+
+        showToast(
+            "Аккаунт создан"
         );
+
     }
 );
 
 
-$("loginForm").addEventListener(
+$("loginForm")?.addEventListener(
     "submit",
     event => {
 
         event.preventDefault();
 
         const email =
-            $("loginEmail")
-                .value
-                .trim()
-                .toLowerCase();
+            normalizeEmail(
+                $("loginEmail").value
+            );
 
-        const password =
-            $("loginPassword")
-                .value;
+        const user = users[email];
 
 
-        const saved =
-            loadUser();
+        if (!user) {
 
-
-        if (
-            saved &&
-            saved.email === email &&
-            saved.password === password
-        ) {
-
-            saved.entered = true;
-
-            saveUser(saved);
-
-            enterMessenger();
-
-            toast(
-                "С возвращением в Nexgram"
+            showToast(
+                "Аккаунт с таким email не найден"
             );
 
             return;
+
         }
 
 
-        toast(
-            "Аккаунт с такими данными не найден"
+        currentUser =
+            ensureUserDefaults(user);
+
+        saveCurrentUser();
+
+        $("loginForm").reset();
+
+        showScreen("notReadyScreen");
+
+        showToast(
+            "Вход выполнен"
         );
+
     }
 );
 
 
-function makeUsername(name) {
-
-    const clean =
-        name
-            .toLowerCase()
-            .replace(
-                /[^a-zа-яё0-9]/gi,
-                ""
-            )
-            .slice(0, 14);
-
-    const number =
-        Math.floor(
-            1000 + Math.random() * 9000
-        );
-
-    return (
-        clean || "nexuser"
-    ) + number;
-}
-
-
-$("forgotPassword").addEventListener(
+$("forgotPassword")?.addEventListener(
     "click",
     () => {
 
-        toast(
-            "Восстановление подключим вместе с сервером"
+        showToast(
+            "В прототипе восстановление пароля ещё не подключено"
         );
 
     }
@@ -500,309 +821,884 @@ $("forgotPassword").addEventListener(
 
 /* =========================================================
    ANONYMOUS
-========================================================= */
+   ========================================================= */
 
-$("anonymousOpen").addEventListener(
+$("anonymousBtn")?.addEventListener(
     "click",
     () => {
 
-        show("anonymousModal");
+        openModal("anonymousModal");
 
     }
 );
 
 
-$("anonymousContinue").addEventListener(
+$("continueAnonymous")?.addEventListener(
     "click",
     () => {
 
-        const user = {
+        currentUser =
+            ensureUserDefaults({
 
-            name: "Аноним",
+                name: "Аноним",
+                email: "",
+                entered: true,
+                anonymous: true,
+                premium: false,
+                rockets: 0,
+                gifts: [],
+                stickers: [],
+                badges: [],
+                frames: [],
+                nickSticker: "",
 
-            username: "anonymous" +
-                Math.floor(
-                    1000 + Math.random() * 9000
-                ),
+                stats: {
+                    tasks: 0,
+                    gifts: 0,
+                    orbit: 0
+                }
 
-            bio:
-                "Анонимный режим Nexgram.",
-
-            email: "",
-
-            password: "",
-
-            avatar: "",
-
-            anonymous: true,
-
-            createdAt:
-                new Date().toISOString(),
-
-            entered: true
-
-        };
+            });
 
 
-        saveUser(user);
+        closeAllModals();
 
-        hide("anonymousModal");
+        saveCurrentUser();
 
-        enterMessenger();
+        showScreen("notReadyScreen");
 
-        toast(
-            "Ты вошёл в ограниченный режим"
+        showToast(
+            "Анонимный режим включён"
         );
+
+    }
+);
+
+
+$("continueBtn")?.addEventListener(
+    "click",
+    openApp
+);
+
+
+/* =========================================================
+   NAV
+   ========================================================= */
+
+document
+    .querySelectorAll(".nav-item")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                showView(
+                    button.dataset.view
+                );
+
+            }
+        );
+
+    });
+
+
+$("goPremiumFromChats")?.addEventListener(
+    "click",
+    () => showView("premiumView")
+);
+
+
+$("newChatBtn")?.addEventListener(
+    "click",
+    () => {
+
+        showToast(
+            "Чаты ещё находятся в разработке"
+        );
+
     }
 );
 
 
 /* =========================================================
-   ENTER APP
-========================================================= */
+   PREMIUM TASKS
+   ========================================================= */
 
-function enterMessenger() {
+function renderTasks() {
 
-    hide("authScreen");
-    hide("registerScreen");
-    hide("loginScreen");
+    const container =
+        $("tasksList");
 
-    show("appScreen");
-    show("bottomNav");
-    show("rocketButton");
+    if (!container) return;
 
-    renderProfile();
-
-    renderCapsules();
-
-    showPage("chatsPage");
-}
+    container.innerHTML = "";
 
 
-function logout() {
-
-    localStorage.removeItem(
-        USER_KEY
-    );
-
-    currentUser = null;
-
-    hide("appScreen");
-    hide("bottomNav");
-    hide("rocketButton");
-
-    openAuthScreen("authScreen");
-
-    toast(
-        "Ты вышел из Nexgram"
-    );
-}
+    const completed =
+        TASKS.filter(isTaskCompleted).length;
 
 
-$("logoutBtn").addEventListener(
-    "click",
-    () => {
+    $("tasksCounter").textContent =
+        `${completed} выполнено`;
 
-        if (
-            confirm(
-                "Выйти из аккаунта Nexgram?"
-            )
+
+    TASKS.forEach(task => {
+
+        const done =
+            isTaskCompleted(task);
+
+
+        let progress = 0;
+
+
+        if (done) {
+
+            progress = 100;
+
+        } else if (
+            task.id === "rockets_100"
         ) {
 
-            logout();
+            progress =
+                Math.min(
+                    100,
+                    Math.round(
+                        (currentUser.rockets / 100) * 100
+                    )
+                );
+
+        } else if (
+            task.id === "collector"
+        ) {
+
+            const count =
+                getCollectionCount();
+
+            progress =
+                Math.min(
+                    100,
+                    Math.round(
+                        (count / 3) * 100
+                    )
+                );
 
         }
 
-    }
-);
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            `task-card ${done ? "completed" : ""}`;
 
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
+        card.innerHTML = `
 
-function showPage(pageId) {
+            <div class="task-icon">
+                ${task.icon}
+            </div>
 
-    document.querySelectorAll(
-        ".app-page"
-    ).forEach(page => {
+            <div class="task-info">
 
-        page.classList.remove(
-            "active-page"
-        );
+                <strong>
+                    ${escapeHTML(task.title)}
+                </strong>
 
-    });
+                <p>
+                    ${escapeHTML(task.description)}
+                </p>
+
+                ${
+                    progress > 0 && !done
+                    ? `
+                        <div class="task-progress">
+
+                            <div class="task-progress-track">
+
+                                <div
+                                    class="task-progress-fill"
+                                    style="width:${progress}%"
+                                ></div>
+
+                            </div>
+
+                        </div>
+                    `
+                    : ""
+                }
+
+            </div>
+
+            ${
+                done
+                ? `
+                    <div class="task-check">
+                        ✓
+                    </div>
+                `
+                : `
+                    <div class="task-reward">
+                        +${task.reward} 🚀
+                    </div>
+                `
+            }
+
+        `;
 
 
-    $(pageId).classList.add(
-        "active-page"
-    );
+        if (!done) {
+
+            card.addEventListener(
+                "click",
+                () => {
+
+                    if (
+                        task.id === "avatar" &&
+                        !currentUser.avatar
+                    ) {
+
+                        $("avatarInput")?.click();
+
+                        return;
+
+                    }
 
 
-    document.querySelectorAll(
-        ".nav-item"
-    ).forEach(item => {
+                    if (
+                        task.id === "collector" &&
+                        getCollectionCount() < 3
+                    ) {
 
-        item.classList.toggle(
-            "active",
-            item.dataset.page === pageId
-        );
+                        showToast(
+                            "Сначала собери 3 предмета"
+                        );
 
-    });
+                        return;
 
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-}
+                    }
 
 
-document.querySelectorAll(
-    ".nav-item"
-).forEach(button => {
+                    if (
+                        task.id === "rockets_100" &&
+                        currentUser.rockets < 100
+                    ) {
 
-    button.addEventListener(
-        "click",
-        () => {
+                        showToast(
+                            `Нужно ещё ${
+                                100 - currentUser.rockets
+                            } 🚀`
+                        );
 
-            showPage(
-                button.dataset.page
+                        return;
+
+                    }
+
+
+                    markTask(task.id);
+
+                }
             );
 
         }
-    );
-
-});
 
 
-function openSettingsPage() {
+        container.appendChild(card);
 
-    showPage("settingsPage");
+    });
 
 }
 
 
-function openProfilePage() {
+/* =========================================================
+   GIFTS
+   ========================================================= */
 
-    showPage("profilePage");
+function renderGifts() {
+
+    const container =
+        $("giftsGrid");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+
+    GIFTS.forEach(gift => {
+
+        const card =
+            document.createElement("div");
+
+        card.className = "gift-card";
+
+
+        const owned =
+            currentUser.gifts
+                .filter(item => item.giftId === gift.id)
+                .length;
+
+
+        card.innerHTML = `
+
+            <div class="gift-icon">
+                ${gift.icon}
+            </div>
+
+            <div>
+
+                <strong>
+                    ${escapeHTML(gift.name)}
+                </strong>
+
+                <span class="gift-rarity">
+                    ${escapeHTML(gift.rarity)}
+                </span>
+
+            </div>
+
+            <button
+                class="gift-buy"
+                ${currentUser.rockets < gift.cost ? "disabled" : ""}
+            >
+                🚀 ${gift.cost}
+            </button>
+
+        `;
+
+
+        card
+            .querySelector(".gift-buy")
+            .addEventListener(
+                "click",
+                event => {
+
+                    event.stopPropagation();
+
+                    buyGift(gift);
+
+                }
+            );
+
+
+        if (owned > 0) {
+
+            const ownedText =
+                document.createElement("small");
+
+            ownedText.style.cssText = `
+                position:absolute;
+                top:9px;
+                right:9px;
+                color:#1680d5;
+                font-size:8px;
+                font-weight:900;
+            `;
+
+            ownedText.textContent =
+                `×${owned}`;
+
+            card.appendChild(ownedText);
+
+        }
+
+
+        container.appendChild(card);
+
+    });
 
 }
 
 
-function openOrbitPage() {
+function buyGift(gift) {
 
-    showPage("orbitPage");
+    if (
+        currentUser.rockets <
+        gift.cost
+    ) {
+
+        showToast(
+            "Недостаточно ракет"
+        );
+
+        return;
+
+    }
+
+
+    currentUser.rockets -=
+        gift.cost;
+
+
+    const reward =
+        gift.rewards[
+            Math.floor(
+                Math.random() *
+                gift.rewards.length
+            )
+        ];
+
+
+    const rewardResult =
+        applyReward(reward);
+
+
+    currentUser.gifts.push({
+
+        id:
+            `${Date.now()}_${Math.random()}`,
+
+        giftId:
+            gift.id,
+
+        giftName:
+            gift.name,
+
+        rarity:
+            gift.rarity,
+
+        reward,
+
+        openedAt:
+            new Date().toISOString()
+
+    });
+
+
+    currentUser.stats.gifts++;
+
+
+    saveCurrentUser();
+
+    renderAll();
+
+    openGiftModal(
+        gift,
+        rewardResult
+    );
+
+
+    markTask("gift");
 
 }
 
 
-function openCapsulesPage() {
+/* =========================================================
+   REWARDS
+   ========================================================= */
 
-    showPage("capsulesPage");
+function applyReward(rewardId) {
+
+    if (
+        rewardId.startsWith("rockets_")
+    ) {
+
+        const amount =
+            Number(
+                rewardId.split("_")[1]
+            );
+
+        currentUser.rockets += amount;
+
+        return {
+            title: `+${amount} 🚀`,
+            description:
+                `Ты получил ${amount} ракет.`
+        };
+
+    }
+
+
+    const sticker =
+        STICKERS.find(
+            item => item.id === rewardId
+        );
+
+
+    if (sticker) {
+
+        if (
+            currentUser.stickers
+                .includes(sticker.id)
+        ) {
+
+            currentUser.rockets += 10;
+
+            return {
+                title: "Дубликат ✦",
+                description:
+                    "Такой стикер уже есть. Дубликат превращён в +10 🚀."
+            };
+
+        }
+
+
+        currentUser.stickers.push(
+            sticker.id
+        );
+
+
+        return {
+            title:
+                `${sticker.symbol} ${sticker.name}`,
+
+            description:
+                "Новый уникальный стикер для ника."
+        };
+
+    }
+
+
+    const reward =
+        REWARD_NAMES[rewardId];
+
+
+    if (reward) {
+
+        if (reward.type === "frame") {
+
+            if (
+                currentUser.frames
+                    .includes(rewardId)
+            ) {
+
+                currentUser.rockets += 20;
+
+                return {
+                    title: "Дубликат рамки",
+                    description:
+                        "Дубликат превращён в +20 🚀."
+                };
+
+            }
+
+            currentUser.frames.push(
+                rewardId
+            );
+
+        }
+
+
+        if (reward.type === "badge") {
+
+            if (
+                currentUser.badges
+                    .includes(rewardId)
+            ) {
+
+                currentUser.rockets += 20;
+
+                return {
+                    title: "Дубликат значка",
+                    description:
+                        "Дубликат превращён в +20 🚀."
+                };
+
+            }
+
+            currentUser.badges.push(
+                rewardId
+            );
+
+        }
+
+
+        return {
+            title:
+                `${reward.icon} ${reward.name}`,
+
+            description:
+                "Новый предмет добавлен в коллекцию."
+        };
+
+    }
+
+
+    return {
+        title: "Новый предмет",
+        description:
+            "Предмет добавлен в коллекцию."
+    };
 
 }
 
 
-$("openOrbitFromChats")
-    .addEventListener(
-        "click",
-        openOrbitPage
+/* =========================================================
+   GIFT MODAL
+   ========================================================= */
+
+function openGiftModal(
+    gift,
+    reward
+) {
+
+    $("giftOpening").textContent =
+        gift.icon;
+
+    $("giftRarity").textContent =
+        gift.rarity;
+
+    $("giftTitle").textContent =
+        gift.name;
+
+    $("giftDescription").textContent =
+        "Подарок открыт. Твоя награда:";
+
+    $("giftReward").textContent =
+        `${reward.title} — ${reward.description}`;
+
+    $("giftReward").classList.remove(
+        "hidden"
     );
 
+    openModal("giftModal");
 
-$("openProfileFromOrbit")
-    .addEventListener(
-        "click",
-        openProfilePage
+}
+
+
+$("giftCloseBtn")?.addEventListener(
+    "click",
+    () => closeModal("giftModal")
+);
+
+
+/* =========================================================
+   COLLECTION
+   ========================================================= */
+
+function getCollectionCount() {
+
+    return (
+        currentUser.stickers.length +
+        currentUser.frames.length +
+        currentUser.badges.length
     );
 
-
-$("openCapsulesFromOrbit")
-    .addEventListener(
-        "click",
-        openCapsulesPage
-    );
+}
 
 
-$("openSettingsFromOrbit")
-    .addEventListener(
-        "click",
-        openSettingsPage
-    );
+function renderCollection() {
+
+    const container =
+        $("collectionList");
+
+    if (!container) return;
+
+    container.innerHTML = "";
 
 
-$("openNavigatorFromOrbit")
-    .addEventListener(
-        "click",
-        openNavigator
-    );
+    const items = [];
 
 
-$("openCapsulesFromChats")
-    .addEventListener(
-        "click",
-        openCapsulesPage
-    );
+    currentUser.stickers
+        .forEach(id => {
+
+            const sticker =
+                STICKERS.find(
+                    item => item.id === id
+                );
+
+            if (sticker) {
+
+                items.push({
+
+                    icon:
+                        sticker.symbol,
+
+                    name:
+                        sticker.name,
+
+                    description:
+                        "Стикер для ника"
+
+                });
+
+            }
+
+        });
 
 
-$("openNavigatorFromChats")
-    .addEventListener(
-        "click",
-        openNavigator
-    );
+    currentUser.frames
+        .forEach(id => {
+
+            const reward =
+                REWARD_NAMES[id];
+
+            if (reward) {
+
+                items.push({
+
+                    icon:
+                        reward.icon,
+
+                    name:
+                        reward.name,
+
+                    description:
+                        "Профильная рамка"
+
+                });
+
+            }
+
+        });
 
 
-$("orbitSettings")
-    .addEventListener(
-        "click",
-        openSettingsPage
-    );
+    currentUser.badges
+        .forEach(id => {
+
+            const reward =
+                REWARD_NAMES[id];
+
+            if (reward) {
+
+                items.push({
+
+                    icon:
+                        reward.icon,
+
+                    name:
+                        reward.name,
+
+                    description:
+                        "Уникальный значок"
+
+                });
+
+            }
+
+        });
+
+
+    if (!items.length) {
+
+        container.innerHTML = `
+            <div class="collection-item">
+                <div class="collection-item-icon">
+                    ✦
+                </div>
+
+                <div class="collection-item-info">
+                    <strong>
+                        Коллекция пока пуста
+                    </strong>
+
+                    <small>
+                        Открывай подарки в Premium.
+                    </small>
+                </div>
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    items.forEach(item => {
+
+        const element =
+            document.createElement("div");
+
+        element.className =
+            "collection-item";
+
+        element.innerHTML = `
+
+            <div class="collection-item-icon">
+                ${item.icon}
+            </div>
+
+            <div class="collection-item-info">
+
+                <strong>
+                    ${escapeHTML(item.name)}
+                </strong>
+
+                <small>
+                    ${escapeHTML(item.description)}
+                </small>
+
+            </div>
+
+        `;
+
+        container.appendChild(element);
+
+    });
+
+}
+
+
+$("openCollectionBtn")?.addEventListener(
+    "click",
+    () => {
+
+        renderCollection();
+
+        openModal("collectionModal");
+
+    }
+);
 
 
 /* =========================================================
    PROFILE
-========================================================= */
+   ========================================================= */
 
 function renderProfile() {
 
-    if (!currentUser) {
-        return;
-    }
+    if (!currentUser) return;
 
 
     $("profileName").textContent =
         currentUser.name;
 
 
-    $("profileUsername").textContent =
-        "@" +
-        (
-            currentUser.username ||
-            "nexuser"
+    $("profileEmail").textContent =
+        currentUser.email ||
+        "Анонимный режим";
+
+
+    $("profileRocketCount").textContent =
+        currentUser.rockets;
+
+
+    $("profileGiftCount").textContent =
+        currentUser.gifts.length;
+
+
+    $("profileTaskCount").textContent =
+        currentUser.stats.tasks;
+
+
+    $("profileOrbitCount").textContent =
+        currentUser.stats.orbit;
+
+
+    const premiumVisible =
+        currentUser.premium &&
+        settings.showPremium;
+
+
+    $("profilePremium")
+        .classList.toggle(
+            "hidden",
+            !premiumVisible
         );
 
 
-    $("profileBio").textContent =
-        currentUser.bio ||
-        "В Nexgram с нуля.";
+    const sticker =
+        STICKERS.find(
+            item =>
+                item.id ===
+                currentUser.nickSticker
+        );
 
 
-    const letter =
-        (
-            currentUser.name ||
-            "N"
-        )
-        .charAt(0)
-        .toUpperCase();
-
-
-    $("avatarLetter").textContent =
-        letter;
-
-
-    $("navAvatar").textContent =
-        letter;
+    $("profileNickSticker").textContent =
+        sticker
+            ? sticker.name
+            : "";
 
 
     const avatar =
@@ -811,103 +1707,218 @@ function renderProfile() {
 
     if (currentUser.avatar) {
 
-        avatar.src =
-            currentUser.avatar;
-
-        $("avatarButton")
-            .classList.add(
-                "has-image"
-            );
-
-        $("navAvatar").innerHTML =
-            `<img
+        avatar.innerHTML = `
+            <img
                 src="${currentUser.avatar}"
-                style="
-                    width:100%;
-                    height:100%;
-                    object-fit:cover;
-                "
-            >`;
+                alt=""
+            >
+        `;
 
     } else {
 
-        avatar.removeAttribute(
-            "src"
-        );
+        avatar.textContent =
+            (
+                currentUser.name ||
+                "N"
+            )
+                .trim()
+                .charAt(0)
+                .toUpperCase();
 
-        $("avatarButton")
-            .classList.remove(
-                "has-image"
-            );
-
-        $("navAvatar").textContent =
-            letter;
     }
 
 
-    $("profileCapsuleCount")
-        .textContent =
-        capsules.length;
-}
-
-
-$("avatarButton")
-    .addEventListener(
-        "click",
-        chooseAvatar
-    );
-
-
-$("changeAvatarBtn")
-    .addEventListener(
-        "click",
-        chooseAvatar
-    );
-
-
-function chooseAvatar() {
-
-    $("avatarInput").click();
+    renderStatusCard();
+    renderStickers();
 
 }
 
 
-$("avatarInput").addEventListener(
+function renderStatusCard() {
+
+    const container =
+        $("profileStatusCard");
+
+    if (!container) return;
+
+
+    if (currentUser.premium) {
+
+        container.innerHTML = `
+
+            <div class="status-premium">
+
+                <div class="status-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Nexgram Premium
+                    </strong>
+
+                    <small>
+                        Premium выдан разработчиком.
+                    </small>
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML = `
+
+        <div class="status-premium">
+
+            <div class="status-icon">
+                🚀
+            </div>
+
+            <div>
+
+                <strong>
+                    Обычный аккаунт
+                </strong>
+
+                <small>
+                    Выполняй задания и собирай ракеты.
+                </small>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+function renderStickers() {
+
+    const container =
+        $("nickStickerList");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+
+    if (!currentUser.stickers.length) {
+
+        container.innerHTML = `
+            <div class="collection-item">
+                <div class="collection-item-info">
+                    <strong>
+                        Уникальных стикеров пока нет
+                    </strong>
+                    <small>
+                        Они выпадают из Premium-подарков.
+                    </small>
+                </div>
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    currentUser.stickers
+        .forEach(id => {
+
+            const sticker =
+                STICKERS.find(
+                    item => item.id === id
+                );
+
+            if (!sticker) return;
+
+
+            const button =
+                document.createElement("button");
+
+            button.className =
+                "sticker-item";
+
+
+            if (
+                currentUser.nickSticker ===
+                sticker.id
+            ) {
+
+                button.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            button.textContent =
+                sticker.name;
+
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    currentUser.nickSticker =
+                        currentUser.nickSticker ===
+                        sticker.id
+                            ? ""
+                            : sticker.id;
+
+                    saveCurrentUser();
+
+                    renderProfile();
+
+                    showToast(
+                        currentUser.nickSticker
+                            ? "Стикер установлен"
+                            : "Стикер снят"
+                    );
+
+                }
+            );
+
+
+            container.appendChild(button);
+
+        });
+
+}
+
+
+/* =========================================================
+   AVATAR
+   ========================================================= */
+
+$("avatarInput")?.addEventListener(
     "change",
     event => {
 
         const file =
-            event.target.files[0];
+            event.target.files?.[0];
 
-        if (!file) {
-            return;
-        }
+        if (!file) return;
 
 
         if (
-            !file.type.startsWith(
-                "image/"
-            )
+            !file.type.startsWith("image/")
         ) {
 
-            toast(
-                "Можно выбрать только изображение"
+            showToast(
+                "Выбери изображение"
             );
 
             return;
-        }
 
-
-        if (
-            file.size >
-            5 * 1024 * 1024
-        ) {
-
-            toast(
-                "Изображение должно быть меньше 5 МБ"
-            );
-
-            return;
         }
 
 
@@ -920,13 +1931,16 @@ $("avatarInput").addEventListener(
             currentUser.avatar =
                 reader.result;
 
-            saveUser(currentUser);
+            saveCurrentUser();
+
+            markTask("avatar");
 
             renderProfile();
 
-            toast(
-                "Аватар изменён"
+            showToast(
+                "Аватар обновлён"
             );
+
         };
 
 
@@ -938,996 +1952,1020 @@ $("avatarInput").addEventListener(
 
 /* =========================================================
    EDIT PROFILE
-========================================================= */
+   ========================================================= */
 
-function openProfileEditor() {
+$("editProfileBtn")?.addEventListener(
+    "click",
+    () => {
 
-    $("editNameInput").value =
-        currentUser.name || "";
+        $("editNameInput").value =
+            currentUser.name;
 
-    $("editUsernameInput").value =
-        currentUser.username || "";
+        openModal(
+            "editProfileModal"
+        );
 
-    $("editBioInput").value =
-        currentUser.bio || "";
+    }
+);
 
-    show("profileEditModal");
+
+$("saveProfileBtn")?.addEventListener(
+    "click",
+    () => {
+
+        const name =
+            $("editNameInput")
+                .value
+                .trim();
+
+
+        if (name.length < 2) {
+
+            showToast("Слишком короткое имя");
+
+            return;
+
+        }
+
+
+        currentUser.name =
+            name;
+
+        saveCurrentUser();
+
+        closeModal(
+            "editProfileModal"
+        );
+
+        renderProfile();
+
+        showToast(
+            "Профиль сохранён"
+        );
+
+    }
+);
+
+
+/* =========================================================
+   SETTINGS
+   ========================================================= */
+
+function initSettings() {
+
+    $("animationsSetting").checked =
+        settings.animations;
+
+    $("soundsSetting").checked =
+        settings.sounds;
+
+    $("notificationsSetting").checked =
+        settings.notifications;
+
+    $("showPremiumSetting").checked =
+        settings.showPremium;
+
+
+    document
+        .querySelectorAll(
+            "[data-font]"
+        )
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.font ===
+                settings.fontSize
+            );
+
+        });
+
+
+    applySettings();
+
 }
 
 
-$("editProfileBtn")
-    .addEventListener(
-        "click",
-        openProfileEditor
+function applySettings() {
+
+    document.body.classList.toggle(
+        "no-animations",
+        !settings.animations
     );
 
 
-$("profileEditTop")
-    .addEventListener(
-        "click",
-        openProfileEditor
-    );
+    document.body.dataset.fontSize =
+        settings.fontSize;
+
+}
 
 
-$("openProfileFromOrbit")
-    .addEventListener(
-        "click",
-        openProfilePage
-    );
+$("animationsSetting")?.addEventListener(
+    "change",
+    event => {
+
+        settings.animations =
+            event.target.checked;
+
+        saveSettings();
+        applySettings();
+
+    }
+);
 
 
-$("saveProfileBtn")
-    .addEventListener(
-        "click",
-        () => {
+$("soundsSetting")?.addEventListener(
+    "change",
+    event => {
 
-            const name =
-                $("editNameInput")
-                    .value
-                    .trim();
+        settings.sounds =
+            event.target.checked;
 
-            let username =
-                $("editUsernameInput")
-                    .value
-                    .trim()
-                    .replace(
-                        /^@/,
-                        ""
-                    );
+        saveSettings();
+
+    }
+);
 
 
-            const bio =
-                $("editBioInput")
-                    .value
-                    .trim();
+$("notificationsSetting")?.addEventListener(
+    "change",
+    event => {
+
+        settings.notifications =
+            event.target.checked;
+
+        saveSettings();
+
+    }
+);
 
 
-            if (!name) {
+$("showPremiumSetting")?.addEventListener(
+    "change",
+    event => {
 
-                toast(
-                    "Имя не может быть пустым"
-                );
+        settings.showPremium =
+            event.target.checked;
 
-                return;
+        saveSettings();
+
+        renderProfile();
+
+    }
+);
+
+
+document
+    .querySelectorAll(
+        "[data-font]"
+    )
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                settings.fontSize =
+                    button.dataset.font;
+
+                saveSettings();
+
+                initSettings();
+
             }
-
-
-            if (!username) {
-
-                username =
-                    makeUsername(name);
-            }
-
-
-            currentUser.name =
-                name;
-
-            currentUser.username =
-                username;
-
-            currentUser.bio =
-                bio ||
-                "В Nexgram с нуля.";
-
-
-            saveUser(currentUser);
-
-            renderProfile();
-
-            hide("profileEditModal");
-
-            toast(
-                "Профиль сохранён"
-            );
-
-        }
-    );
-
-
-/* =========================================================
-   THEME
-========================================================= */
-
-$("themeSetting")
-    .addEventListener(
-        "click",
-        () => show("themeModal")
-    );
-
-
-document.querySelectorAll(
-    "[data-theme]"
-).forEach(button => {
-
-    button.addEventListener(
-        "click",
-        () => {
-
-            settings.theme =
-                button.dataset.theme;
-
-            applySettings();
-
-            toast(
-                "Тема: " +
-                themeName(settings.theme)
-            );
-
-        }
-    );
-
-});
-
-
-/* =========================================================
-   FONT
-========================================================= */
-
-$("fontSetting")
-    .addEventListener(
-        "click",
-        () => show("fontModal")
-    );
-
-
-document.querySelectorAll(
-    "[data-font]"
-).forEach(button => {
-
-    button.addEventListener(
-        "click",
-        () => {
-
-            settings.font =
-                button.dataset.font;
-
-            applySettings();
-
-            toast(
-                "Размер: " +
-                fontName(settings.font)
-            );
-
-        }
-    );
-
-});
-
-
-/* =========================================================
-   TOGGLES
-========================================================= */
-
-$("animationsSetting")
-    .addEventListener(
-        "click",
-        () => {
-
-            settings.animations =
-                !settings.animations;
-
-            applySettings();
-
-            toast(
-                settings.animations
-                    ? "Анимации включены"
-                    : "Анимации выключены"
-            );
-
-        }
-    );
-
-
-$("glassSetting")
-    .addEventListener(
-        "click",
-        () => {
-
-            settings.glass =
-                !settings.glass;
-
-            applySettings();
-
-            toast(
-                settings.glass
-                    ? "Стеклянный интерфейс включён"
-                    : "Стеклянный интерфейс выключен"
-            );
-
-        }
-    );
-
-
-document.querySelectorAll(
-    "[data-toggle-setting]"
-).forEach(row => {
-
-    row.addEventListener(
-        "click",
-        () => {
-
-            const key =
-                row.dataset.toggleSetting;
-
-            settings[key] =
-                !settings[key];
-
-            applySettings();
-
-            toast(
-                settings[key]
-                    ? "Настройка включена"
-                    : "Настройка выключена"
-            );
-
-        }
-    );
-
-});
-
-
-/* =========================================================
-   LANGUAGE
-========================================================= */
-
-$("languageSetting")
-    .addEventListener(
-        "click",
-        () => show("languageModal")
-    );
-
-
-document.querySelectorAll(
-    "[data-language]"
-).forEach(button => {
-
-    button.addEventListener(
-        "click",
-        () => {
-
-            settings.language =
-                button.dataset.language;
-
-            applySettings();
-
-            hide("languageModal");
-
-            toast(
-                "Язык выбран: " +
-                settings.language
-            );
-
-        }
-    );
-
-});
-
-
-/* =========================================================
-   PRIVACY
-========================================================= */
-
-$("profileVisibilitySetting")
-    .addEventListener(
-        "click",
-        () => {
-
-            const values = [
-                "Все пользователи",
-                "Только контакты",
-                "Никто"
-            ];
-
-            const current =
-                values.indexOf(
-                    settings.visibility
-                );
-
-            const next =
-                values[
-                    (current + 1) %
-                    values.length
-                ];
-
-            settings.visibility =
-                next;
-
-            applySettings();
-
-            toast(
-                "Видимость: " +
-                next
-            );
-
-        }
-    );
-
-
-/* =========================================================
-   CAPSULES
-========================================================= */
-
-$("addCapsuleBtn")
-    .addEventListener(
-        "click",
-        () => show("capsuleModal")
-    );
-
-
-function saveCapsule() {
-
-    const title =
-        $("capsuleTitle")
-            .value
-            .trim();
-
-    const text =
-        $("capsuleText")
-            .value
-            .trim();
-
-
-    if (!title && !text) {
-
-        toast(
-            "Напиши что-нибудь в капсуле"
         );
 
-        return;
+    });
+
+
+$("logoutBtn")?.addEventListener(
+    "click",
+    () => {
+
+        currentUser = null;
+
+        localStorage.removeItem(
+            USER_KEY
+        );
+
+        openAuth();
+
+        showToast(
+            "Вы вышли из аккаунта"
+        );
+
+    }
+);
+
+
+/* =========================================================
+   ADMIN
+   ========================================================= */
+
+function checkAdmin() {
+
+    if (!currentUser) return false;
+
+    return (
+        normalizeEmail(
+            currentUser.email
+        ) ===
+        normalizeEmail(
+            ADMIN_EMAIL
+        )
+    );
+
+}
+
+
+function renderAdminButton() {
+
+    const button =
+        $("adminPanelBtn");
+
+    if (!button) return;
+
+    button.classList.toggle(
+        "hidden",
+        !checkAdmin()
+    );
+
+}
+
+
+$("adminPanelBtn")?.addEventListener(
+    "click",
+    () => {
+
+        if (!checkAdmin()) {
+
+            showToast(
+                "Доступ запрещён"
+            );
+
+            return;
+
+        }
+
+        renderAdminUsers();
+
+        openModal(
+            "adminModal"
+        );
+
+    }
+);
+
+
+function getAdminTarget() {
+
+    const email =
+        normalizeEmail(
+            $("adminTargetEmail").value
+        );
+
+
+    if (!email) {
+
+        showToast(
+            "Укажи email пользователя"
+        );
+
+        return null;
+
     }
 
 
-    const capsule = {
+    if (!users[email]) {
 
-        id:
-            Date.now(),
+        showToast(
+            "Пользователь не найден локально"
+        );
 
-        title:
-            title ||
-            "Без названия",
+        return null;
 
-        text:
-            text,
-
-        createdAt:
-            new Date().toISOString()
-
-    };
+    }
 
 
-    capsules.unshift(
-        capsule
-    );
+    return users[email];
 
-
-    saveCapsules();
-
-    renderCapsules();
-
-    renderProfile();
-
-    $("capsuleTitle").value =
-        "";
-
-    $("capsuleText").value =
-        "";
-
-    hide("capsuleModal");
-
-    toast(
-        "Капсула запечатана ◈"
-    );
 }
 
 
-$("saveCapsuleBtn")
-    .addEventListener(
-        "click",
-        saveCapsule
+function updateAdminTarget(callback) {
+
+    const target =
+        getAdminTarget();
+
+    if (!target) return;
+
+
+    callback(target);
+
+
+    ensureUserDefaults(target);
+
+
+    users[
+        normalizeEmail(target.email)
+    ] = target;
+
+
+    if (
+        normalizeEmail(
+            currentUser.email
+        ) ===
+        normalizeEmail(
+            target.email
+        )
+    ) {
+
+        currentUser =
+            target;
+
+        saveCurrentUser();
+
+    } else {
+
+        localStorage.setItem(
+            USERS_KEY,
+            JSON.stringify(users)
+        );
+
+    }
+
+
+    renderAdminUsers();
+    renderAll();
+
+    showToast(
+        "Изменения применены"
     );
 
+}
 
-function renderCapsules() {
+
+$("adminPremiumBtn")?.addEventListener(
+    "click",
+    () => {
+
+        updateAdminTarget(
+            target => {
+
+                target.premium = true;
+
+            }
+        );
+
+    }
+);
+
+
+$("adminRemovePremiumBtn")?.addEventListener(
+    "click",
+    () => {
+
+        updateAdminTarget(
+            target => {
+
+                target.premium = false;
+
+            }
+        );
+
+    }
+);
+
+
+$("adminRocketsBtn")?.addEventListener(
+    "click",
+    () => {
+
+        updateAdminTarget(
+            target => {
+
+                target.rockets =
+                    (target.rockets || 0) +
+                    100;
+
+            }
+        );
+
+    }
+);
+
+
+$("adminGiftBtn")?.addEventListener(
+    "click",
+    () => {
+
+        updateAdminTarget(
+            target => {
+
+                const gift =
+                    GIFTS[
+                        Math.floor(
+                            Math.random() *
+                            GIFTS.length
+                        )
+                    ];
+
+
+                target.gifts ||= [];
+
+
+                target.gifts.push({
+
+                    id:
+                        `${Date.now()}_${Math.random()}`,
+
+                    giftId:
+                        gift.id,
+
+                    giftName:
+                        gift.name,
+
+                    rarity:
+                        gift.rarity,
+
+                    reward:
+                        gift.rewards[0],
+
+                    openedAt:
+                        new Date().toISOString()
+
+                });
+
+
+                target.stats ||= {
+                    tasks: 0,
+                    gifts: 0,
+                    orbit: 0
+                };
+
+
+                target.stats.gifts++;
+
+            }
+        );
+
+    }
+);
+
+
+$("adminStickerBtn")?.addEventListener(
+    "click",
+    () => {
+
+        updateAdminTarget(
+            target => {
+
+                target.stickers ||= [];
+
+
+                const available =
+                    STICKERS.filter(
+                        sticker =>
+                            !target.stickers
+                                .includes(
+                                    sticker.id
+                                )
+                    );
+
+
+                if (!available.length) {
+
+                    showToast(
+                        "У пользователя уже есть все стикеры"
+                    );
+
+                    return;
+
+                }
+
+
+                const sticker =
+                    available[
+                        Math.floor(
+                            Math.random() *
+                            available.length
+                        )
+                    ];
+
+
+                target.stickers.push(
+                    sticker.id
+                );
+
+            }
+        );
+
+    }
+);
+
+
+function renderAdminUsers() {
+
+    const container =
+        $("adminUsersList");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
 
     const list =
-        $("capsulesList");
+        Object.values(users);
 
 
-    if (!capsules.length) {
+    if (!list.length) {
 
-        list.innerHTML = `
-
-            <div class="empty-chat-card">
-
-                <div class="capsule-icon"
-                     style="margin:0 auto 15px">
-                    ◈
+        container.innerHTML = `
+            <div class="admin-user">
+                <div class="admin-user-info">
+                    <strong>
+                        Пользователей пока нет
+                    </strong>
                 </div>
+            </div>
+        `;
 
-                <h2>
-                    Пока пусто
-                </h2>
+        return;
 
-                <p>
-                    Создай первую капсулу —
-                    сохрани мысль, идею или план.
-                </p>
+    }
 
-                <button
-                    class="primary-btn"
-                    id="emptyAddCapsule"
-                >
-                    Создать капсулу
-                    <b>+</b>
-                </button>
+
+    list.forEach(user => {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "admin-user";
+
+
+        item.innerHTML = `
+
+            <div class="admin-user-avatar">
+                ${
+                    (
+                        user.name ||
+                        "N"
+                    )
+                        .charAt(0)
+                        .toUpperCase()
+                }
+            </div>
+
+            <div class="admin-user-info">
+
+                <strong>
+                    ${escapeHTML(
+                        user.name ||
+                        "Пользователь"
+                    )}
+                    ${
+                        user.premium
+                            ? " ✓"
+                            : ""
+                    }
+                </strong>
+
+                <small>
+                    ${escapeHTML(
+                        user.email ||
+                        "Аноним"
+                    )}
+                    ·
+                    🚀 ${user.rockets || 0}
+                </small>
 
             </div>
 
         `;
 
 
-        $("emptyAddCapsule")
-            .addEventListener(
-                "click",
-                () => show("capsuleModal")
-            );
+        item.addEventListener(
+            "click",
+            () => {
+
+                $("adminTargetEmail").value =
+                    user.email;
+
+            }
+        );
 
 
-        return;
+        container.appendChild(item);
+
+    });
+
+}
+
+
+/* =========================================================
+   ORBIT
+   ========================================================= */
+
+$("orbitButton")?.addEventListener(
+    "click",
+    () => {
+
+        openModal(
+            "orbitModal"
+        );
+
     }
+);
 
 
-    list.innerHTML =
-        capsules
-            .map(capsule => {
-
-                const date =
-                    new Date(
-                        capsule.createdAt
-                    );
-
-
-                const formatted =
-                    date.toLocaleString(
-                        settings.language === "Русский"
-                            ? "ru-RU"
-                            : "en-US",
-                        {
-                            day: "2-digit",
-                            month: "short",
-                            hour: "2-digit",
-                            minute: "2-digit"
-                        }
-                    );
-
-
-                return `
-
-                    <article
-                        class="capsule-card"
-                        data-id="${capsule.id}"
-                    >
-
-                        <button
-                            class="capsule-delete"
-                            data-delete-capsule="${capsule.id}"
-                        >
-                            ×
-                        </button>
-
-                        <h3>
-                            ${escapeHtml(
-                                capsule.title
-                            )}
-                        </h3>
-
-                        <p>
-                            ${escapeHtml(
-                                capsule.text
-                            )}
-                        </p>
-
-                        <div class="capsule-date">
-                            ${formatted}
-                        </div>
-
-                    </article>
-
-                `;
-
-            })
-            .join("");
-
-
-    list.querySelectorAll(
-        "[data-delete-capsule]"
-    ).forEach(button => {
+document
+    .querySelectorAll(
+        "[data-orbit]"
+    )
+    .forEach(button => {
 
         button.addEventListener(
             "click",
             () => {
 
-                const id =
-                    Number(
-                        button.dataset
-                            .deleteCapsule
-                    );
-
-
-                capsules =
-                    capsules.filter(
-                        capsule =>
-                            capsule.id !== id
-                    );
-
-
-                saveCapsules();
-
-                renderCapsules();
-
-                renderProfile();
-
-                toast(
-                    "Капсула удалена"
+                routeOrbit(
+                    button.dataset.orbit
                 );
 
             }
         );
 
     });
+
+
+function routeOrbit(command) {
+
+    closeModal(
+        "orbitModal"
+    );
+
+
+    currentUser.stats.orbit++;
+
+    saveCurrentUser();
+
+
+    if (
+        command === "tasks" ||
+        command === "premium"
+    ) {
+
+        showView("premiumView");
+
+        setTimeout(
+            () => {
+
+                if (command === "tasks") {
+
+                    $("tasksList")
+                        ?.scrollIntoView({
+                            behavior: "smooth"
+                        });
+
+                } else {
+
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
+                    });
+
+                }
+
+            },
+            100
+        );
+
+        markTask("orbit");
+
+        return;
+
+    }
+
+
+    if (command === "gifts") {
+
+        showView("premiumView");
+
+        setTimeout(
+            () => {
+
+                $("giftsGrid")
+                    ?.scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+            },
+            100
+        );
+
+        markTask("orbit");
+
+        return;
+
+    }
+
+
+    if (command === "profile") {
+
+        showView("profileView");
+
+        markTask("orbit");
+
+        return;
+
+    }
+
+
+    if (command === "settings") {
+
+        showView("settingsView");
+
+        markTask("orbit");
+
+        return;
+
+    }
+
+
+    showView("chatsView");
+
 }
 
 
-function escapeHtml(value) {
-
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
+$("orbitSearchBtn")?.addEventListener(
+    "click",
+    searchOrbit
+);
 
 
-/* =========================================================
-   CLEAR DATA
-========================================================= */
+$("orbitInput")?.addEventListener(
+    "keydown",
+    event => {
 
-$("clearCapsulesBtn")
-    .addEventListener(
-        "click",
-        () => {
+        if (event.key === "Enter") {
 
-            if (!capsules.length) {
-
-                toast(
-                    "Капсул пока нет"
-                );
-
-                return;
-            }
-
-
-            if (
-                confirm(
-                    "Удалить все локальные капсулы?"
-                )
-            ) {
-
-                capsules = [];
-
-                saveCapsules();
-
-                renderCapsules();
-
-                renderProfile();
-
-                toast(
-                    "Капсулы очищены"
-                );
-
-            }
+            searchOrbit();
 
         }
-    );
+
+    }
+);
 
 
-$("resetSettingsBtn")
-    .addEventListener(
-        "click",
-        () => {
+function searchOrbit() {
 
-            if (
-                confirm(
-                    "Сбросить все настройки Nexgram?"
-                )
-            ) {
-
-                settings = {
-                    ...defaultSettings
-                };
-
-                applySettings();
-
-                toast(
-                    "Настройки сброшены"
-                );
-
-            }
-
-        }
-    );
-
-
-/* =========================================================
-   LAB
-========================================================= */
-
-$("labButton")
-    .addEventListener(
-        "click",
-        () => show("labModal")
-    );
-
-
-/* =========================================================
-   NAVIGATOR
-========================================================= */
-
-$("rocketButton")
-    .addEventListener(
-        "click",
-        openNavigator
-    );
-
-
-function openNavigator() {
-
-    show("navigatorModal");
-
-    setTimeout(
-        () => $("navigatorInput").focus(),
-        100
-    );
-
-}
-
-
-$("navigatorInput")
-    .addEventListener(
-        "input",
-        filterNavigator
-    );
-
-
-function filterNavigator() {
-
-    const query =
-        $("navigatorInput")
+    const text =
+        $("orbitInput")
             .value
-            .toLowerCase()
-            .trim();
+            .trim()
+            .toLowerCase();
 
 
-    const results =
-        document.querySelectorAll(
-            ".navigator-result"
+    if (!text) {
+
+        showToast(
+            "Напиши, куда тебя отправить"
         );
 
+        return;
 
-    results.forEach(result => {
-
-        const text =
-            result.innerText
-                .toLowerCase();
+    }
 
 
-        result.style.display =
-            !query ||
-            text.includes(query)
-                ? "flex"
-                : "none";
+    if (
+        text.includes("прем") ||
+        text.includes("ракет")
+    ) {
 
-    });
+        routeOrbit("premium");
 
+    } else if (
+        text.includes("подар")
+    ) {
 
-    if (query) {
+        routeOrbit("gifts");
 
-        const aliases = {
+    } else if (
+        text.includes("задан")
+    ) {
 
-            "аватар": "profile",
-            "фото": "profile",
-            "имя": "profile",
-            "юзер": "profile",
-            "username": "profile",
+        routeOrbit("tasks");
 
-            "тема": "theme",
-            "цвет": "theme",
-            "фон": "theme",
+    } else if (
+        text.includes("проф")
+    ) {
 
-            "текст": "font",
-            "шрифт": "font",
-            "размер": "font",
+        routeOrbit("profile");
 
-            "язык": "language",
+    } else if (
+        text.includes("настр")
+    ) {
 
-            "заметка": "capsules",
-            "заметки": "capsules",
-            "идея": "capsules",
-            "капсула": "capsules",
+        routeOrbit("settings");
 
-            "настройки": "settings"
+    } else if (
+        text.includes("чат")
+    ) {
 
-        };
+        routeOrbit("chats");
 
+    } else {
 
-        let matched =
-            null;
-
-
-        for (
-            const key in aliases
-        ) {
-
-            if (
-                query.includes(key)
-            ) {
-
-                matched =
-                    aliases[key];
-
-                break;
-            }
-
-        }
-
-
-        if (matched) {
-
-            results.forEach(result => {
-
-                const action =
-                    result.dataset.navAction;
-
-                result.style.display =
-                    action === matched
-                        ? "flex"
-                        : "none";
-
-            });
-
-        }
+        showToast(
+            "Orbit пока не знает этот маршрут"
+        );
 
     }
 
 }
 
 
-document.querySelectorAll(
-    "[data-nav-action]"
-).forEach(button => {
+/* =========================================================
+   ORBIT PROGRESS
+   ========================================================= */
 
-    button.addEventListener(
-        "click",
-        () => {
+function renderOrbitProgress() {
 
-            const action =
-                button.dataset.navAction;
+    const total =
+        TASKS.length;
+
+    const completed =
+        TASKS.filter(
+            isTaskCompleted
+        ).length;
 
 
-            hide("navigatorModal");
+    const percent =
+        total
+            ? Math.round(
+                (completed / total) *
+                100
+            )
+            : 0;
 
 
-            switch (action) {
+    if ($("orbitProgressText")) {
 
-                case "profile":
-                    openProfilePage();
-                    break;
+        $("orbitProgressText")
+            .textContent =
+            `${percent}%`;
 
-                case "theme":
-                    openSettingsPage();
-                    setTimeout(
-                        () => show("themeModal"),
-                        200
-                    );
-                    break;
+    }
 
-                case "font":
-                    openSettingsPage();
-                    setTimeout(
-                        () => show("fontModal"),
-                        200
-                    );
-                    break;
 
-                case "language":
-                    openSettingsPage();
-                    setTimeout(
-                        () => show("languageModal"),
-                        200
-                    );
-                    break;
+    if ($("orbitProgressBar")) {
 
-                case "capsules":
-                    openCapsulesPage();
-                    break;
+        $("orbitProgressBar")
+            .style.width =
+            `${percent}%`;
 
-                case "settings":
-                    openSettingsPage();
-                    break;
+    }
 
-            }
-
-        }
-    );
-
-});
+}
 
 
 /* =========================================================
-   MODAL CLOSES
-========================================================= */
+   MODALS
+   ========================================================= */
 
-document.querySelectorAll(
-    "[data-close-modal]"
-).forEach(button => {
+function openModal(id) {
 
-    button.addEventListener(
-        "click",
-        () => hide("anonymousModal")
+    $(id)?.classList.remove(
+        "hidden"
     );
 
-});
+}
 
 
-document.querySelectorAll(
-    "[data-close-theme]"
-).forEach(button => {
+function closeModal(id) {
 
-    button.addEventListener(
-        "click",
-        () => hide("themeModal")
+    $(id)?.classList.add(
+        "hidden"
     );
 
-});
+}
 
 
-document.querySelectorAll(
-    "[data-close-font]"
-).forEach(button => {
+function closeAllModals() {
 
-    button.addEventListener(
-        "click",
-        () => hide("fontModal")
-    );
+    document
+        .querySelectorAll(".modal-overlay")
+        .forEach(modal => {
 
-});
+            modal.classList.add(
+                "hidden"
+            );
 
+        });
 
-document.querySelectorAll(
-    "[data-close-language]"
-).forEach(button => {
-
-    button.addEventListener(
-        "click",
-        () => hide("languageModal")
-    );
-
-});
+}
 
 
-document.querySelectorAll(
-    "[data-close-profile]"
-).forEach(button => {
+document
+    .querySelectorAll(
+        "[data-close-modal]"
+    )
+    .forEach(button => {
 
-    button.addEventListener(
-        "click",
-        () => hide("profileEditModal")
-    );
+        button.addEventListener(
+            "click",
+            closeAllModals
+        );
 
-});
-
-
-document.querySelectorAll(
-    "[data-close-capsule]"
-).forEach(button => {
-
-    button.addEventListener(
-        "click",
-        () => hide("capsuleModal")
-    );
-
-});
+    });
 
 
-document.querySelectorAll(
-    "[data-close-lab]"
-).forEach(button => {
+document
+    .querySelectorAll(".modal-overlay")
+    .forEach(overlay => {
 
-    button.addEventListener(
-        "click",
-        () => hide("labModal")
-    );
+        overlay.addEventListener(
+            "click",
+            event => {
 
-});
+                if (
+                    event.target ===
+                    overlay
+                ) {
 
+                    overlay.classList.add(
+                        "hidden"
+                    );
 
-document.querySelectorAll(
-    "[data-close-navigator]"
-).forEach(button => {
-
-    button.addEventListener(
-        "click",
-        () => hide("navigatorModal")
-    );
-
-});
-
-
-document.querySelectorAll(
-    ".modal-overlay"
-).forEach(overlay => {
-
-    overlay.addEventListener(
-        "click",
-        event => {
-
-            if (
-                event.target === overlay
-            ) {
-
-                overlay.classList.add(
-                    "hidden"
-                );
+                }
 
             }
+        );
+
+    });
+
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (event.key === "Escape") {
+
+            closeAllModals();
 
         }
-    );
 
-});
+    }
+);
 
 
 /* =========================================================
-   SEARCH BUTTON
-========================================================= */
+   PWA
+   ========================================================= */
 
-$("chatSearchBtn")
-    .addEventListener(
-        "click",
-        () => {
+$("installBtn")?.addEventListener(
+    "click",
+    async () => {
 
-            toast(
-                "Поиск чатов появится вместе с сервером"
+        if (!deferredInstallPrompt) {
+
+            showToast(
+                "Если приложение уже установлено, эта кнопка недоступна"
+            );
+
+            return;
+
+        }
+
+
+        deferredInstallPrompt.prompt();
+
+
+        const result =
+            await deferredInstallPrompt.userChoice;
+
+
+        if (
+            result.outcome === "accepted"
+        ) {
+
+            showToast(
+                "Установка запущена"
             );
 
         }
-    );
 
 
-/* =========================================================
-   INSTALL PWA
-========================================================= */
+        deferredInstallPrompt = null;
+
+        $("installBtn").classList.add(
+            "hidden"
+        );
+
+    }
+);
+
 
 window.addEventListener(
     "beforeinstallprompt",
@@ -1935,48 +2973,35 @@ window.addEventListener(
 
         event.preventDefault();
 
-        installPrompt =
+        deferredInstallPrompt =
             event;
 
-        show("installBtn");
+        $("installBtn")
+            ?.classList.remove(
+                "hidden"
+            );
 
     }
 );
 
 
-$("installBtn")
-    .addEventListener(
-        "click",
-        async () => {
+window.addEventListener(
+    "appinstalled",
+    () => {
 
-            if (!installPrompt) {
+        deferredInstallPrompt =
+            null;
 
-                toast(
-                    "Открой меню браузера и выбери «Установить приложение»"
-                );
+        $("installBtn")
+            ?.classList.add(
+                "hidden"
+            );
 
-                return;
-            }
-
-
-            installPrompt.prompt();
-
-            await installPrompt.userChoice;
-
-            installPrompt =
-                null;
-
-        }
-    );
+    }
+);
 
 
-/* =========================================================
-   SERVICE WORKER
-========================================================= */
-
-if (
-    "serviceWorker" in navigator
-) {
+if ("serviceWorker" in navigator) {
 
     window.addEventListener(
         "load",
@@ -1988,8 +3013,8 @@ if (
                 )
                 .catch(
                     error =>
-                        console.log(
-                            "SW error:",
+                        console.warn(
+                            "Service worker:",
                             error
                         )
                 );
@@ -2001,25 +3026,198 @@ if (
 
 
 /* =========================================================
-   START
-========================================================= */
+   RENDER
+   ========================================================= */
 
-applySettings();
+function renderPremiumStats() {
 
-renderCapsules();
+    $("topRocketBalance")
+        ?.querySelector("span")
+        && (
+            $("topRocketBalance")
+                .querySelector("span")
+                .textContent =
+                currentUser.rockets
+        );
 
 
-if (
-    currentUser &&
-    currentUser.entered
-) {
+    $("premiumRocketCount").textContent =
+        currentUser.rockets;
 
-    enterMessenger();
+
+    $("premiumGiftCount").textContent =
+        currentUser.gifts.length;
+
+
+    $("premiumTaskCount").textContent =
+        currentUser.stats.tasks;
+
+
+    $("profileRocketCount").textContent =
+        currentUser.rockets;
+
+}
+
+
+function renderAll() {
+
+    if (!currentUser) return;
+
+
+    ensureUserDefaults(
+        currentUser
+    );
+
+
+    renderPremiumStats();
+
+    renderTasks();
+
+    renderGifts();
+
+    renderProfile();
+
+    renderOrbitProgress();
+
+    renderAdminButton();
+
+    initSettings();
+
+}
+
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+let toastTimer = null;
+
+
+function showToast(message) {
+
+    const toast =
+        $("toast");
+
+    if (!toast) return;
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2600
+        );
+
+}
+
+
+/* =========================================================
+   STARTUP
+   ========================================================= */
+
+loadStorage();
+
+
+currentUser =
+    ensureUserDefaults(
+        currentUser
+    );
+
+
+if (currentUser?.entered) {
+
+    saveCurrentUser();
+
+    openApp();
 
 } else {
 
-    openAuthScreen(
-        "authScreen"
-    );
+    openAuth();
 
 }
+
+
+if (currentUser) {
+
+    markTask("daily_open");
+
+}
+
+
+$("brandBtn")?.addEventListener(
+    "click",
+    () => {
+
+        if (currentUser) {
+
+            showView("chatsView");
+
+        } else {
+
+            openAuth();
+
+        }
+
+    }
+);
+
+
+/* Developer shortcut:
+   Ctrl + Shift + A opens admin only for ADMIN_EMAIL.
+*/
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.ctrlKey &&
+            event.shiftKey &&
+            event.key.toLowerCase() === "a"
+        ) {
+
+            if (checkAdmin()) {
+
+                renderAdminUsers();
+
+                openModal(
+                    "adminModal"
+                );
+
+            }
+
+        }
+
+    }
+);
