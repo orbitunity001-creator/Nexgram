@@ -3,17 +3,17 @@
     --accent-2: #56a5ff;
 
     --bg: #f4f8ff;
-    --card: rgba(255, 255, 255, 0.82);
-    --card-solid: #ffffff;
+    --card: rgba(255, 255, 255, 0.86);
 
     --text: #0b172a;
     --muted: #718096;
-    --border: rgba(20, 80, 150, 0.10);
+
+    --border: rgba(20, 80, 150, 0.09);
 
     --shadow:
-        0 20px 60px rgba(28, 84, 150, 0.12);
+        0 10px 35px rgba(28, 84, 150, 0.10);
 
-    --radius: 24px;
+    --nav-height: 68px;
 }
 
 
@@ -23,13 +23,12 @@
 }
 
 
-html,
-body {
-    margin: 0;
-    padding: 0;
-
+html {
     width: 100%;
     min-height: 100%;
+
+    margin: 0;
+    padding: 0;
 
     font-family:
         -apple-system,
@@ -39,14 +38,21 @@ body {
         Arial,
         sans-serif;
 
-    color: var(--text);
     background: var(--bg);
 }
 
 
 body {
+    width: 100%;
     min-height: 100vh;
+
+    margin: 0;
+    padding: 0;
+
     overflow-x: hidden;
+
+    color: var(--text);
+    background: var(--bg);
 }
 
 
@@ -57,7 +63,8 @@ input {
 
 
 button {
-    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 
@@ -67,25 +74,30 @@ button {
 
 
 
-/* ========================= */
+/* ================================================= */
 /* BACKGROUND */
-/* ========================= */
+/* ================================================= */
 
 .aurora {
     position: fixed;
+
     inset: 0;
 
+    width: 100%;
+    height: 100%;
+
     overflow: hidden;
+
     pointer-events: none;
 
-    z-index: -3;
+    z-index: -10;
 
     background:
         linear-gradient(
-            135deg,
+            145deg,
             #ffffff 0%,
-            #f4f9ff 50%,
-            #eef6ff 100%
+            #f5f9ff 45%,
+            #edf6ff 100%
         );
 }
 
@@ -93,55 +105,56 @@ button {
 .aurora-ball {
     position: absolute;
 
-    width: 420px;
-    height: 420px;
+    width: 300px;
+    height: 300px;
 
     border-radius: 50%;
 
-    filter: blur(70px);
+    filter: blur(65px);
 
-    opacity: 0.42;
+    opacity: 0.35;
 
-    animation: floatBall 14s ease-in-out infinite;
+    animation:
+        floatBall 14s ease-in-out infinite;
 }
 
 
 .ball-one {
-    top: -180px;
+    top: -130px;
     left: -100px;
 
-    background: #91c8ff;
+    background: #8fc8ff;
 }
 
 
 .ball-two {
-    top: 30%;
-    right: -180px;
+    top: 35%;
+    right: -150px;
 
-    background: #b8d8ff;
+    background: #b9d9ff;
 
     animation-delay: -4s;
 }
 
 
 .ball-three {
-    bottom: -220px;
+    bottom: -170px;
     left: 10%;
 
-    background: #c8e8ff;
+    background: #c9e7ff;
 
     animation-delay: -8s;
 }
 
 
 .ball-four {
-    top: 45%;
-    left: 40%;
+    top: 40%;
+    left: 35%;
 
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
 
-    background: #d7e9ff;
+    background: #dcecff;
 
     animation-delay: -2s;
 }
@@ -155,30 +168,28 @@ button {
     }
 
     50% {
-        transform: translate3d(35px, -25px, 0);
+        transform: translate3d(25px, -20px, 0);
     }
 }
 
 
 .noise {
     position: fixed;
+
     inset: 0;
+
+    z-index: -5;
 
     pointer-events: none;
 
-    opacity: 0.025;
-
-    z-index: -1;
-
-    background-image:
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+    opacity: 0.02;
 }
 
 
 
-/* ========================= */
-/* TOPBAR */
-/* ========================= */
+/* ================================================= */
+/* TOP BAR */
+/* ================================================= */
 
 .topbar {
     position: fixed;
@@ -187,46 +198,54 @@ button {
     left: 0;
     right: 0;
 
-    height: 72px;
+    width: 100%;
+    height: 62px;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
 
     padding:
-        0 20px;
+        0 15px;
 
     background:
-        rgba(255, 255, 255, 0.58);
+        rgba(255, 255, 255, 0.72);
 
     backdrop-filter: blur(22px);
     -webkit-backdrop-filter: blur(22px);
 
     border-bottom:
-        1px solid rgba(20, 80, 150, 0.08);
+        1px solid rgba(20, 80, 150, 0.07);
 
-    z-index: 50;
+    z-index: 100;
 }
 
 
 .brand {
     display: flex;
     align-items: baseline;
-    gap: 7px;
+
+    gap: 6px;
+
+    min-width: 0;
 }
 
 
 .brand-name {
-    font-size: 23px;
+    font-size: 22px;
+
     font-weight: 900;
+
     letter-spacing: -1px;
 }
 
 
 .brand-subtitle {
-    font-size: 13px;
     color: var(--muted);
-    font-weight: 600;
+
+    font-size: 11px;
+
+    font-weight: 650;
 }
 
 
@@ -234,95 +253,117 @@ button {
     border: none;
 
     padding:
-        10px 15px;
+        9px 13px;
 
-    border-radius: 13px;
-
-    color: white;
-    background: var(--accent);
-
-    font-size: 13px;
-    font-weight: 700;
-
-    box-shadow:
-        0 8px 22px rgba(22, 119, 255, 0.22);
-}
-
-
-
-/* ========================= */
-/* SCREENS */
-/* ========================= */
-
-.screen {
-    min-height: 100vh;
-    padding-top: 72px;
-}
-
-
-.auth-screen {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding:
-        90px 18px 30px;
-}
-
-
-.auth-card {
-    width: min(100%, 440px);
-
-    padding: 30px;
-
-    background:
-        rgba(255, 255, 255, 0.80);
-
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-
-    border:
-        1px solid rgba(255, 255, 255, 0.9);
-
-    border-radius: 30px;
-
-    box-shadow: var(--shadow);
-}
-
-
-.auth-logo {
-    width: 64px;
-    height: 64px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin-bottom: 22px;
-
-    border-radius: 20px;
+    border-radius: 12px;
 
     color: white;
+
     background:
         linear-gradient(
-            145deg,
+            135deg,
             var(--accent),
             var(--accent-2)
         );
 
-    font-size: 22px;
+    font-size: 12px;
+
+    font-weight: 750;
+}
+
+
+
+/* ================================================= */
+/* GENERAL SCREENS */
+/* ================================================= */
+
+.screen {
+    width: 100%;
+    min-height: 100vh;
+
+    padding-top: 62px;
+}
+
+
+
+/* ================================================= */
+/* AUTH */
+/* ================================================= */
+
+.auth-screen {
+    width: 100%;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: center;
+
+    padding:
+        85px 14px 25px;
+}
+
+
+.auth-card {
+    width: 100%;
+    max-width: 430px;
+
+    padding:
+        24px 18px;
+
+    border-radius: 25px;
+
+    background:
+        rgba(255, 255, 255, 0.84);
+
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.95);
+
+    box-shadow:
+        0 15px 45px rgba(30, 90, 150, 0.12);
+}
+
+
+.auth-logo {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 18px;
+
+    border-radius: 17px;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent),
+            var(--accent-2)
+        );
+
+    font-size: 20px;
+
     font-weight: 900;
 
     box-shadow:
-        0 14px 30px rgba(22, 119, 255, 0.24);
+        0 10px 25px rgba(22, 119, 255, 0.22);
 }
 
 
 .auth-card h1 {
     margin:
-        0 0 10px;
+        0 0 9px;
 
-    font-size: 30px;
+    font-size: 28px;
+
     line-height: 1.08;
 
     letter-spacing: -1px;
@@ -331,59 +372,62 @@ button {
 
 .auth-description {
     margin:
-        0 0 26px;
+        0 0 22px;
 
     color: var(--muted);
 
-    line-height: 1.55;
+    font-size: 14px;
+
+    line-height: 1.5;
 }
 
 
+
+/* ================================================= */
+/* INPUTS */
+/* ================================================= */
+
 .field {
-    margin-bottom: 15px;
+    width: 100%;
+
+    margin-bottom: 14px;
 }
 
 
 .field label {
     display: block;
 
-    margin-bottom: 7px;
+    margin:
+        0 0 7px 2px;
 
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 12px;
+
+    font-weight: 750;
 }
 
 
-.field small {
+.field input {
     display: block;
 
-    margin-top: 6px;
-
-    color: var(--muted);
-
-    font-size: 11px;
-    line-height: 1.4;
-}
-
-
-.field input,
-.search-box input {
     width: 100%;
+    height: 50px;
+
+    padding:
+        0 14px;
 
     border:
-        1px solid rgba(40, 90, 150, 0.12);
-
-    outline: none;
-
-    background:
-        rgba(255, 255, 255, 0.86);
-
-    color: var(--text);
+        1px solid rgba(40, 90, 150, 0.11);
 
     border-radius: 15px;
 
-    padding:
-        14px 15px;
+    outline: none;
+
+    color: var(--text);
+
+    background:
+        rgba(255, 255, 255, 0.88);
+
+    font-size: 15px;
 
     transition:
         border-color 0.2s,
@@ -391,31 +435,48 @@ button {
 }
 
 
-.field input:focus,
-.search-box input:focus {
-    border-color: var(--accent);
+.field input:focus {
+    border-color:
+        var(--accent);
 
     box-shadow:
         0 0 0 4px rgba(22, 119, 255, 0.10);
 }
 
 
+.field small {
+    display: block;
+
+    margin:
+        6px 3px 0;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+    line-height: 1.4;
+}
+
+
+
+/* ================================================= */
+/* BUTTONS */
+/* ================================================= */
+
 .primary-btn,
 .secondary-btn,
-.ghost-btn,
-.logout-btn {
+.ghost-btn {
     width: 100%;
 
     min-height: 50px;
 
     border-radius: 15px;
 
+    font-size: 14px;
+
     font-weight: 750;
 
-    transition:
-        transform 0.15s,
-        box-shadow 0.15s,
-        background 0.15s;
+    touch-action: manipulation;
 }
 
 
@@ -432,25 +493,25 @@ button {
         );
 
     box-shadow:
-        0 12px 25px rgba(22, 119, 255, 0.22);
+        0 10px 23px rgba(22, 119, 255, 0.22);
 }
 
 
 .secondary-btn {
-    margin-top: 10px;
+    margin-top: 9px;
 
     border:
-        1px solid rgba(22, 119, 255, 0.18);
+        1px solid rgba(22, 119, 255, 0.16);
 
     color: var(--accent);
 
     background:
-        rgba(255, 255, 255, 0.7);
+        rgba(255, 255, 255, 0.72);
 }
 
 
 .ghost-btn {
-    margin-top: 7px;
+    margin-top: 6px;
 
     border: none;
 
@@ -462,81 +523,99 @@ button {
 
 .primary-btn:active,
 .secondary-btn:active,
-.ghost-btn:active,
-.logout-btn:active {
+.ghost-btn:active {
     transform: scale(0.98);
 }
 
 
 .auth-message {
-    min-height: 22px;
+    min-height: 20px;
 
-    margin-top: 15px;
+    margin-top: 13px;
 
     text-align: center;
 
     color: #d94c4c;
 
-    font-size: 13px;
+    font-size: 12px;
 }
 
 
 
-/* ========================= */
+/* ================================================= */
 /* APP */
-/* ========================= */
+/* ================================================= */
 
 .app-screen {
-    padding-bottom: 90px;
+    width: 100%;
+
+    min-height: 100vh;
+
+    padding-bottom:
+        calc(var(--nav-height) + 24px);
 }
 
 
 .app-page {
-    width: min(100%, 760px);
+    width: 100%;
 
-    margin:
-        0 auto;
+    max-width: 100%;
+
+    margin: 0;
 
     padding:
-        35px 18px 40px;
+        24px 14px 35px;
 }
 
 
+
+/* ================================================= */
+/* PAGE HEADER */
+/* ================================================= */
+
 .page-header {
+    width: 100%;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    margin-bottom: 20px;
+    margin-bottom: 17px;
 }
 
 
 .page-kicker {
-    margin-bottom: 4px;
+    margin-bottom: 3px;
 
     color: var(--accent);
 
-    font-size: 10px;
+    font-size: 9px;
+
     font-weight: 850;
 
-    letter-spacing: 1.6px;
+    letter-spacing: 1.5px;
 }
 
 
 .page-header h2 {
     margin: 0;
 
-    font-size: 32px;
+    font-size: 29px;
+
+    line-height: 1;
+
     letter-spacing: -1px;
 }
 
 
 .circle-btn {
-    width: 44px;
-    height: 44px;
+    width: 43px;
+    height: 43px;
+
+    flex: 0 0 auto;
 
     border:
-        1px solid rgba(20, 80, 150, 0.10);
+        1px solid rgba(20, 80, 150, 0.08);
 
     border-radius: 50%;
 
@@ -544,81 +623,106 @@ button {
         rgba(255, 255, 255, 0.78);
 
     box-shadow:
-        0 8px 25px rgba(30, 90, 150, 0.08);
+        0 7px 20px rgba(30, 90, 150, 0.07);
 }
 
 
+
+/* ================================================= */
+/* SEARCH */
+/* ================================================= */
+
 .search-box {
+    width: 100%;
+    height: 48px;
+
     display: flex;
     align-items: center;
-    gap: 10px;
+
+    gap: 9px;
+
+    margin-bottom: 14px;
 
     padding:
-        0 14px;
-
-    margin-bottom: 18px;
+        0 13px;
 
     border:
-        1px solid rgba(20, 80, 150, 0.09);
+        1px solid rgba(20, 80, 150, 0.08);
 
-    border-radius: 16px;
+    border-radius: 15px;
 
     background:
-        rgba(255, 255, 255, 0.72);
+        rgba(255, 255, 255, 0.74);
 }
 
 
 .search-box span {
+    flex: 0 0 auto;
+
     color: var(--muted);
-    font-size: 22px;
+
+    font-size: 21px;
 }
 
 
 .search-box input {
+    width: 100%;
+    height: 46px;
+
     border: none;
-    box-shadow: none;
+    outline: none;
 
     background: transparent;
 
-    padding:
-        13px 0;
+    color: var(--text);
+
+    font-size: 14px;
 }
 
 
+
+/* ================================================= */
+/* WELCOME CARD */
+/* ================================================= */
+
 .welcome-chat-card {
+    width: 100%;
+
     display: flex;
     align-items: center;
-    gap: 14px;
 
-    padding: 17px;
+    gap: 12px;
 
-    margin-bottom: 28px;
+    padding:
+        15px;
+
+    margin-bottom: 24px;
 
     border:
-        1px solid rgba(22, 119, 255, 0.12);
+        1px solid rgba(22, 119, 255, 0.10);
 
-    border-radius: 20px;
+    border-radius: 19px;
 
     background:
         linear-gradient(
             135deg,
             rgba(255, 255, 255, 0.86),
-            rgba(232, 244, 255, 0.80)
+            rgba(235, 246, 255, 0.84)
         );
 }
 
 
 .welcome-chat-icon {
-    flex: 0 0 auto;
+    width: 46px;
+    height: 46px;
 
-    width: 50px;
-    height: 50px;
+    flex: 0 0 auto;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 16px;
+    border-radius: 14px;
 
     color: white;
 
@@ -629,6 +733,8 @@ button {
             var(--accent-2)
         );
 
+    font-size: 17px;
+
     font-weight: 900;
 }
 
@@ -636,7 +742,9 @@ button {
 .welcome-chat-card strong {
     display: block;
 
-    margin-bottom: 4px;
+    margin-bottom: 3px;
+
+    font-size: 13px;
 }
 
 
@@ -645,23 +753,31 @@ button {
 
     color: var(--muted);
 
-    font-size: 13px;
+    font-size: 11px;
+
     line-height: 1.4;
 }
 
 
+
+/* ================================================= */
+/* EMPTY CHATS */
+/* ================================================= */
+
 .empty-chat {
+    width: 100%;
+
     padding:
-        55px 20px;
+        45px 15px;
 
     text-align: center;
 }
 
 
 .empty-icon {
-    font-size: 44px;
+    margin-bottom: 10px;
 
-    margin-bottom: 13px;
+    font-size: 40px;
 }
 
 
@@ -669,40 +785,45 @@ button {
     margin:
         0 0 7px;
 
-    font-size: 21px;
+    font-size: 19px;
 }
 
 
 .empty-chat p {
-    max-width: 350px;
+    max-width: 300px;
 
     margin:
         0 auto;
 
     color: var(--muted);
 
+    font-size: 12px;
+
     line-height: 1.5;
 }
 
 
 
-/* ========================= */
+/* ================================================= */
 /* SETTINGS */
-/* ========================= */
+/* ================================================= */
 
 .settings-section {
-    margin-bottom: 28px;
+    width: 100%;
+
+    margin-bottom: 24px;
 }
 
 
 .section-title {
     margin:
-        0 0 10px 5px;
+        0 0 9px 4px;
 
     color: var(--muted);
 
-    font-size: 12px;
-    font-weight: 800;
+    font-size: 10px;
+
+    font-weight: 850;
 
     text-transform: uppercase;
 
@@ -713,44 +834,43 @@ button {
 .setting-card {
     width: 100%;
 
+    min-height: 64px;
+
     display: flex;
     align-items: center;
-    gap: 13px;
 
-    margin-bottom: 9px;
+    gap: 11px;
 
-    padding: 15px;
+    margin-bottom: 8px;
+
+    padding:
+        12px;
 
     border:
-        1px solid rgba(20, 80, 150, 0.09);
+        1px solid rgba(20, 80, 150, 0.08);
 
-    border-radius: 18px;
+    border-radius: 17px;
 
     color: var(--text);
 
     background:
-        rgba(255, 255, 255, 0.76);
+        rgba(255, 255, 255, 0.78);
 
     box-shadow:
-        0 8px 25px rgba(30, 90, 150, 0.045);
+        0 6px 18px rgba(30, 90, 150, 0.035);
 
     text-align: left;
 }
 
 
-button.setting-card {
-    cursor: pointer;
-}
-
-
 .profile-card {
-    min-height: 78px;
+    min-height: 72px;
 }
 
 
 .profile-avatar {
-    width: 50px;
-    height: 50px;
+    width: 46px;
+    height: 46px;
 
     flex: 0 0 auto;
 
@@ -758,7 +878,7 @@ button.setting-card {
     align-items: center;
     justify-content: center;
 
-    border-radius: 16px;
+    border-radius: 14px;
 
     color: white;
 
@@ -769,14 +889,15 @@ button.setting-card {
             var(--accent-2)
         );
 
-    font-size: 18px;
+    font-size: 17px;
+
     font-weight: 850;
 }
 
 
 .setting-icon {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
 
     flex: 0 0 auto;
 
@@ -784,12 +905,12 @@ button.setting-card {
     align-items: center;
     justify-content: center;
 
-    border-radius: 13px;
+    border-radius: 12px;
 
     background:
         rgba(22, 119, 255, 0.08);
 
-    font-size: 20px;
+    font-size: 19px;
 }
 
 
@@ -803,57 +924,75 @@ button.setting-card {
 .setting-main strong {
     display: block;
 
-    margin-bottom: 4px;
+    margin-bottom: 3px;
 
-    font-size: 14px;
+    font-size: 13px;
 }
 
 
 .setting-main span {
     display: block;
 
-    color: var(--muted);
-
-    font-size: 12px;
+    max-width: 100%;
 
     overflow: hidden;
+
     text-overflow: ellipsis;
+
     white-space: nowrap;
+
+    color: var(--muted);
+
+    font-size: 11px;
 }
 
 
 .setting-arrow {
+    flex: 0 0 auto;
+
     color: #a5b1c0;
 
-    font-size: 25px;
+    font-size: 24px;
 }
 
 
 .vertical-card {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 
+
+/* ================================================= */
+/* THEME SELECTOR */
+/* ================================================= */
+
 .choice-grid {
+    width: 100%;
+
     display: grid;
 
     grid-template-columns:
-        repeat(3, 1fr);
+        repeat(3, minmax(0, 1fr));
 
-    gap: 9px;
+    gap: 7px;
 }
 
 
 .choice-btn {
-    min-height: 82px;
+    min-width: 0;
+
+    min-height: 74px;
+
+    padding:
+        8px 4px;
 
     border:
-        1px solid rgba(20, 80, 150, 0.09);
+        1px solid rgba(20, 80, 150, 0.08);
 
-    border-radius: 17px;
+    border-radius: 15px;
 
     background:
-        rgba(255, 255, 255, 0.65);
+        rgba(255, 255, 255, 0.70);
 
     color: var(--text);
 }
@@ -862,20 +1001,28 @@ button.setting-card {
 .choice-btn span {
     display: block;
 
-    margin-bottom: 6px;
+    margin-bottom: 5px;
 
-    font-size: 20px;
+    font-size: 19px;
 }
 
 
 .choice-btn strong {
-    font-size: 11px;
+    display: block;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 10px;
 }
 
 
 .choice-btn.active {
     border-color:
-        rgba(22, 119, 255, 0.38);
+        rgba(22, 119, 255, 0.34);
 
     background:
         rgba(22, 119, 255, 0.08);
@@ -884,17 +1031,26 @@ button.setting-card {
 }
 
 
+
+/* ================================================= */
+/* ACCENTS */
+/* ================================================= */
+
 .accent-grid {
+    width: 100%;
+
     display: flex;
+    align-items: center;
+
     gap: 12px;
 
     padding:
-        14px 15px;
+        13px;
 
     border:
-        1px solid rgba(20, 80, 150, 0.09);
+        1px solid rgba(20, 80, 150, 0.08);
 
-    border-radius: 18px;
+    border-radius: 17px;
 
     background:
         rgba(255, 255, 255, 0.72);
@@ -902,8 +1058,10 @@ button.setting-card {
 
 
 .accent-dot {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
+
+    flex: 0 0 auto;
 
     border: 3px solid transparent;
 
@@ -944,30 +1102,42 @@ button.setting-card {
 }
 
 
+
+/* ================================================= */
+/* LANGUAGES */
+/* ================================================= */
+
 .language-list {
+    width: 100%;
+
     display: grid;
 
     grid-template-columns:
-        repeat(2, 1fr);
+        1fr 1fr;
 
-    gap: 9px;
+    gap: 7px;
 }
 
 
 .language-btn {
-    min-height: 55px;
+    width: 100%;
+
+    min-width: 0;
+
+    min-height: 52px;
 
     display: flex;
     align-items: center;
-    gap: 10px;
+
+    gap: 8px;
 
     padding:
-        0 14px;
+        0 12px;
 
     border:
-        1px solid rgba(20, 80, 150, 0.09);
+        1px solid rgba(20, 80, 150, 0.08);
 
-    border-radius: 16px;
+    border-radius: 15px;
 
     background:
         rgba(255, 255, 255, 0.72);
@@ -979,18 +1149,26 @@ button.setting-card {
 
 
 .language-btn span {
-    font-size: 20px;
+    flex: 0 0 auto;
+
+    font-size: 18px;
 }
 
 
 .language-btn strong {
-    font-size: 13px;
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 12px;
 }
 
 
 .language-btn.active {
     border-color:
-        rgba(22, 119, 255, 0.35);
+        rgba(22, 119, 255, 0.34);
 
     background:
         rgba(22, 119, 255, 0.08);
@@ -1000,15 +1178,15 @@ button.setting-card {
 
 
 
-/* ========================= */
+/* ================================================= */
 /* SWITCH */
-/* ========================= */
+/* ================================================= */
 
 .switch {
     position: relative;
 
-    width: 48px;
-    height: 28px;
+    width: 46px;
+    height: 27px;
 
     flex: 0 0 auto;
 }
@@ -1021,13 +1199,12 @@ button.setting-card {
 
 .switch span {
     position: absolute;
+
     inset: 0;
 
     border-radius: 30px;
 
     background: #d8e0ea;
-
-    transition: 0.2s;
 }
 
 
@@ -1036,11 +1213,11 @@ button.setting-card {
 
     position: absolute;
 
-    width: 22px;
-    height: 22px;
-
     top: 3px;
     left: 3px;
+
+    width: 21px;
+    height: 21px;
 
     border-radius: 50%;
 
@@ -1059,42 +1236,45 @@ button.setting-card {
 
 
 .switch input:checked + span::after {
-    transform: translateX(20px);
+    transform: translateX(19px);
 }
 
 
 
-/* ========================= */
-/* ABOUT */
-/* ========================= */
+/* ================================================= */
+/* ABOUT NEX */
+/* ================================================= */
 
 .about-card {
-    padding: 23px;
+    width: 100%;
+
+    padding:
+        20px 17px;
 
     border:
-        1px solid rgba(20, 80, 150, 0.09);
+        1px solid rgba(20, 80, 150, 0.08);
 
-    border-radius: 23px;
+    border-radius: 20px;
 
     background:
-        rgba(255, 255, 255, 0.75);
+        rgba(255, 255, 255, 0.76);
 
     box-shadow:
-        0 12px 35px rgba(30, 90, 150, 0.06);
+        0 8px 25px rgba(30, 90, 150, 0.05);
 }
 
 
 .about-logo {
-    width: 58px;
-    height: 58px;
+    width: 54px;
+    height: 54px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    margin-bottom: 16px;
+    margin-bottom: 13px;
 
-    border-radius: 18px;
+    border-radius: 16px;
 
     color: white;
 
@@ -1105,7 +1285,8 @@ button.setting-card {
             var(--accent-2)
         );
 
-    font-size: 19px;
+    font-size: 18px;
+
     font-weight: 900;
 }
 
@@ -1114,17 +1295,18 @@ button.setting-card {
     margin:
         0 0 4px;
 
-    font-size: 24px;
+    font-size: 22px;
 }
 
 
 .version {
     display: flex;
-    gap: 7px;
+
+    gap: 6px;
 
     color: var(--muted);
 
-    font-size: 12px;
+    font-size: 11px;
 }
 
 
@@ -1132,7 +1314,7 @@ button.setting-card {
     height: 1px;
 
     margin:
-        20px 0;
+        17px 0;
 
     background:
         rgba(20, 80, 150, 0.08);
@@ -1141,9 +1323,9 @@ button.setting-card {
 
 .about-card h4 {
     margin:
-        20px 0 7px;
+        18px 0 6px;
 
-    font-size: 15px;
+    font-size: 14px;
 }
 
 
@@ -1152,20 +1334,22 @@ button.setting-card {
 
     color: var(--muted);
 
-    font-size: 13px;
+    font-size: 12px;
 
-    line-height: 1.65;
+    line-height: 1.62;
 }
 
 
 .about-footer {
     display: flex;
+
     flex-direction: column;
 
     gap: 3px;
 
-    margin-top: 24px;
-    padding-top: 18px;
+    margin-top: 20px;
+
+    padding-top: 15px;
 
     border-top:
         1px solid rgba(20, 80, 150, 0.08);
@@ -1173,36 +1357,58 @@ button.setting-card {
 
 
 .about-footer strong {
-    font-size: 13px;
+    font-size: 12px;
 }
 
 
 .about-footer span {
     color: var(--muted);
 
-    font-size: 11px;
+    font-size: 10px;
 }
 
 
+
+/* ================================================= */
+/* LOGOUT */
+/* ================================================= */
+
 .logout-section {
-    margin-top: 35px;
+    margin-top: 30px;
 }
 
 
 .logout-btn {
+    width: 100%;
+
+    min-height: 50px;
+
     border:
-        1px solid rgba(220, 70, 70, 0.15);
+        1px solid rgba(220, 70, 70, 0.14);
+
+    border-radius: 15px;
 
     color: #d84b4b;
 
     background:
-        rgba(255, 245, 245, 0.75);
+        rgba(255, 245, 245, 0.78);
+
+    font-size: 13px;
+
+    font-weight: 750;
 }
 
 
+
+/* ================================================= */
+/* FOOTER */
+/* ================================================= */
+
 .app-footer {
+    width: 100%;
+
     padding:
-        20px 10px 40px;
+        12px 15px 35px;
 
     text-align: center;
 
@@ -1215,7 +1421,7 @@ button.setting-card {
 
     color: var(--text);
 
-    font-size: 14px;
+    font-size: 13px;
 }
 
 
@@ -1224,81 +1430,84 @@ button.setting-card {
 
     margin-top: 3px;
 
-    font-size: 11px;
+    font-size: 10px;
 }
 
 
 .app-footer p {
-    max-width: 330px;
+    max-width: 280px;
 
     margin:
-        9px auto 0;
+        8px auto 0;
 
-    font-size: 11px;
+    font-size: 10px;
 
     line-height: 1.5;
 }
 
 
 
-/* ========================= */
-/* BOTTOM NAV */
-/* ========================= */
+/* ================================================= */
+/* BOTTOM NAVIGATION */
+/* ================================================= */
 
 .bottom-nav {
     position: fixed;
 
-    left: 50%;
-    bottom: 14px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
 
-    transform: translateX(-50%);
-
-    width:
-        min(calc(100% - 28px), 500px);
-
-    height: 66px;
+    width: auto;
+    height: var(--nav-height);
 
     display: grid;
 
     grid-template-columns:
-        repeat(2, 1fr);
+        1fr 1fr;
+
+    gap: 4px;
 
     padding: 5px;
 
     border:
-        1px solid rgba(255, 255, 255, 0.9);
+        1px solid rgba(255, 255, 255, 0.95);
 
-    border-radius: 23px;
+    border-radius: 21px;
 
     background:
-        rgba(255, 255, 255, 0.78);
+        rgba(255, 255, 255, 0.82);
 
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
 
     box-shadow:
-        0 15px 40px rgba(20, 70, 130, 0.14);
+        0 12px 35px rgba(20, 70, 130, 0.15);
 
-    z-index: 100;
+    z-index: 200;
 }
 
 
 .nav-btn {
+    width: 100%;
+    height: 100%;
+
     border: none;
 
-    border-radius: 18px;
+    border-radius: 17px;
 
     background: transparent;
 
     color: var(--muted);
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     gap: 7px;
 
-    font-weight: 700;
+    font-weight: 750;
 }
 
 
@@ -1321,29 +1530,29 @@ button.setting-card {
 
 
 
-/* ========================= */
-/* DARK THEME */
-/* ========================= */
+/* ================================================= */
+/* DARK MODE */
+/* ================================================= */
 
 body.dark {
     --bg: #07111f;
-    --card: rgba(15, 29, 48, 0.82);
-    --card-solid: #0f1d30;
+
+    --card:
+        rgba(15, 29, 48, 0.84);
 
     --text: #f1f6ff;
+
     --muted: #8fa1b8;
 
-    --border: rgba(255, 255, 255, 0.08);
-
-    --shadow:
-        0 20px 60px rgba(0, 0, 0, 0.35);
+    --border:
+        rgba(255, 255, 255, 0.08);
 }
 
 
 body.dark .aurora {
     background:
         linear-gradient(
-            135deg,
+            145deg,
             #07111f,
             #091a2e
         );
@@ -1352,10 +1561,10 @@ body.dark .aurora {
 
 body.dark .topbar {
     background:
-        rgba(7, 17, 31, 0.70);
+        rgba(7, 17, 31, 0.78);
 
     border-bottom-color:
-        rgba(255, 255, 255, 0.07);
+        rgba(255, 255, 255, 0.06);
 }
 
 
@@ -1368,7 +1577,7 @@ body.dark .language-btn,
 body.dark .choice-btn,
 body.dark .accent-grid {
     background:
-        rgba(15, 29, 48, 0.78);
+        rgba(15, 29, 48, 0.82);
 
     border-color:
         rgba(255, 255, 255, 0.07);
@@ -1379,7 +1588,7 @@ body.dark .field input {
     color: white;
 
     background:
-        rgba(10, 22, 38, 0.9);
+        rgba(7, 18, 32, 0.9);
 
     border-color:
         rgba(255, 255, 255, 0.08);
@@ -1394,7 +1603,7 @@ body.dark .secondary-btn {
 
 body.dark .welcome-chat-card {
     background:
-        rgba(15, 35, 60, 0.72);
+        rgba(15, 35, 60, 0.76);
 }
 
 
@@ -1405,9 +1614,9 @@ body.dark .logout-btn {
 
 
 
-/* ========================= */
-/* ACCENTS */
-/* ========================= */
+/* ================================================= */
+/* ACCENT COLORS */
+/* ================================================= */
 
 body.accent-purple {
     --accent: #7957ff;
@@ -1434,92 +1643,34 @@ body.accent-pink {
 
 
 
-/* ========================= */
-/* MOBILE */
-/* ========================= */
+/* ================================================= */
+/* VERY SMALL PHONES */
+/* ================================================= */
 
-@media (max-width: 600px) {
+@media (max-width: 360px) {
 
-    .topbar {
-        height: 64px;
-
-        padding:
-            0 15px;
-    }
-
-
-    .screen {
-        padding-top: 64px;
+    .app-page {
+        padding-left: 11px;
+        padding-right: 11px;
     }
 
 
     .auth-screen {
-        align-items: flex-start;
-
-        padding-top: 92px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
 
     .auth-card {
-        padding: 24px 19px;
-
-        border-radius: 25px;
-    }
-
-
-    .auth-card h1 {
-        font-size: 27px;
-    }
-
-
-    .app-page {
         padding:
-            28px 15px 35px;
+            22px 15px;
     }
 
 
     .page-header h2 {
-        font-size: 29px;
+        font-size: 27px;
     }
 
-
-    .choice-grid {
-        gap: 7px;
-    }
-
-
-    .choice-btn {
-        min-height: 75px;
-    }
-
-
-    .choice-btn strong {
-        font-size: 10px;
-    }
-
-
-    .language-list {
-        grid-template-columns:
-            1fr 1fr;
-    }
-
-
-    .about-card {
-        padding: 20px;
-    }
-
-
-    .bottom-nav {
-        bottom:
-            max(10px, env(safe-area-inset-bottom));
-
-        height: 64px;
-    }
-
-}
-
-
-@media (max-width: 360px) {
 
     .language-list {
         grid-template-columns: 1fr;
@@ -1528,6 +1679,53 @@ body.accent-pink {
 
     .choice-btn strong {
         font-size: 9px;
+    }
+
+
+    .accent-grid {
+        gap: 9px;
+    }
+
+
+    .accent-dot {
+        width: 34px;
+        height: 34px;
+    }
+
+
+    .nav-label {
+        font-size: 11px;
+    }
+
+}
+
+
+
+/* ================================================= */
+/* TABLET — STILL MOBILE STYLE */
+/* ================================================= */
+
+@media (min-width: 601px) {
+
+    .app-page {
+        max-width: 560px;
+
+        margin:
+            0 auto;
+
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+
+    .bottom-nav {
+        width: 500px;
+
+        left: 50%;
+        right: auto;
+
+        transform:
+            translateX(-50%);
     }
 
 }
