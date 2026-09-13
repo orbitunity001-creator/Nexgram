@@ -2,229 +2,983 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
 
-    <title>NEX</title>
-
-    <link rel="stylesheet" href="./style.css?v=10">
-    <link rel="manifest" href="./manifest.json">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    >
 
     <meta name="theme-color" content="#ffffff">
+
+    <meta
+        name="description"
+        content="NEX — современный школьный мессенджер для общения, классов, учителей и школьного сообщества."
+    >
+
+    <link rel="manifest" href="./manifest.json?v=20">
+    <link rel="icon" href="./icon.svg?v=20">
+
+    <title>NEX — Messenger</title>
+
+    <link rel="stylesheet" href="./style.css?v=20">
 </head>
 
 <body>
 
-    <div class="aurora">
-        <div class="aurora-ball ball-1"></div>
-        <div class="aurora-ball ball-2"></div>
-        <div class="aurora-ball ball-3"></div>
+<div class="aurora">
+    <div class="aurora-ball ball-one"></div>
+    <div class="aurora-ball ball-two"></div>
+    <div class="aurora-ball ball-three"></div>
+    <div class="aurora-ball ball-four"></div>
+</div>
+
+<div class="noise"></div>
+
+<header class="topbar">
+
+    <div class="brand">
+        <div class="brand-name">NEX</div>
+        <div class="brand-subtitle">Messenger</div>
     </div>
 
-    <div class="noise"></div>
+    <button
+        id="installBtn"
+        class="install-btn hidden"
+        type="button"
+    >
+        Установить
+    </button>
 
-    <!-- Шапка -->
+</header>
 
-    <header class="topbar">
-        <div class="brand">NEX</div>
 
-        <button id="installBtn"
-                class="install-btn"
-                hidden>
-            Установить
-        </button>
-    </header>
+<main>
 
 
     <!-- ========================= -->
-    <!-- АВТОРИЗАЦИЯ -->
+    <!-- AUTH -->
     <!-- ========================= -->
 
-    <main class="auth-page">
+    <section
+        id="authScreen"
+        class="screen auth-screen"
+    >
 
-        <section class="auth-card">
+        <div class="auth-card">
 
-            <div class="auth-header">
-
-                <div class="mini-logo">NEX</div>
-
-                <h1 id="authTitle">
-                    Добро пожаловать
-                </h1>
-
-                <p id="authSubtitle">
-                    Войдите в свой NEX аккаунт
-                </p>
-
+            <div class="auth-logo">
+                NEX
             </div>
 
+            <h1 data-i18n="welcome">
+                Общение. По-новому.
+            </h1>
 
-            <!-- ========================= -->
-            <!-- ВХОД -->
-            <!-- ========================= -->
+            <p
+                class="auth-description"
+                data-i18n="authDescription"
+            >
+                Современный мессенджер для общения,
+                классов и школьного сообщества.
+            </p>
 
-            <form id="loginForm"
-                  class="auth-form">
 
-                <label>
-                    NEX ID
+            <!-- LOGIN -->
+
+            <form id="loginForm">
+
+                <div class="field">
+
+                    <label for="loginNexId">
+                        NEX ID
+                    </label>
 
                     <input
-                        id="loginId"
+                        id="loginNexId"
                         type="text"
                         placeholder="NEX-000001"
                         autocomplete="username"
-                        required>
-                </label>
+                        required
+                    >
+
+                </div>
 
 
-                <label>
-                    Пароль
+                <div class="field">
+
+                    <label
+                        for="loginPassword"
+                        data-i18n="password"
+                    >
+                        Пароль
+                    </label>
 
                     <input
                         id="loginPassword"
                         type="password"
                         placeholder="Введите пароль"
                         autocomplete="current-password"
-                        required>
-                </label>
+                        required
+                    >
+
+                </div>
 
 
-                <button type="submit"
-                        class="main-btn">
+                <button
+                    class="primary-btn"
+                    type="submit"
+                    data-i18n="login"
+                >
                     Войти
                 </button>
 
 
-                <button type="button"
-                        id="openRegister"
-                        class="secondary-btn">
+                <button
+                    id="showRegister"
+                    class="secondary-btn"
+                    type="button"
+                    data-i18n="createAccount"
+                >
                     Создать аккаунт
                 </button>
 
 
-                <button type="button"
-                        id="anonymousBtn"
-                        class="anonymous-btn">
-                    Продолжить как Аноним
+                <button
+                    id="anonymousBtn"
+                    class="ghost-btn"
+                    type="button"
+                    data-i18n="anonymous"
+                >
+                    Зайти анонимно
                 </button>
 
             </form>
 
 
-            <!-- ========================= -->
-            <!-- РЕГИСТРАЦИЯ -->
-            <!-- ========================= -->
+            <!-- REGISTER -->
 
-            <form id="registerForm"
-                  class="auth-form hidden">
+            <form
+                id="registerForm"
+                class="hidden"
+            >
 
-                <label>
-                    Ник
-                    <span class="optional">
-                        необязательно
-                    </span>
+                <div class="field">
+
+                    <label
+                        for="registerNickname"
+                        data-i18n="nickname"
+                    >
+                        Никнейм
+                    </label>
 
                     <input
                         id="registerNickname"
                         type="text"
                         maxlength="32"
-                        placeholder="Например, Alex">
-                </label>
+                        placeholder="Необязательно"
+                        autocomplete="nickname"
+                    >
+
+                    <small data-i18n="nicknameHint">
+                        Если оставить пустым, будет использовано имя «Аноним».
+                    </small>
+
+                </div>
 
 
-                <label>
-                    Пароль
+                <div class="field">
+
+                    <label
+                        for="registerPassword"
+                        data-i18n="password"
+                    >
+                        Пароль
+                    </label>
 
                     <input
                         id="registerPassword"
                         type="password"
                         minlength="6"
-                        maxlength="128"
-                        placeholder="Придумайте пароль"
+                        placeholder="Минимум 6 символов"
                         autocomplete="new-password"
-                        required>
-                </label>
+                        required
+                    >
+
+                </div>
 
 
-                <label>
-                    Повторите пароль
+                <div class="field">
+
+                    <label
+                        for="registerPasswordRepeat"
+                        data-i18n="repeatPassword"
+                    >
+                        Повторите пароль
+                    </label>
 
                     <input
-                        id="registerPassword2"
+                        id="registerPasswordRepeat"
                         type="password"
                         minlength="6"
-                        maxlength="128"
-                        placeholder="Введите пароль ещё раз"
+                        placeholder="Повторите пароль"
                         autocomplete="new-password"
-                        required>
-                </label>
+                        required
+                    >
+
+                </div>
 
 
-                <button type="submit"
-                        class="main-btn">
+                <button
+                    class="primary-btn"
+                    type="submit"
+                    data-i18n="register"
+                >
                     Зарегистрироваться
                 </button>
 
 
-                <button type="button"
-                        id="openLogin"
-                        class="secondary-btn">
+                <button
+                    id="backToLogin"
+                    class="ghost-btn"
+                    type="button"
+                    data-i18n="backToLogin"
+                >
                     Уже есть аккаунт
                 </button>
 
             </form>
 
 
-            <!-- Ошибка -->
-
-            <div id="authMessage"
-                 class="auth-message">
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- ========================= -->
-    <!-- ЧАТЫ ЕЩЁ НЕ ГОТОВЫ -->
-    <!-- ========================= -->
-
-    <section id="notReadyScreen"
-             class="screen hidden">
-
-        <div class="not-ready-card">
-
-            <div class="not-ready-icon">
-                💬
-            </div>
-
-            <h2>
-                Чаты ещё не готовы
-            </h2>
-
-            <p>
-                Мы уже работаем над чатами NEX.
-                Скоро здесь появится полноценный
-                школьный мессенджер.
-            </p>
-
-            <div id="accountInfo"
-                 class="account-info">
-            </div>
-
-            <button id="logoutBtn"
-                    class="main-btn">
-                Выйти
-            </button>
+            <div
+                id="authMessage"
+                class="auth-message"
+            ></div>
 
         </div>
 
     </section>
 
 
-    <script src="./app.js?v=10"></script>
+
+    <!-- ========================= -->
+    <!-- APP -->
+    <!-- ========================= -->
+
+    <section
+        id="appScreen"
+        class="screen app-screen hidden"
+    >
+
+
+        <!-- ========================= -->
+        <!-- CHAT PAGE -->
+        <!-- ========================= -->
+
+        <div
+            id="chatsPage"
+            class="app-page"
+        >
+
+            <div class="page-header">
+
+                <div>
+
+                    <div
+                        class="page-kicker"
+                        data-i18n="messenger"
+                    >
+                        MESSENGER
+                    </div>
+
+                    <h2 data-i18n="chats">
+                        Чаты
+                    </h2>
+
+                </div>
+
+
+                <button
+                    id="profileQuickBtn"
+                    class="circle-btn"
+                    type="button"
+                    aria-label="Профиль"
+                >
+                    👤
+                </button>
+
+            </div>
+
+
+            <div class="search-box">
+
+                <span>⌕</span>
+
+                <input
+                    id="chatSearch"
+                    type="search"
+                    placeholder="Поиск"
+                    data-i18n-placeholder="search"
+                >
+
+            </div>
+
+
+            <div class="welcome-chat-card">
+
+                <div class="welcome-chat-icon">
+                    N
+                </div>
+
+                <div>
+
+                    <strong data-i18n="welcomeToNex">
+                        Добро пожаловать в NEX
+                    </strong>
+
+                    <p data-i18n="welcomeToNexText">
+                        Здесь появятся ваши личные,
+                        классные и школьные чаты.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="empty-chat">
+
+                <div class="empty-icon">
+                    💬
+                </div>
+
+                <h3 data-i18n="noChats">
+                    Пока нет чатов
+                </h3>
+
+                <p data-i18n="noChatsText">
+                    Начните общение, когда функция
+                    чатов будет подключена.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ========================= -->
+        <!-- SETTINGS PAGE -->
+        <!-- ========================= -->
+
+        <div
+            id="settingsPage"
+            class="app-page hidden"
+        >
+
+            <div class="page-header">
+
+                <div>
+
+                    <div
+                        class="page-kicker"
+                        data-i18n="personalization"
+                    >
+                        PERSONALIZATION
+                    </div>
+
+                    <h2 data-i18n="settings">
+                        Настройки
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROFILE -->
+
+            <div class="settings-section">
+
+                <div
+                    class="section-title"
+                    data-i18n="account"
+                >
+                    Аккаунт
+                </div>
+
+
+                <button
+                    class="setting-card profile-card"
+                    id="profileCard"
+                    type="button"
+                >
+
+                    <div
+                        id="profileAvatar"
+                        class="profile-avatar"
+                    >
+                        A
+                    </div>
+
+                    <div class="setting-main">
+
+                        <strong id="profileName">
+                            Аноним
+                        </strong>
+
+                        <span id="profileId">
+                            NEX
+                        </span>
+
+                    </div>
+
+                    <span class="setting-arrow">
+                        ›
+                    </span>
+
+                </button>
+
+            </div>
+
+
+
+            <!-- APPEARANCE -->
+
+            <div class="settings-section">
+
+                <div
+                    class="section-title"
+                    data-i18n="appearance"
+                >
+                    Внешний вид
+                </div>
+
+
+                <div class="setting-card vertical-card">
+
+                    <div class="setting-icon">
+                        🎨
+                    </div>
+
+                    <div class="setting-main">
+
+                        <strong data-i18n="theme">
+                            Тема
+                        </strong>
+
+                        <span data-i18n="themeDescription">
+                            Выберите оформление NEX
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="themeSelector"
+                    class="choice-grid"
+                >
+
+                    <button
+                        class="choice-btn active"
+                        data-theme="system"
+                        type="button"
+                    >
+                        <span>⚙️</span>
+                        <strong data-i18n="system">
+                            Системная
+                        </strong>
+                    </button>
+
+
+                    <button
+                        class="choice-btn"
+                        data-theme="light"
+                        type="button"
+                    >
+                        <span>☀️</span>
+                        <strong data-i18n="light">
+                            Светлая
+                        </strong>
+                    </button>
+
+
+                    <button
+                        class="choice-btn"
+                        data-theme="dark"
+                        type="button"
+                    >
+                        <span>🌙</span>
+                        <strong data-i18n="dark">
+                            Тёмная
+                        </strong>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ACCENT -->
+
+            <div class="settings-section">
+
+                <div
+                    class="section-title"
+                    data-i18n="accent"
+                >
+                    Цвет интерфейса
+                </div>
+
+
+                <div
+                    id="accentSelector"
+                    class="accent-grid"
+                >
+
+                    <button
+                        class="accent-dot accent-blue active"
+                        data-accent="blue"
+                        aria-label="Blue"
+                        type="button"
+                    ></button>
+
+                    <button
+                        class="accent-dot accent-purple"
+                        data-accent="purple"
+                        aria-label="Purple"
+                        type="button"
+                    ></button>
+
+                    <button
+                        class="accent-dot accent-green"
+                        data-accent="green"
+                        aria-label="Green"
+                        type="button"
+                    ></button>
+
+                    <button
+                        class="accent-dot accent-orange"
+                        data-accent="orange"
+                        aria-label="Orange"
+                        type="button"
+                    ></button>
+
+                    <button
+                        class="accent-dot accent-pink"
+                        data-accent="pink"
+                        aria-label="Pink"
+                        type="button"
+                    ></button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- LANGUAGE -->
+
+            <div class="settings-section">
+
+                <div
+                    class="section-title"
+                    data-i18n="language"
+                >
+                    Язык
+                </div>
+
+
+                <div class="language-list">
+
+                    <button
+                        class="language-btn active"
+                        data-language="ru"
+                        type="button"
+                    >
+                        <span>🇷🇺</span>
+                        <strong>Русский</strong>
+                    </button>
+
+
+                    <button
+                        class="language-btn"
+                        data-language="en"
+                        type="button"
+                    >
+                        <span>🇬🇧</span>
+                        <strong>English</strong>
+                    </button>
+
+
+                    <button
+                        class="language-btn"
+                        data-language="de"
+                        type="button"
+                    >
+                        <span>🇩🇪</span>
+                        <strong>Deutsch</strong>
+                    </button>
+
+
+                    <button
+                        class="language-btn"
+                        data-language="fr"
+                        type="button"
+                    >
+                        <span>🇫🇷</span>
+                        <strong>Français</strong>
+                    </button>
+
+
+                    <button
+                        class="language-btn"
+                        data-language="es"
+                        type="button"
+                    >
+                        <span>🇪🇸</span>
+                        <strong>Español</strong>
+                    </button>
+
+
+                    <button
+                        class="language-btn"
+                        data-language="uk"
+                        type="button"
+                    >
+                        <span>🇺🇦</span>
+                        <strong>Українська</strong>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- NOTIFICATIONS -->
+
+            <div class="settings-section">
+
+                <div
+                    class="section-title"
+                    data-i18n="notifications"
+                >
+                    Уведомления
+                </div>
+
+
+                <div class="setting-card">
+
+                    <div class="setting-icon">
+                        🔔
+                    </div>
+
+                    <div class="setting-main">
+
+                        <strong data-i18n="notifications">
+                            Уведомления
+                        </strong>
+
+                        <span data-i18n="notificationsDescription">
+                            Настройка уведомлений NEX
+                        </span>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            id="notificationsToggle"
+                            type="checkbox"
+                            checked
+                        >
+
+                        <span></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SECURITY -->
+
+            <div class="settings-section">
+
+                <div
+                    class="section-title"
+                    data-i18n="security"
+                >
+                    Безопасность
+                </div>
+
+
+                <div class="setting-card">
+
+                    <div class="setting-icon">
+                        🔒
+                    </div>
+
+                    <div class="setting-main">
+
+                        <strong data-i18n="security">
+                            Безопасность
+                        </strong>
+
+                        <span data-i18n="securityDescription">
+                            Защита аккаунта и данных
+                        </span>
+
+                    </div>
+
+                    <span class="setting-arrow">
+                        ›
+                    </span>
+
+                </div>
+
+
+                <div class="setting-card">
+
+                    <div class="setting-icon">
+                        🛡️
+                    </div>
+
+                    <div class="setting-main">
+
+                        <strong data-i18n="privacy">
+                            Конфиденциальность
+                        </strong>
+
+                        <span data-i18n="privacyDescription">
+                            Кто может взаимодействовать с вами
+                        </span>
+
+                    </div>
+
+                    <span class="setting-arrow">
+                        ›
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ABOUT NEX -->
+
+            <div class="settings-section">
+
+                <div
+                    class="section-title"
+                    data-i18n="about"
+                >
+                    О NEX
+                </div>
+
+
+                <div class="about-card">
+
+                    <div class="about-logo">
+                        NEX
+                    </div>
+
+
+                    <h3>
+                        Nexgram
+                    </h3>
+
+
+                    <div class="version">
+                        <span data-i18n="version">
+                            Версия
+                        </span>
+
+                        <strong>
+                            1.0.0
+                        </strong>
+                    </div>
+
+
+                    <div class="about-divider"></div>
+
+
+                    <h4 data-i18n="aboutTitle">
+                        Что такое NEX?
+                    </h4>
+
+
+                    <p data-i18n="aboutText">
+                        NEX — современный школьный мессенджер,
+                        созданный для удобного общения между
+                        учениками, учителями и школьным сообществом.
+                        Наша цель — объединить общение,
+                        учебные процессы и школьную жизнь
+                        в одном понятном и быстром приложении.
+                    </p>
+
+
+                    <h4 data-i18n="missionTitle">
+                        Для чего создан NEX?
+                    </h4>
+
+
+                    <p data-i18n="missionText">
+                        NEX создан для того, чтобы школьное
+                        общение стало проще, безопаснее
+                        и современнее. Здесь могут существовать
+                        личные сообщения, группы классов,
+                        предметные чаты, школьные объявления,
+                        файлы, расписание, домашние задания
+                        и другие инструменты, которые помогают
+                        ученикам и учителям каждый день.
+                    </p>
+
+
+                    <h4 data-i18n="principlesTitle">
+                        Принципы NEX
+                    </h4>
+
+
+                    <p data-i18n="principlesText">
+                        NEX строится вокруг скорости,
+                        удобства, безопасности и уважительного
+                        общения. Мы хотим создавать продукт,
+                        которым приятно пользоваться каждый день,
+                        независимо от устройства и выбранного языка.
+                    </p>
+
+
+                    <h4 data-i18n="futureTitle">
+                        Что дальше?
+                    </h4>
+
+
+                    <p data-i18n="futureText">
+                        В будущем NEX может получить полноценные
+                        личные и групповые чаты, голосовые сообщения,
+                        отправку файлов, школьные каналы,
+                        роли учеников и учителей, систему модерации,
+                        расписание, домашние задания,
+                        уведомления, NEX Orbit, награды,
+                        Premium-возможности и многое другое.
+                    </p>
+
+
+                    <div class="about-footer">
+
+                        <strong>
+                            Nexgram
+                        </strong>
+
+                        <span data-i18n="madeForCommunication">
+                            Создан для общения.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- LOGOUT -->
+
+            <div class="settings-section logout-section">
+
+                <button
+                    id="logoutBtn"
+                    class="logout-btn"
+                    type="button"
+                    data-i18n="logout"
+                >
+                    Выйти из аккаунта
+                </button>
+
+            </div>
+
+
+            <footer class="app-footer">
+
+                <strong>
+                    Nexgram
+                </strong>
+
+                <span>
+                    v1.0.0
+                </span>
+
+                <p data-i18n="footerText">
+                    Современный школьный мессенджер
+                    для общения, учёбы и школьной жизни.
+                </p>
+
+            </footer>
+
+        </div>
+
+
+
+        <!-- ========================= -->
+        <!-- BOTTOM NAVIGATION -->
+        <!-- ========================= -->
+
+        <nav class="bottom-nav">
+
+            <button
+                class="nav-btn active"
+                data-page="chats"
+                type="button"
+            >
+
+                <span class="nav-icon">
+                    💬
+                </span>
+
+                <span
+                    class="nav-label"
+                    data-i18n="chats"
+                >
+                    Чаты
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-btn"
+                data-page="settings"
+                type="button"
+            >
+
+                <span class="nav-icon">
+                    ⚙️
+                </span>
+
+                <span
+                    class="nav-label"
+                    data-i18n="settings"
+                >
+                    Настройки
+                </span>
+
+            </button>
+
+        </nav>
+
+    </section>
+
+</main>
+
+
+<script src="./app.js?v=20"></script>
 
 </body>
 </html>
