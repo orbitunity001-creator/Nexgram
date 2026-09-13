@@ -7,10 +7,9 @@
     <title>Nexgram Messenger</title>
 
     <meta name="theme-color" content="#1677ff">
-    <meta name="apple-mobile-web-app-capable" content="yes">
 
-    <link rel="manifest" href="./manifest.json?v=10">
-    <link rel="stylesheet" href="./style.css?v=10">
+    <link rel="manifest" href="./manifest.json?v=11">
+    <link rel="stylesheet" href="./style.css?v=11">
 </head>
 
 <body>
@@ -22,19 +21,15 @@
     <div class="aurora aurora-four"></div>
 </div>
 
-<!-- TOP -->
-
 <header class="topbar">
 
     <div class="brand">
-
         <div class="brand-logo">N</div>
 
         <div>
             <div class="brand-name">Nexgram</div>
             <div class="brand-status">Messenger</div>
         </div>
-
     </div>
 
     <button id="installBtn" class="install-btn">
@@ -46,7 +41,7 @@
 
 <main>
 
-<!-- ================= AUTH ================= -->
+<!-- AUTH -->
 
 <section id="authScreen" class="screen active">
 
@@ -95,7 +90,7 @@
 </section>
 
 
-<!-- ================= REGISTER ================= -->
+<!-- REGISTER -->
 
 <section id="registerScreen" class="screen">
 
@@ -116,28 +111,13 @@
         </p>
 
         <label>Имя</label>
-
-        <input
-            id="registerName"
-            type="text"
-            placeholder="Ваше имя"
-        >
+        <input id="registerName" type="text" placeholder="Ваше имя">
 
         <label>Email</label>
-
-        <input
-            id="registerEmail"
-            type="email"
-            placeholder="example@mail.com"
-        >
+        <input id="registerEmail" type="email" placeholder="example@mail.com">
 
         <label>Пароль</label>
-
-        <input
-            id="registerPassword"
-            type="password"
-            placeholder="Минимум 6 символов"
-        >
+        <input id="registerPassword" type="password" placeholder="Минимум 6 символов">
 
         <button id="registerBtn" class="primary-btn">
             Создать аккаунт
@@ -148,7 +128,7 @@
 </section>
 
 
-<!-- ================= LOGIN ================= -->
+<!-- LOGIN -->
 
 <section id="loginScreen" class="screen">
 
@@ -169,20 +149,10 @@
         </p>
 
         <label>Email</label>
-
-        <input
-            id="loginEmail"
-            type="email"
-            placeholder="example@mail.com"
-        >
+        <input id="loginEmail" type="email" placeholder="example@mail.com">
 
         <label>Пароль</label>
-
-        <input
-            id="loginPassword"
-            type="password"
-            placeholder="Ваш пароль"
-        >
+        <input id="loginPassword" type="password" placeholder="Ваш пароль">
 
         <button id="loginBtn" class="primary-btn">
             Войти
@@ -197,15 +167,13 @@
 </section>
 
 
-<!-- ================= NOT READY ================= -->
+<!-- NOT READY -->
 
 <section id="notReadyScreen" class="screen">
 
     <div class="not-ready-card">
 
-        <div class="not-ready-icon">
-            💬
-        </div>
+        <div class="not-ready-icon">💬</div>
 
         <div class="small-label">
             NEXGRAM
@@ -230,7 +198,7 @@
 </section>
 
 
-<!-- ================= APP ================= -->
+<!-- APP -->
 
 <section id="appScreen" class="screen app-screen">
 
@@ -244,44 +212,26 @@
     <div class="page-header">
 
         <div>
-            <div class="small-label">
-                NEXGRAM
-            </div>
-
-            <h2>
-                Чаты
-            </h2>
+            <div class="small-label">NEXGRAM</div>
+            <h2>Чаты</h2>
         </div>
 
-        <button
-            id="newChatBtn"
-            class="round-btn"
-        >
+        <button id="newChatBtn" class="round-btn">
             ＋
         </button>
 
     </div>
 
     <div class="search-box">
-
         <span>⌕</span>
-
-        <input
-            id="chatSearch"
-            placeholder="Поиск"
-        >
-
+        <input id="chatSearch" placeholder="Поиск">
     </div>
 
     <div id="chatEmpty" class="empty-chat">
 
-        <div class="empty-icon">
-            💬
-        </div>
+        <div class="empty-icon">💬</div>
 
-        <h3>
-            Пока здесь пусто
-        </h3>
+        <h3>Пока здесь пусто</h3>
 
         <p>
             Когда чаты будут готовы,
@@ -297,16 +247,24 @@
 
 <div id="settingsPage" class="page">
 
-    <div class="page-header">
+    <div class="settings-top">
 
         <div>
             <div class="small-label">
-                NEXGRAM
+                PERSONAL SPACE
             </div>
 
             <h2>
                 Настройки
             </h2>
+
+            <p>
+                Настройте Nexgram под себя
+            </p>
+        </div>
+
+        <div class="settings-orb">
+            ✦
         </div>
 
     </div>
@@ -314,17 +272,15 @@
 
     <!-- PROFILE -->
 
-    <div class="settings-profile">
+    <div class="profile-card">
 
-        <div
-            id="profileAvatar"
-            class="profile-avatar"
-        >
+        <div class="profile-glow"></div>
+
+        <div id="profileAvatar" class="profile-avatar">
             N
         </div>
 
         <div class="profile-info">
-
             <strong id="profileName">
                 Пользователь
             </strong>
@@ -333,13 +289,79 @@
                 Nexgram
             </span>
 
+            <small>
+                ● В сети
+            </small>
         </div>
 
-        <button
-            id="editProfileBtn"
-            class="round-btn"
-        >
+        <button id="editProfileBtn" class="edit-profile">
             ✎
+        </button>
+
+    </div>
+
+
+    <!-- QUICK SETTINGS -->
+
+    <div class="quick-grid">
+
+        <button class="quick-card" id="quickTheme">
+
+            <span class="quick-icon blue">
+                🎨
+            </span>
+
+            <strong>Тема</strong>
+
+            <small id="quickThemeText">
+                Светлая
+            </small>
+
+        </button>
+
+
+        <button class="quick-card" id="quickLanguage">
+
+            <span class="quick-icon purple">
+                🌐
+            </span>
+
+            <strong>Язык</strong>
+
+            <small id="quickLanguageText">
+                Русский
+            </small>
+
+        </button>
+
+
+        <button class="quick-card" id="quickFont">
+
+            <span class="quick-icon orange">
+                Aa
+            </span>
+
+            <strong>Шрифт</strong>
+
+            <small id="quickFontText">
+                Средний
+            </small>
+
+        </button>
+
+
+        <button class="quick-card" id="quickAnimation">
+
+            <span class="quick-icon green">
+                ✨
+            </span>
+
+            <strong>Эффекты</strong>
+
+            <small id="quickAnimationText">
+                Включены
+            </small>
+
         </button>
 
     </div>
@@ -349,77 +371,156 @@
 
     <div class="settings-section">
 
-        <div class="section-title">
-            Внешний вид
+        <div class="section-heading">
+            <span>Внешний вид</span>
+            <small>Персонализация</small>
         </div>
 
 
-        <div
-            class="setting-card clickable"
-            id="themesSetting"
-        >
+        <div class="modern-settings-card">
 
-            <div class="setting-row">
+            <button class="modern-setting" id="themesSetting">
 
-                <div class="setting-title">
-
-                    <span class="setting-icon">
-                        🎨
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Темы
-                        </strong>
-
-                        <small id="currentThemeText">
-                            Светлая
-                        </small>
-
-                    </div>
-
-                </div>
-
-                <span class="arrow">
-                    ›
+                <span class="setting-icon blue">
+                    🎨
                 </span>
+
+                <span class="setting-content">
+                    <strong>Темы оформления</strong>
+                    <small id="currentThemeText">
+                        Светлая
+                    </small>
+                </span>
+
+                <span class="setting-arrow">›</span>
+
+            </button>
+
+
+            <button class="modern-setting" id="fontSetting">
+
+                <span class="setting-icon orange">
+                    Aa
+                </span>
+
+                <span class="setting-content">
+                    <strong>Шрифт и размер</strong>
+                    <small id="currentFontText">
+                        Средний · Системный
+                    </small>
+                </span>
+
+                <span class="setting-arrow">›</span>
+
+            </button>
+
+
+            <button class="modern-setting" id="languageSetting">
+
+                <span class="setting-icon purple">
+                    🌐
+                </span>
+
+                <span class="setting-content">
+                    <strong>Язык приложения</strong>
+                    <small id="languageValue">
+                        Русский
+                    </small>
+                </span>
+
+                <span class="setting-arrow">›</span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- NOTIFICATIONS -->
+
+    <div class="settings-section">
+
+        <div class="section-heading">
+            <span>Удобство</span>
+            <small>Основные параметры</small>
+        </div>
+
+
+        <div class="modern-settings-card">
+
+            <div class="modern-setting">
+
+                <span class="setting-icon pink">
+                    🔔
+                </span>
+
+                <span class="setting-content">
+                    <strong>Уведомления</strong>
+                    <small>Новые сообщения и события</small>
+                </span>
+
+                <label class="switch">
+                    <input id="notificationsToggle" type="checkbox">
+                    <span></span>
+                </label>
 
             </div>
 
-        </div>
 
+            <div class="modern-setting">
 
-        <div
-            class="setting-card clickable"
-            id="fontSetting"
-        >
-
-            <div class="setting-row">
-
-                <div class="setting-title">
-
-                    <span class="setting-icon">
-                        Aa
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Шрифт и размер
-                        </strong>
-
-                        <small id="currentFontText">
-                            Средний · Системный
-                        </small>
-
-                    </div>
-
-                </div>
-
-                <span class="arrow">
-                    ›
+                <span class="setting-icon blue">
+                    📳
                 </span>
+
+                <span class="setting-content">
+                    <strong>Вибрация</strong>
+                    <small>Тактильный отклик</small>
+                </span>
+
+                <label class="switch">
+                    <input id="vibrationToggle" type="checkbox">
+                    <span></span>
+                </label>
+
+            </div>
+
+
+            <div class="modern-setting">
+
+                <span class="setting-icon purple">
+                    ✨
+                </span>
+
+                <span class="setting-content">
+                    <strong>Анимации</strong>
+                    <small>Плавные переходы интерфейса</small>
+                </span>
+
+                <label class="switch">
+                    <input id="animationsToggle" type="checkbox">
+                    <span></span>
+                </label>
+
+            </div>
+
+
+            <div class="modern-setting">
+
+                <span class="setting-icon green">
+                    ⚡
+                </span>
+
+                <span class="setting-content">
+                    <strong>Быстрый интерфейс</strong>
+                    <small>Минимум лишних эффектов</small>
+                </span>
+
+                <label class="switch">
+                    <input id="performanceToggle" type="checkbox">
+                    <span></span>
+                </label>
 
             </div>
 
@@ -428,156 +529,68 @@
     </div>
 
 
-    <!-- GENERAL -->
+    <!-- LAB -->
 
     <div class="settings-section">
 
-        <div class="section-title">
-            Основные
+        <div class="section-heading lab-heading">
+
+            <div>
+                <span>Nexgram Lab</span>
+                <small>Экспериментальные функции</small>
+            </div>
+
+            <b>NEW</b>
+
         </div>
 
-        <div class="setting-card">
 
+        <div class="lab-card">
 
-            <div class="setting-row">
+            <div class="lab-top">
 
-                <div class="setting-title">
-
-                    <span class="setting-icon">
-                        🔔
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Уведомления
-                        </strong>
-
-                        <small>
-                            Новые сообщения и события
-                        </small>
-
-                    </div>
-
+                <div class="lab-icon">
+                    ✦
                 </div>
 
-                <label class="switch">
-
-                    <input
-                        id="notificationsToggle"
-                        type="checkbox"
-                    >
-
-                    <span></span>
-
-                </label>
+                <div>
+                    <strong>Умный интерфейс</strong>
+                    <p>
+                        Новые экспериментальные
+                        элементы Nexgram.
+                    </p>
+                </div>
 
             </div>
 
 
-            <div class="setting-row">
+            <div class="lab-options">
 
-                <div class="setting-title">
+                <button
+                    class="lab-option"
+                    data-lab="smart"
+                >
+                    <span>🧠</span>
+                    Умные функции
+                </button>
 
-                    <span class="setting-icon">
-                        📳
-                    </span>
+                <button
+                    class="lab-option"
+                    data-lab="blur"
+                >
+                    <span>◈</span>
+                    Стекло
+                </button>
 
-                    <div>
-
-                        <strong>
-                            Вибрация
-                        </strong>
-
-                        <small>
-                            Тактильный отклик
-                        </small>
-
-                    </div>
-
-                </div>
-
-                <label class="switch">
-
-                    <input
-                        id="vibrationToggle"
-                        type="checkbox"
-                    >
-
-                    <span></span>
-
-                </label>
+                <button
+                    class="lab-option"
+                    data-lab="particles"
+                >
+                    <span>✧</span>
+                    Частицы
+                </button>
 
             </div>
-
-
-            <div class="setting-row">
-
-                <div class="setting-title">
-
-                    <span class="setting-icon">
-                        ✨
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Анимации
-                        </strong>
-
-                        <small>
-                            Плавность интерфейса
-                        </small>
-
-                    </div>
-
-                </div>
-
-                <label class="switch">
-
-                    <input
-                        id="animationsToggle"
-                        type="checkbox"
-                    >
-
-                    <span></span>
-
-                </label>
-
-            </div>
-
-
-            <div
-                class="setting-row clickable"
-                id="languageSetting"
-            >
-
-                <div class="setting-title">
-
-                    <span class="setting-icon">
-                        🌐
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Язык
-                        </strong>
-
-                        <small id="languageValue">
-                            Русский
-                        </small>
-
-                    </div>
-
-                </div>
-
-                <span class="arrow">
-                    ›
-                </span>
-
-            </div>
-
 
         </div>
 
@@ -588,74 +601,60 @@
 
     <div class="settings-section">
 
-        <div class="section-title">
-            Приватность
+        <div class="section-heading">
+            <span>Безопасность</span>
+            <small>Ваш аккаунт</small>
         </div>
 
-        <div class="setting-card">
 
-            <div
-                id="privacyBtn"
-                class="setting-row clickable"
-            >
+        <div class="modern-settings-card">
 
-                <div class="setting-title">
+            <button class="modern-setting" id="privacyBtn">
 
-                    <span class="setting-icon">
-                        🔐
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Приватность
-                        </strong>
-
-                        <small>
-                            Безопасность и данные
-                        </small>
-
-                    </div>
-
-                </div>
-
-                <span class="arrow">
-                    ›
+                <span class="setting-icon green">
+                    🔐
                 </span>
 
-            </div>
-
-
-            <div
-                id="securityBtn"
-                class="setting-row clickable"
-            >
-
-                <div class="setting-title">
-
-                    <span class="setting-icon">
-                        🛡️
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Безопасность
-                        </strong>
-
-                        <small>
-                            Защита аккаунта
-                        </small>
-
-                    </div>
-
-                </div>
-
-                <span class="arrow">
-                    ›
+                <span class="setting-content">
+                    <strong>Приватность</strong>
+                    <small>Настройки личных данных</small>
                 </span>
 
-            </div>
+                <span class="setting-arrow">›</span>
+
+            </button>
+
+
+            <button class="modern-setting" id="securityBtn">
+
+                <span class="setting-icon blue">
+                    🛡️
+                </span>
+
+                <span class="setting-content">
+                    <strong>Безопасность</strong>
+                    <small>Защита аккаунта</small>
+                </span>
+
+                <span class="setting-arrow">›</span>
+
+            </button>
+
+
+            <button class="modern-setting" id="dataBtn">
+
+                <span class="setting-icon orange">
+                    💾
+                </span>
+
+                <span class="setting-content">
+                    <strong>Данные приложения</strong>
+                    <small>Локальные настройки</small>
+                </span>
+
+                <span class="setting-arrow">›</span>
+
+            </button>
 
         </div>
 
@@ -664,91 +663,33 @@
 
     <!-- ABOUT -->
 
-    <div class="settings-section">
+    <div class="about-nexgram">
 
-        <div class="section-title">
-            Дополнительно
+        <div class="about-logo">
+            N
         </div>
 
-        <div class="setting-card">
-
-            <div
-                id="aboutBtn"
-                class="setting-row clickable"
-            >
-
-                <div class="setting-title">
-
-                    <span class="setting-icon">
-                        ℹ️
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            О Nexgram
-                        </strong>
-
-                        <small>
-                            Версия 1.0.0
-                        </small>
-
-                    </div>
-
-                </div>
-
-                <span class="arrow">
-                    ›
-                </span>
-
-            </div>
-
-
-            <div
-                id="dataBtn"
-                class="setting-row clickable"
-            >
-
-                <div class="setting-title">
-
-                    <span class="setting-icon">
-                        💾
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Данные приложения
-                        </strong>
-
-                        <small>
-                            Локальные настройки
-                        </small>
-
-                    </div>
-
-                </div>
-
-                <span class="arrow">
-                    ›
-                </span>
-
-            </div>
-
+        <div>
+            <strong>Nexgram</strong>
+            <small>
+                Messenger · Version 1.0.0
+            </small>
         </div>
+
+        <button id="aboutBtn">
+            ›
+        </button>
 
     </div>
 
 
-    <button
-        id="logoutBtn"
-        class="logout-btn"
-    >
+    <button id="logoutBtn" class="logout-btn">
         Выйти из аккаунта
     </button>
 
+
     <div class="settings-version">
-        Nexgram Messenger · 1.0.0
+        Сделано с идеей. Сделано с нуля.
     </div>
 
 </div>
@@ -764,15 +705,8 @@
         class="nav-item active"
         data-page="chatsPage"
     >
-
-        <span class="nav-icon">
-            💬
-        </span>
-
-        <span>
-            Чаты
-        </span>
-
+        <span class="nav-icon">💬</span>
+        <span>Чаты</span>
     </button>
 
 
@@ -780,15 +714,8 @@
         class="nav-item"
         data-page="settingsPage"
     >
-
-        <span class="nav-icon">
-            ⚙️
-        </span>
-
-        <span>
-            Настройки
-        </span>
-
+        <span class="nav-icon">⚙️</span>
+        <span>Настройки</span>
     </button>
 
 </nav>
@@ -798,12 +725,9 @@
 </main>
 
 
-<!-- ================= ANONYMOUS ================= -->
+<!-- ANONYMOUS -->
 
-<div
-    id="anonymousModal"
-    class="modal"
->
+<div id="anonymousModal" class="modal">
 
     <div class="modal-card">
 
@@ -821,36 +745,19 @@
         </p>
 
         <ul>
-            <li>
-                Нет полноценного профиля
-            </li>
-
-            <li>
-                Нет настроек аккаунта
-            </li>
-
-            <li>
-                Ограниченная функциональность
-            </li>
-
-            <li>
-                Данные могут не сохраняться
-            </li>
+            <li>Нет полноценного профиля</li>
+            <li>Нет настроек аккаунта</li>
+            <li>Ограниченная функциональность</li>
+            <li>Данные могут не сохраняться</li>
         </ul>
 
         <div class="modal-actions">
 
-            <button
-                id="anonymousBack"
-                class="secondary-btn"
-            >
+            <button id="anonymousBack" class="secondary-btn">
                 Назад
             </button>
 
-            <button
-                id="anonymousContinue"
-                class="primary-btn"
-            >
+            <button id="anonymousContinue" class="primary-btn">
                 Продолжить
             </button>
 
@@ -861,150 +768,107 @@
 </div>
 
 
-<!-- ================= THEMES ================= -->
+<!-- THEMES -->
 
 <div id="themesModal" class="modal">
 
     <div class="modal-card settings-modal">
 
-        <button
-            class="modal-close"
-            data-close="themesModal"
-        >
+        <button class="modal-close" data-close="themesModal">
             ×
         </button>
 
         <div class="modal-label">
-            ОФОРМЛЕНИЕ
+            PERSONALIZATION
         </div>
 
         <h2>
-            Выберите тему
+            Тема Nexgram
         </h2>
 
         <p>
-            Изменение применяется сразу.
+            Выберите настроение интерфейса.
         </p>
 
 
         <div class="theme-list">
 
-            <button
-                class="theme-choice"
-                data-theme="light"
-            >
+            <button class="theme-choice" data-theme="light">
                 <span class="theme-demo theme-light"></span>
-
                 <span>
                     <strong>Светлая</strong>
-                    <small>Чистая и яркая</small>
+                    <small>Чистая и воздушная</small>
                 </span>
-
                 <i>✓</i>
             </button>
 
 
-            <button
-                class="theme-choice"
-                data-theme="dark"
-            >
+            <button class="theme-choice" data-theme="dark">
                 <span class="theme-demo theme-dark"></span>
-
                 <span>
                     <strong>Тёмная</strong>
                     <small>Комфортная вечером</small>
                 </span>
-
                 <i>✓</i>
             </button>
 
 
-            <button
-                class="theme-choice"
-                data-theme="ocean"
-            >
+            <button class="theme-choice" data-theme="ocean">
                 <span class="theme-demo theme-ocean"></span>
-
                 <span>
-                    <strong>Океан</strong>
-                    <small>Синий Nexgram</small>
+                    <strong>Ocean</strong>
+                    <small>Фирменный синий</small>
                 </span>
-
                 <i>✓</i>
             </button>
 
 
-            <button
-                class="theme-choice"
-                data-theme="midnight"
-            >
+            <button class="theme-choice" data-theme="midnight">
                 <span class="theme-demo theme-midnight"></span>
-
                 <span>
                     <strong>Midnight</strong>
-                    <small>Глубокая ночная</small>
+                    <small>Глубокая ночь</small>
                 </span>
-
                 <i>✓</i>
             </button>
 
 
-            <button
-                class="theme-choice"
-                data-theme="purple"
-            >
+            <button class="theme-choice" data-theme="purple">
                 <span class="theme-demo theme-purple"></span>
-
                 <span>
-                    <strong>Фиолетовая</strong>
-                    <small>Необычная</small>
+                    <strong>Purple</strong>
+                    <small>Фиолетовая энергия</small>
                 </span>
-
                 <i>✓</i>
             </button>
 
 
-            <button
-                class="theme-choice"
-                data-theme="sunset"
-            >
+            <button class="theme-choice" data-theme="sunset">
                 <span class="theme-demo theme-sunset"></span>
-
                 <span>
                     <strong>Sunset</strong>
-                    <small>Тёплое оформление</small>
+                    <small>Тёплая атмосфера</small>
                 </span>
-
                 <i>✓</i>
             </button>
 
 
-            <button
-                class="theme-choice"
-                data-theme="forest"
-            >
+            <button class="theme-choice" data-theme="forest">
                 <span class="theme-demo theme-forest"></span>
-
                 <span>
                     <strong>Forest</strong>
                     <small>Спокойный зелёный</small>
                 </span>
-
                 <i>✓</i>
             </button>
 
 
-            <button
-                class="theme-choice"
-                data-theme="rose"
-            >
+            <button class="theme-choice" data-theme="rose">
                 <span class="theme-demo theme-rose"></span>
-
                 <span>
                     <strong>Rose</strong>
                     <small>Мягкий розовый</small>
                 </span>
-
                 <i>✓</i>
             </button>
 
@@ -1015,44 +879,39 @@
 </div>
 
 
-<!-- ================= FONT ================= -->
+<!-- FONT -->
 
 <div id="fontModal" class="modal">
 
     <div class="modal-card settings-modal">
 
-        <button
-            class="modal-close"
-            data-close="fontModal"
-        >
+        <button class="modal-close" data-close="fontModal">
             ×
         </button>
 
         <div class="modal-label">
-            ТИПОГРАФИКА
+            TYPOGRAPHY
         </div>
 
         <h2>
-            Шрифт и размер
+            Шрифт
         </h2>
 
         <p>
-            Настройте Nexgram под себя.
+            Сделайте текст удобным для себя.
         </p>
 
 
         <div class="font-preview">
-            Aa
-            <span>
-                Пример текста Nexgram
-            </span>
+            <b>Aa</b>
+            <span>Так выглядит Nexgram</span>
         </div>
 
 
         <div class="font-block">
 
             <div class="font-heading">
-                Размер текста
+                Размер
             </div>
 
             <div class="font-buttons">
@@ -1081,7 +940,7 @@
         <div class="font-block">
 
             <div class="font-heading">
-                Стиль шрифта
+                Стиль
             </div>
 
             <div class="font-buttons">
@@ -1111,16 +970,13 @@
 </div>
 
 
-<!-- ================= LANGUAGE ================= -->
+<!-- LANGUAGE -->
 
 <div id="languageModal" class="modal">
 
     <div class="modal-card language-modal">
 
-        <button
-            class="modal-close"
-            data-close="languageModal"
-        >
+        <button class="modal-close" data-close="languageModal">
             ×
         </button>
 
@@ -1129,23 +985,20 @@
         </div>
 
         <h2>
-            Язык приложения
+            Язык
         </h2>
 
         <p>
-            Выберите удобный язык.
+            Выберите язык интерфейса.
         </p>
 
 
         <div class="language-search">
-
             🔎
-
             <input
                 id="languageSearch"
                 placeholder="Поиск языка..."
             >
-
         </div>
 
 
@@ -1248,16 +1101,13 @@
 </div>
 
 
-<!-- ================= INFO ================= -->
+<!-- INFO -->
 
 <div id="infoModal" class="modal">
 
     <div class="modal-card">
 
-        <button
-            class="modal-close"
-            data-close="infoModal"
-        >
+        <button class="modal-close" data-close="infoModal">
             ×
         </button>
 
@@ -1270,14 +1120,10 @@
         </h2>
 
         <p id="infoText">
-            Современный мессенджер
-            нового поколения.
+            Современный мессенджер нового поколения.
         </p>
 
-        <button
-            id="infoClose"
-            class="primary-btn"
-        >
+        <button id="infoClose" class="primary-btn">
             Понятно
         </button>
 
@@ -1289,7 +1135,7 @@
 <div id="toast" class="toast"></div>
 
 
-<script src="./app.js?v=10"></script>
+<script src="./app.js?v=11"></script>
 
 </body>
 </html>
