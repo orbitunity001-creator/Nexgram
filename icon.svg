@@ -1,124 +1,56 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="blue" x1="80" y1="60" x2="430" y2="450" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#163B73"/>
-      <stop offset="1" stop-color="#071D3D"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B5CFF"/>
+      <stop offset="50%" stop-color="#246BFF"/>
+      <stop offset="100%" stop-color="#071A3D"/>
     </linearGradient>
 
-    <linearGradient id="silver" x1="210" y1="130" x2="320" y2="390" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#FFFFFF"/>
-      <stop offset="1" stop-color="#DCE7F5"/>
+    <linearGradient id="n" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#DDE9FF"/>
     </linearGradient>
+
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
 
-  <!-- White premium background -->
-  <rect width="512" height="512" rx="118" fill="#FFFFFF"/>
+  <!-- Rounded app background -->
+  <rect x="16" y="16" width="480" height="480" rx="120"
+        fill="url(#bg)"/>
 
-  <!-- Main emblem -->
-  <circle cx="256" cy="256" r="190" fill="url(#blue)"/>
+  <!-- Decorative glow -->
+  <circle cx="390" cy="105" r="90"
+          fill="#6FA0FF" opacity="0.18"/>
+  <circle cx="105" cy="420" r="120"
+          fill="#001B55" opacity="0.25"/>
 
-  <!-- Subtle inner border -->
-  <circle
-    cx="256"
-    cy="256"
-    r="176"
-    fill="none"
-    stroke="#FFFFFF"
-    stroke-opacity=".10"
-    stroke-width="2"
-  />
+  <!-- N -->
+  <path d="
+    M145 365
+    V147
+    C145 132 154 122 169 122
+    H195
+    C208 122 218 128 226 140
+    L316 278
+    V147
+    C316 132 325 122 340 122
+    H367
+    V365
+    H334
+    C321 365 311 359 303 347
+    L196 207
+    V365
+    Z"
+    fill="url(#n)"
+    filter="url(#glow)"/>
 
-  <!-- Minimal stars -->
-  <g fill="#FFFFFF">
-    <circle cx="155" cy="174" r="4"/>
-    <circle cx="365" cy="178" r="4"/>
-    <circle cx="381" cy="315" r="3"/>
-    <circle cx="142" cy="326" r="3"/>
-  </g>
-
-  <!-- Main rocket -->
-  <g transform="translate(256 256) rotate(-42)">
-
-    <!-- Rocket body -->
-    <path
-      d="
-        M 0 -112
-        C -42 -82 -57 -30 -54 28
-        C -52 65 -27 89 0 101
-        C 27 89 52 65 54 28
-        C 57 -30 42 -82 0 -112
-        Z
-      "
-      fill="url(#silver)"
-    />
-
-    <!-- Nose -->
-    <path
-      d="
-        M 0 -112
-        C -20 -96 -32 -78 -39 -55
-        C -25 -60 -13 -63 0 -63
-        C 13 -63 25 -60 39 -55
-        C 32 -78 20 -96 0 -112
-        Z
-      "
-      fill="#FFFFFF"
-    />
-
-    <!-- Window -->
-    <circle cx="0" cy="-25" r="23" fill="#0B2B58"/>
-
-    <circle
-      cx="0"
-      cy="-25"
-      r="15"
-      fill="#FFFFFF"
-      opacity=".9"
-    />
-
-    <circle
-      cx="-5"
-      cy="-30"
-      r="5"
-      fill="#DCE7F5"
-    />
-
-    <!-- Left wing -->
-    <path
-      d="
-        M -48 24
-        C -71 34 -82 51 -80 73
-        C -61 68 -44 59 -30 45
-        Z
-      "
-      fill="#D7E2F0"
-    />
-
-    <!-- Right wing -->
-    <path
-      d="
-        M 48 24
-        C 71 34 82 51 80 73
-        C 61 68 44 59 30 45
-        Z
-      "
-      fill="#D7E2F0"
-    />
-
-    <!-- Engine -->
-    <path
-      d="
-        M -23 67
-        C -20 88 -11 103 0 117
-        C 11 103 20 88 23 67
-        C 15 73 8 76 0 76
-        C -8 76 -15 73 -23 67
-        Z
-      "
-      fill="#FFFFFF"
-    />
-
-  </g>
-
+  <!-- Small accent -->
+  <circle cx="390" cy="390" r="13"
+          fill="#FFFFFF" opacity="0.85"/>
 </svg>
