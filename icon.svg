@@ -1,360 +1,520 @@
 <svg xmlns="http://www.w3.org/2000/svg"
      viewBox="0 0 512 512"
      width="512"
-     height="512">
+     height="512"
+     shape-rendering="crispEdges">
 
   <defs>
 
-    <!-- Почти белый фон -->
-    <radialGradient id="bg"
-      cx="50%" cy="45%"
-      r="75%">
+    <!-- Ночной фон -->
+    <linearGradient id="bg"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1">
+      <stop offset="0%" stop-color="#07100f"/>
+      <stop offset="55%" stop-color="#10241e"/>
+      <stop offset="100%" stop-color="#1b3026"/>
+    </linearGradient>
 
-      <stop offset="0" stop-color="#FFFFFF"/>
-      <stop offset="0.55" stop-color="#FFFFFF"/>
-      <stop offset="0.78" stop-color="#F7FCFF"/>
-      <stop offset="1" stop-color="#ECFAFF"/>
-
+    <!-- Свет от монитора -->
+    <radialGradient id="screenGlow"
+                    cx="50%"
+                    cy="45%"
+                    r="65%">
+      <stop offset="0%" stop-color="#b8fff0" stop-opacity=".25"/>
+      <stop offset="100%" stop-color="#5de0bd" stop-opacity="0"/>
     </radialGradient>
 
+    <!-- Экран -->
+    <linearGradient id="screen"
+                    x1="0"
+                    y1="0"
+                    x2="1"
+                    y2="1">
+      <stop offset="0%" stop-color="#172e2a"/>
+      <stop offset="100%" stop-color="#071514"/>
+    </linearGradient>
 
-    <!-- Океан -->
-    <radialGradient id="ocean"
-      cx="32%" cy="25%"
-      r="75%">
-
-      <stop offset="0" stop-color="#72E9FF"/>
-      <stop offset="0.32" stop-color="#27C5EF"/>
-      <stop offset="0.65" stop-color="#078FD0"/>
-      <stop offset="0.88" stop-color="#0568AD"/>
-      <stop offset="1" stop-color="#034D89"/>
-
-    </radialGradient>
-
-
-    <!-- Свет Земли -->
-    <radialGradient id="earthLight"
-      cx="28%" cy="23%"
-      r="70%">
-
-      <stop offset="0"
-            stop-color="#FFFFFF"
-            stop-opacity=".5"/>
-
-      <stop offset=".35"
-            stop-color="#FFFFFF"
-            stop-opacity=".1"/>
-
-      <stop offset="1"
-            stop-color="#FFFFFF"
-            stop-opacity="0"/>
-
-    </radialGradient>
-
-
-    <!-- Блик -->
-    <radialGradient id="shine">
-
-      <stop offset="0"
-            stop-color="#FFFFFF"
-            stop-opacity=".65"/>
-
-      <stop offset="1"
-            stop-color="#FFFFFF"
-            stop-opacity="0"/>
-
-    </radialGradient>
-
-
-    <!-- Свечение -->
-    <filter id="glow"
-      x="-60%"
-      y="-60%"
-      width="220%"
-      height="220%">
-
-      <feGaussianBlur
-        stdDeviation="12"
-        result="blur"/>
-
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-
-    </filter>
-
-
-    <!-- Ограничение материков -->
-    <clipPath id="earthClip">
-
-      <circle
-        cx="256"
-        cy="256"
-        r="143"/>
-
-    </clipPath>
+    <!-- Кот -->
+    <linearGradient id="cat"
+                    x1="0"
+                    y1="0"
+                    x2="1"
+                    y2="1">
+      <stop offset="0%" stop-color="#b4bd8b"/>
+      <stop offset="55%" stop-color="#89966d"/>
+      <stop offset="100%" stop-color="#59634c"/>
+    </linearGradient>
 
   </defs>
 
 
-  <!-- ===================== -->
-  <!-- БЕЛЫЙ ФОН -->
-  <!-- ===================== -->
+  <!-- ================================= -->
+  <!-- BACKGROUND -->
+  <!-- ================================= -->
 
-  <rect
-    width="512"
-    height="512"
-    rx="120"
-    fill="url(#bg)"/>
+  <rect width="512" height="512" fill="url(#bg)"/>
 
+  <!-- Тёмные пиксельные участки -->
+  <path fill="#050a09"
+        d="
+        M0 0H512V85H380V62H300V45H210V68H120V92H0Z"/>
 
-  <!-- Очень лёгкое голубое свечение -->
+  <path fill="#0b1713"
+        d="
+        M0 0H95V512H0Z"/>
 
-  <circle
-    cx="256"
-    cy="256"
-    r="178"
-    fill="#35D8FF"
-    opacity=".07"
-    filter="url(#glow)"/>
-
-  <circle
-    cx="256"
-    cy="256"
-    r="158"
-    fill="#9DEEFF"
-    opacity=".06"/>
+  <path fill="#162820"
+        d="
+        M410 0H512V512H438V350H420Z"/>
 
 
-  <!-- ===================== -->
-  <!-- ЗЕМЛЯ -->
-  <!-- ===================== -->
+  <!-- ================================= -->
+  <!-- WINDOW -->
+  <!-- ================================= -->
 
-  <circle
-    cx="256"
-    cy="256"
-    r="143"
-    fill="url(#ocean)"
-    filter="url(#glow)"/>
+  <!-- Рама -->
+  <rect x="35" y="58" width="380" height="295"
+        fill="#18251d"/>
 
+  <rect x="45" y="68" width="360" height="275"
+        fill="#66715f"/>
 
-  <!-- ===================== -->
-  <!-- МАТЕРИКИ -->
-  <!-- ===================== -->
-
-  <g
-    clip-path="url(#earthClip)"
-    fill="#42B94B">
+  <!-- Небо -->
+  <rect x="57" y="80" width="336" height="250"
+        fill="#b7b4bd"/>
 
 
-    <!-- Северная Америка -->
+  <!-- Светлые снежные пиксели -->
 
-    <path d="
-      M129 177
-      C122 163 130 149 146 140
-      C159 133 174 139 186 146
-      C198 153 210 157 216 168
-      C221 178 211 187 202 194
-      C194 201 190 212 180 216
-      C169 220 163 208 153 204
-      C142 200 137 190 129 177Z"/>
+  <g fill="#e9e9ed">
 
+    <rect x="78" y="101" width="8" height="8"/>
+    <rect x="105" y="132" width="5" height="5"/>
+    <rect x="151" y="94" width="8" height="8"/>
+    <rect x="190" y="151" width="6" height="6"/>
+    <rect x="235" y="110" width="7" height="7"/>
+    <rect x="285" y="137" width="8" height="8"/>
+    <rect x="330" y="103" width="5" height="5"/>
+    <rect x="367" y="157" width="8" height="8"/>
 
-    <!-- Центральная Америка -->
-
-    <path d="
-      M188 207
-      C199 204 210 210 214 219
-      C217 228 211 236 204 241
-      C197 238 191 231 187 223
-      C185 217 185 212 188 207Z"/>
-
-
-    <!-- Южная Америка -->
-
-    <path d="
-      M198 239
-      C211 234 225 241 228 254
-      C231 267 224 279 220 290
-      C216 304 211 319 202 333
-      C196 343 187 338 183 326
-      C179 315 183 303 181 291
-      C178 278 184 267 190 258
-      C195 251 192 244 198 239Z"/>
-
-
-    <!-- Европа -->
-
-    <path d="
-      M250 154
-      C262 148 277 150 287 157
-      C297 163 298 172 289 178
-      C280 182 271 176 263 180
-      C254 183 247 176 247 168
-      C247 162 248 157 250 154Z"/>
-
-
-    <!-- Африка -->
-
-    <path d="
-      M251 187
-      C268 181 288 186 299 200
-      C307 212 304 227 300 239
-      C296 253 291 269 282 282
-      C274 295 261 298 251 288
-      C240 277 237 262 239 247
-      C241 233 235 215 242 202
-      C245 195 248 190 251 187Z"/>
-
-
-    <!-- Азия -->
-
-    <path d="
-      M286 155
-      C303 149 325 152 342 161
-      C358 169 375 174 384 187
-      C392 198 383 207 370 206
-      C357 205 348 198 338 202
-      C328 207 322 217 310 213
-      C300 209 297 198 287 191
-      C277 183 277 163 286 155Z"/>
-
-
-    <!-- Индия -->
-
-    <path d="
-      M326 211
-      C337 211 346 219 345 229
-      C344 239 336 248 328 254
-      C322 246 318 235 319 225
-      C319 219 322 214 326 211Z"/>
-
-
-    <!-- Япония -->
-
-    <path d="
-      M391 190
-      C398 188 403 193 401 199
-      C399 205 394 209 389 207
-      C385 203 387 195 391 190Z"/>
-
-
-    <!-- Австралия -->
-
-    <path d="
-      M350 292
-      C363 284 383 288 393 299
-      C401 309 397 322 386 329
-      C375 336 357 333 347 324
-      C338 315 340 300 350 292Z"/>
-
-
-    <!-- Гренландия -->
-
-    <path d="
-      M181 105
-      C196 96 216 99 226 109
-      C233 117 228 129 216 134
-      C202 138 187 132 181 122
-      C178 116 178 110 181 105Z"/>
+    <rect x="92" y="188" width="7" height="7"/>
+    <rect x="135" y="216" width="5" height="5"/>
+    <rect x="212" y="191" width="8" height="8"/>
+    <rect x="273" y="220" width="6" height="6"/>
+    <rect x="345" y="201" width="8" height="8"/>
 
   </g>
 
 
-  <!-- Светлые участки материков -->
+  <!-- ================================= -->
+  <!-- CITY -->
+  <!-- ================================= -->
 
-  <g
-    clip-path="url(#earthClip)"
-    fill="#65C94F"
-    opacity=".65">
+  <g>
 
-    <path d="
-      M143 164
-      C155 153 173 154 185 162
-      C193 168 193 179 184 187
-      C174 193 159 188 150 182
-      C145 176 142 170 143 164Z"/>
+    <rect x="57" y="248" width="42" height="82"
+          fill="#6e716d"/>
 
-    <path d="
-      M264 193
-      C278 189 292 198 296 211
-      C300 222 294 235 287 243
-      C278 249 268 241 263 230
-      C258 217 257 202 264 193Z"/>
+    <rect x="106" y="225" width="48" height="105"
+          fill="#777873"/>
 
-    <path d="
-      M356 298
-      C368 293 382 299 387 308
-      C391 316 383 323 374 324
-      C363 325 353 317 351 309
-      C351 304 353 301 356 298Z"/>
+    <rect x="161" y="255" width="38" height="75"
+          fill="#676b68"/>
+
+    <rect x="206" y="235" width="52" height="95"
+          fill="#777874"/>
+
+    <rect x="265" y="250" width="43" height="80"
+          fill="#666b67"/>
+
+    <rect x="315" y="221" width="43" height="109"
+          fill="#727570"/>
+
+    <rect x="365" y="258" width="28" height="72"
+          fill="#5f6560"/>
 
   </g>
 
 
-  <!-- Мягкий свет внутри Земли -->
-  <circle
-    cx="256"
-    cy="256"
-    r="143"
-    fill="url(#earthLight)"/>
+  <!-- Окна зданий -->
+
+  <g fill="#f5d98a">
+
+    <rect x="116" y="246" width="9" height="12"/>
+    <rect x="139" y="270" width="8" height="11"/>
+
+    <rect x="219" y="252" width="10" height="12"/>
+    <rect x="243" y="280" width="9" height="11"/>
+
+    <rect x="327" y="238" width="10" height="13"/>
+    <rect x="350" y="270" width="8" height="11"/>
+
+  </g>
 
 
-  <!-- Атмосфера вокруг Земли -->
-  <circle
-    cx="256"
-    cy="256"
-    r="143"
+  <!-- ================================= -->
+  <!-- COMPUTER DESK -->
+  <!-- ================================= -->
+
+  <rect x="43" y="337" width="376" height="18"
+        fill="#080d0b"/>
+
+  <rect x="38" y="355" width="392" height="13"
+        fill="#24372b"/>
+
+  <rect x="50" y="368" width="370" height="7"
+        fill="#0a110e"/>
+
+
+  <!-- ================================= -->
+  <!-- MONITOR -->
+  <!-- ================================= -->
+
+  <!-- Монитор корпус -->
+  <rect x="102" y="155"
+        width="207"
+        height="145"
+        fill="#101917"/>
+
+  <rect x="110" y="163"
+        width="191"
+        height="128"
+        fill="#263934"/>
+
+  <!-- Экран -->
+  <rect x="119" y="172"
+        width="173"
+        height="109"
+        fill="url(#screen)"/>
+
+  <!-- Свечение -->
+  <rect x="119" y="172"
+        width="173"
+        height="109"
+        fill="url(#screenGlow)"/>
+
+
+  <!-- ================================= -->
+  <!-- CODE ON SCREEN -->
+  <!-- ================================= -->
+
+  <g font-family="monospace"
+     font-size="11"
+     font-weight="bold">
+
+    <text x="130" y="190" fill="#63d6bb">
+      &lt;NEROX&gt;
+    </text>
+
+    <text x="130" y="208" fill="#8cc9ff">
+      const game =
+    </text>
+
+    <text x="130" y="226" fill="#e0c77a">
+      new Developer();
+    </text>
+
+    <text x="130" y="244" fill="#72e6a7">
+      project.start();
+    </text>
+
+    <text x="130" y="262" fill="#b991e8">
+      team.connect();
+    </text>
+
+    <text x="130" y="278" fill="#63d6bb">
+      &lt;/NEROX&gt;
+    </text>
+
+  </g>
+
+
+  <!-- Монитор ножка -->
+
+  <rect x="190" y="300"
+        width="32"
+        height="35"
+        fill="#101816"/>
+
+  <rect x="168" y="331"
+        width="76"
+        height="10"
+        fill="#101816"/>
+
+
+  <!-- ================================= -->
+  <!-- KEYBOARD -->
+  <!-- ================================= -->
+
+  <path fill="#111916"
+        d="
+        M125 342
+        H285
+        L302 360
+        H108
+        Z"/>
+
+  <g fill="#4b6257">
+
+    <rect x="130" y="347" width="12" height="5"/>
+    <rect x="147" y="347" width="12" height="5"/>
+    <rect x="164" y="347" width="12" height="5"/>
+    <rect x="181" y="347" width="12" height="5"/>
+    <rect x="198" y="347" width="12" height="5"/>
+    <rect x="215" y="347" width="12" height="5"/>
+    <rect x="232" y="347" width="12" height="5"/>
+    <rect x="249" y="347" width="12" height="5"/>
+    <rect x="266" y="347" width="12" height="5"/>
+
+    <rect x="151" y="355" width="92" height="4"/>
+
+  </g>
+
+
+  <!-- ================================= -->
+  <!-- COFFEE -->
+  <!-- ================================= -->
+
+  <rect x="67" y="326"
+        width="46"
+        height="35"
+        fill="#c6c4ad"/>
+
+  <rect x="72" y="321"
+        width="36"
+        height="7"
+        fill="#dad8c2"/>
+
+  <rect x="77" y="325"
+        width="27"
+        height="6"
+        fill="#705e32"/>
+
+  <!-- ручка кружки -->
+  <path d="
+        M108 332
+        H119
+        V350
+        H108
+        V345
+        H113
+        V337
+        H108
+        Z"
+        fill="#aaa990"/>
+
+
+  <!-- ================================= -->
+  <!-- CAT -->
+  <!-- ================================= -->
+
+  <!-- Тело -->
+  <path
+    d="
+    M267 309
+    Q266 278 279 251
+    Q292 224 320 214
+    Q349 204 378 214
+    Q406 225 420 252
+    Q431 279 426 320
+    L426 390
+    Q426 427 390 445
+    Q348 464 301 447
+    Q265 432 265 392
+    Z"
+    fill="url(#cat)"/>
+
+
+  <!-- Голова -->
+
+  <path
+    d="
+    M267 245
+    Q260 211 270 178
+    L292 145
+    L323 170
+    Q348 158 374 169
+    L407 143
+    L416 181
+    Q433 208 425 245
+    Q417 285 376 302
+    Q331 314 294 291
+    Q274 278 267 245
+    Z"
+    fill="url(#cat)"/>
+
+
+  <!-- Уши внутри -->
+
+  <path
+    d="
+    M282 174
+    L293 155
+    L314 176
+    Z"
+    fill="#9d7c72"/>
+
+  <path
+    d="
+    M389 175
+    L405 153
+    L409 183
+    Z"
+    fill="#9d7c72"/>
+
+
+  <!-- ================================= -->
+  <!-- CAT STRIPES -->
+  <!-- ================================= -->
+
+  <g fill="#4f5946">
+
+    <path d="M278 194 L300 180 L305 187 L282 204Z"/>
+    <path d="M273 214 L300 205 L303 213 L275 224Z"/>
+
+    <path d="M387 181 L412 195 L408 203 L384 190Z"/>
+    <path d="M394 207 L421 216 L418 225 L391 216Z"/>
+
+    <path d="M302 160 L312 174 L304 179 L293 164Z"/>
+    <path d="M384 165 L374 178 L382 182 L393 169Z"/>
+
+  </g>
+
+
+  <!-- ================================= -->
+  <!-- CAT EYES -->
+  <!-- ================================= -->
+
+  <ellipse cx="315" cy="222"
+           rx="19"
+           ry="15"
+           fill="#101410"/>
+
+  <ellipse cx="382" cy="222"
+           rx="19"
+           ry="15"
+           fill="#101410"/>
+
+  <!-- глаза -->
+  <rect x="317" y="216"
+        width="7"
+        height="14"
+        fill="#d8e9a3"/>
+
+  <rect x="380" y="216"
+        width="7"
+        height="14"
+        fill="#d8e9a3"/>
+
+
+  <!-- ================================= -->
+  <!-- NOSE -->
+  <!-- ================================= -->
+
+  <path
+    d="
+    M344 241
+    L354 241
+    L349 247
+    Z"
+    fill="#59483e"/>
+
+
+  <!-- рот -->
+
+  <path
+    d="M349 247 V255 M349 255 L339 260 M349 255 L359 260"
     fill="none"
-    stroke="#B9F5FF"
-    stroke-width="8"
-    opacity=".7"/>
+    stroke="#4b493c"
+    stroke-width="3"/>
 
 
-  <!-- Большой мягкий блик -->
+  <!-- ================================= -->
+  <!-- WHISKERS -->
+  <!-- ================================= -->
 
-  <ellipse
-    cx="205"
-    cy="172"
-    rx="92"
-    ry="62"
-    fill="url(#shine)"/>
+  <g stroke="#d0d4b2"
+     stroke-width="2"
+     opacity=".75">
 
+    <path d="M329 250 L278 241"/>
+    <path d="M329 258 L274 258"/>
+    <path d="M370 250 L420 239"/>
+    <path d="M370 258 L425 260"/>
 
-  <!-- Маленький блик -->
-
-  <ellipse
-    cx="188"
-    cy="145"
-    rx="32"
-    ry="17"
-    fill="#FFFFFF"
-    opacity=".3"/>
+  </g>
 
 
-  <!-- Мягкая тень под Землёй -->
+  <!-- ================================= -->
+  <!-- CAT PAWS -->
+  <!-- ================================= -->
 
-  <ellipse
-    cx="256"
-    cy="414"
-    rx="110"
-    ry="17"
-    fill="#008AC8"
-    opacity=".08"/>
+  <ellipse cx="303"
+           cy="382"
+           rx="37"
+           ry="48"
+           fill="#7d8966"/>
+
+  <ellipse cx="383"
+           cy="382"
+           rx="37"
+           ry="48"
+           fill="#7d8966"/>
 
 
-  <!-- Тонкая рамка -->
+  <!-- лапки -->
 
-  <rect
-    x="24"
-    y="24"
-    width="464"
-    height="464"
-    rx="112"
-    fill="none"
-    stroke="#DCEEF3"
-    stroke-width="2"
-    opacity=".4"/>
+  <g fill="#657052">
+
+    <rect x="287" y="390" width="9" height="12"/>
+    <rect x="300" y="394" width="9" height="12"/>
+    <rect x="313" y="390" width="9" height="12"/>
+
+    <rect x="367" y="390" width="9" height="12"/>
+    <rect x="380" y="394" width="9" height="12"/>
+    <rect x="393" y="390" width="9" height="12"/>
+
+  </g>
+
+
+  <!-- ================================= -->
+  <!-- SMALL NEROX BADGE -->
+  <!-- ================================= -->
+
+  <rect x="292"
+        y="300"
+        width="111"
+        height="26"
+        rx="4"
+        fill="#0b1714"
+        opacity=".9"/>
+
+  <text x="347"
+        y="318"
+        text-anchor="middle"
+        font-family="monospace"
+        font-size="13"
+        font-weight="bold"
+        fill="#8cebd2">
+
+    NEROX DEV
+
+  </text>
+
+
+  <!-- ================================= -->
+  <!-- PIXEL HIGHLIGHTS -->
+  <!-- ================================= -->
+
+  <g fill="#d8e6c1"
+     opacity=".45">
+
+    <rect x="292" y="196" width="6" height="6"/>
+    <rect x="399" y="188" width="5" height="5"/>
+    <rect x="283" y="278" width="5" height="5"/>
+
+  </g>
 
 </svg>
