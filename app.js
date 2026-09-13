@@ -1,67 +1,44 @@
-const USER_KEY = "nexgram_user_v11";
-const SETTINGS_KEY = "nexgram_settings_v11";
+const USER_KEY = "nexgram_user_v7";
+const SETTINGS_KEY = "nexgram_settings_v1";
+const CAPSULES_KEY = "nexgram_capsules_v1";
 
-let deferredPrompt = null;
+const defaultSettings = {
+    theme: "sky",
+    font: "normal",
+
+    animations: true,
+    glass: true,
+
+    language: "Русский",
+
+    notifications: true,
+    sounds: true,
+    vibration: true,
+
+    readReceipts: true,
+    onlineStatus: true,
+
+    visibility: "Все пользователи"
+};
 
 
-const $ = id => document.getElementById(id);
+let settings = loadSettings();
+let capsules = loadCapsules();
+let currentUser = loadUser();
+
+let installPrompt = null;
 
 
-function toast(message) {
+/* =========================================================
+   HELPERS
+========================================================= */
 
-    const el = $("toast");
-
-    el.textContent = message;
-
-    el.classList.add("show");
-
-    clearTimeout(window.toastTimer);
-
-    window.toastTimer = setTimeout(() => {
-        el.classList.remove("show");
-    }, 2500);
+function $(id) {
+    return document.getElementById(id);
 }
 
 
-function showScreen(id) {
-
-    document
-        .querySelectorAll(".screen")
-        .forEach(screen => {
-            screen.classList.remove("active");
-        });
-
-    const target = $(id);
-
-    if (target) {
-        target.classList.add("active");
-    }
-}
-
-
-function showModal(id) {
-
-    const modal = $(id);
-
-    if (modal) {
-        modal.classList.add("show");
-    }
-}
-
-
-function closeModal(id) {
-
-    const modal = $(id);
-
-    if (modal) {
-        modal.classList.remove("show");
-    }
-}
-
-
-/* USER */
-
-function getUser() {
+function loadUser() {
 
     try {
         return JSON.parse(
@@ -75,6 +52,8 @@ function getUser() {
 
 function saveUser(user) {
 
+    currentUser = user;
+
     localStorage.setItem(
         USER_KEY,
         JSON.stringify(user)
@@ -82,47 +61,13 @@ function saveUser(user) {
 }
 
 
-/* SETTINGS */
-
-const defaultSettings = {
-
-    theme: "light",
-
-    fontSize: 16,
-
-    font: "system",
-
-    notifications: true,
-
-    vibration: true,
-
-    animations: true,
-
-    performance: false,
-
-    language: "ru",
-
-    labSmart: false,
-
-    labBlur: true,
-
-    labParticles: false
-
-};
-
-
-let settings = getSettings();
-
-
-function getSettings() {
+function loadSettings() {
 
     try {
 
         const saved =
             JSON.parse(
-                localStorage.getItem(
-                    SETTINGS_KEY
-                )
+                localStorage.getItem(SETTINGS_KEY)
             );
 
         return {
@@ -135,7 +80,6 @@ function getSettings() {
         return {
             ...defaultSettings
         };
-
     }
 }
 
@@ -146,101 +90,74 @@ function saveSettings() {
         SETTINGS_KEY,
         JSON.stringify(settings)
     );
-
 }
 
 
-/* FONT */
+function loadCapsules() {
 
-const fonts = {
+    try {
 
-    system:
-        `Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`,
+        const saved =
+            JSON.parse(
+                localStorage.getItem(CAPSULES_KEY)
+            );
 
-    rounded:
-        `"Trebuchet MS", Arial, sans-serif`,
+        return Array.isArray(saved)
+            ? saved
+            : [];
 
-    mono:
-        `"Courier New", monospace`,
+    } catch {
 
-    serif:
-        `Georgia, "Times New Roman", serif`
-
-};
-
-
-const fontNames = {
-
-    system: "Системный",
-
-    rounded: "Rounded",
-
-    mono: "Mono",
-
-    serif: "Serif"
-
-};
-
-
-function fontSizeName(size) {
-
-    if (size <= 14) return "Маленький";
-
-    if (size >= 20) return "Очень большой";
-
-    if (size >= 18) return "Большой";
-
-    return "Средний";
+        return [];
+    }
 }
 
 
-/* THEMES */
+function saveCapsules() {
 
-const themeNames = {
-
-    light: "Светлая",
-
-    dark: "Тёмная",
-
-    ocean: "Ocean",
-
-    midnight: "Midnight",
-
-    purple: "Purple",
-
-    sunset: "Sunset",
-
-    forest: "Forest",
-
-    rose: "Rose"
-
-};
+    localStorage.setItem(
+        CAPSULES_KEY,
+        JSON.stringify(capsules)
+    );
+}
 
 
-/* LANGUAGES */
+function toast(message) {
 
-const languageNames = {
+    const el = $("toast");
 
-    ru: "Русский",
-    en: "English",
-    uk: "Українська",
-    de: "Deutsch",
-    fr: "Français",
-    es: "Español",
-    it: "Italiano",
-    pt: "Português",
-    pl: "Polski",
-    tr: "Türkçe",
-    ar: "العربية",
-    hi: "हिन्दी",
-    zh: "中文",
-    ja: "日本語",
-    ko: "한국어"
+    el.querySelector("p").textContent =
+        message;
 
-};
+    el.classList.add("show");
+
+    clearTimeout(
+        toast.timer
+    );
+
+    toast.timer = setTimeout(() => {
+
+        el.classList.remove("show");
+
+    }, 2600);
+}
 
 
-/* APPLY */
+function show(id) {
+
+    $(id).classList.remove("hidden");
+}
+
+
+function hide(id) {
+
+    $(id).classList.add("hidden");
+}
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
 
 function applySettings() {
 
@@ -249,956 +166,1768 @@ function applySettings() {
 
     document.documentElement.style
         .setProperty(
-            "--font-size",
-            `${settings.fontSize}px`
-        );
-
-    document.documentElement.style
-        .setProperty(
-            "--font-family",
-            fonts[settings.font] || fonts.system
+            "--font-scale",
+            getFontScale(settings.font)
         );
 
     document.body.classList.toggle(
         "no-animations",
-        !settings.animations ||
-        settings.performance
+        !settings.animations
     );
 
+    document.body.classList.toggle(
+        "no-glass",
+        !settings.glass
+    );
 
-    $("notificationsToggle").checked =
-        settings.notifications;
+    updateSettingsUI();
 
-    $("vibrationToggle").checked =
-        settings.vibration;
+    saveSettings();
+}
 
-    $("animationsToggle").checked =
-        settings.animations;
 
-    $("performanceToggle").checked =
-        settings.performance;
+function getFontScale(font) {
 
+    const values = {
+        small: .90,
+        normal: 1,
+        large: 1.10,
+        xl: 1.22
+    };
+
+    return values[font] || 1;
+}
+
+
+function themeName(theme) {
+
+    const names = {
+        sky: "Небо",
+        ocean: "Океан",
+        night: "Ночь",
+        graphite: "Графит",
+        purple: "Фиолет",
+        green: "Изумруд",
+        sunset: "Закат",
+        ice: "Лёд"
+    };
+
+    return names[theme] || "Небо";
+}
+
+
+function fontName(font) {
+
+    const names = {
+        small: "Маленький",
+        normal: "Обычный",
+        large: "Большой",
+        xl: "Очень большой"
+    };
+
+    return names[font] || "Обычный";
+}
+
+
+function updateSettingsUI() {
 
     $("currentThemeText").textContent =
-        themeNames[settings.theme];
-
-    $("quickThemeText").textContent =
-        themeNames[settings.theme];
-
+        themeName(settings.theme);
 
     $("currentFontText").textContent =
-        `${fontSizeName(settings.fontSize)} · ${fontNames[settings.font]}`;
+        fontName(settings.font);
 
-    $("quickFontText").textContent =
-        fontSizeName(settings.fontSize);
+    $("currentLanguageText").textContent =
+        settings.language;
 
-
-    $("languageValue").textContent =
-        languageNames[settings.language];
-
-    $("quickLanguageText").textContent =
-        languageNames[settings.language];
+    $("visibilityText").textContent =
+        settings.visibility;
 
 
-    $("quickAnimationText").textContent =
+    const animationToggle =
+        $("animationsToggle");
+
+    animationToggle.classList.toggle(
+        "on",
         settings.animations
-            ? "Включены"
-            : "Выключены";
-
-
-    updateThemeButtons();
-    updateFontButtons();
-    updateLanguageButtons();
-    updateLabButtons();
-
-}
-
-
-/* AUTH */
-
-$("registerOpen").onclick = () => {
-    showScreen("registerScreen");
-};
-
-
-$("loginOpen").onclick = () => {
-    showScreen("loginScreen");
-};
-
-
-document
-    .querySelectorAll("[data-back]")
-    .forEach(button => {
-
-        button.onclick = () => {
-
-            showScreen(
-                button.dataset.back
-            );
-
-        };
-
-    });
-
-
-/* REGISTER */
-
-$("registerBtn").onclick = () => {
-
-    const name =
-        $("registerName")
-            .value
-            .trim();
-
-    const email =
-        $("registerEmail")
-            .value
-            .trim();
-
-    const password =
-        $("registerPassword")
-            .value;
-
-
-    if (!name) {
-        toast("Введите имя");
-        return;
-    }
-
-
-    if (
-        !email ||
-        !email.includes("@")
-    ) {
-        toast("Введите корректный email");
-        return;
-    }
-
-
-    if (password.length < 6) {
-        toast(
-            "Пароль должен быть минимум 6 символов"
-        );
-        return;
-    }
-
-
-    saveUser({
-        name,
-        email,
-        anonymous: false,
-        entered: true
-    });
-
-
-    toast("Аккаунт создан");
-
-
-    setTimeout(() => {
-        showScreen("notReadyScreen");
-    }, 500);
-
-};
-
-
-/* LOGIN */
-
-$("loginBtn").onclick = () => {
-
-    const email =
-        $("loginEmail")
-            .value
-            .trim();
-
-    const password =
-        $("loginPassword")
-            .value;
-
-
-    if (
-        !email ||
-        !email.includes("@")
-    ) {
-        toast("Введите email");
-        return;
-    }
-
-
-    if (!password) {
-        toast("Введите пароль");
-        return;
-    }
-
-
-    saveUser({
-
-        name:
-            "Пользователь Nexgram",
-
-        email,
-
-        anonymous: false,
-
-        entered: true
-
-    });
-
-
-    toast("Вход выполнен");
-
-
-    setTimeout(() => {
-        showScreen("notReadyScreen");
-    }, 500);
-
-};
-
-
-/* FORGOT */
-
-$("forgotPassword").onclick = () => {
-
-    showInfo(
-        "Восстановление",
-        "Восстановление пароля появится после подключения настоящей системы аккаунтов."
     );
 
-};
+
+    const glassToggle =
+        $("glassToggle");
+
+    glassToggle.classList.toggle(
+        "on",
+        settings.glass
+    );
 
 
-/* ANONYMOUS */
+    document.querySelectorAll(
+        "[data-toggle]"
+    ).forEach(toggle => {
 
-$("anonymousOpen").onclick = () => {
-    showModal("anonymousModal");
-};
+        const key =
+            toggle.dataset.toggle;
 
-
-$("anonymousBack").onclick = () => {
-    closeModal("anonymousModal");
-};
-
-
-$("anonymousContinue").onclick = () => {
-
-    closeModal("anonymousModal");
-
-
-    saveUser({
-
-        name: "Аноним",
-
-        email: "",
-
-        anonymous: true,
-
-        entered: true
-
-    });
-
-
-    toast("Анонимный режим включён");
-
-
-    setTimeout(() => {
-        showScreen("notReadyScreen");
-    }, 500);
-
-};
-
-
-/* APP */
-
-$("continueBtn").onclick = () => {
-    openApp();
-};
-
-
-function openApp() {
-
-    showScreen("appScreen");
-
-    updateProfile();
-
-    switchPage("chatsPage");
-
-}
-
-
-/* NAVIGATION */
-
-document
-    .querySelectorAll(".nav-item")
-    .forEach(item => {
-
-        item.onclick = () => {
-
-            switchPage(
-                item.dataset.page
-            );
-
-        };
-
-    });
-
-
-function switchPage(pageId) {
-
-    document
-        .querySelectorAll(".page")
-        .forEach(page => {
-            page.classList.remove(
-                "active-page"
-            );
-        });
-
-
-    document
-        .querySelectorAll(".nav-item")
-        .forEach(item => {
-            item.classList.remove("active");
-        });
-
-
-    const page = $(pageId);
-
-    if (page) {
-        page.classList.add("active-page");
-    }
-
-
-    const nav =
-        document.querySelector(
-            `.nav-item[data-page="${pageId}"]`
+        toggle.classList.toggle(
+            "on",
+            Boolean(settings[key])
         );
 
-
-    if (nav) {
-        nav.classList.add("active");
-    }
-
-}
+    });
 
 
-/* THEMES */
+    document.querySelectorAll(
+        "[data-theme]"
+    ).forEach(button => {
 
-$("themesSetting").onclick = () => {
-    showModal("themesModal");
-};
-
-
-$("quickTheme").onclick = () => {
-    showModal("themesModal");
-};
-
-
-document
-    .querySelectorAll(".theme-choice")
-    .forEach(button => {
-
-        button.onclick = () => {
-
-            settings.theme =
-                button.dataset.theme;
-
-            saveSettings();
-
-            applySettings();
-
-            toast(
-                `Тема: ${themeNames[settings.theme]}`
-            );
-
-        };
+        button.classList.toggle(
+            "active",
+            button.dataset.theme ===
+            settings.theme
+        );
 
     });
 
 
-function updateThemeButtons() {
+    document.querySelectorAll(
+        "[data-font]"
+    ).forEach(button => {
 
-    document
-        .querySelectorAll(".theme-choice")
-        .forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.dataset.font ===
+            settings.font
+        );
 
-            button.classList.toggle(
-                "active",
-                button.dataset.theme ===
-                settings.theme
-            );
-
-        });
-
+    });
 }
 
 
-/* FONT */
+/* =========================================================
+   AUTH
+========================================================= */
 
-$("fontSetting").onclick = () => {
-    showModal("fontModal");
-};
+function openAuthScreen(id) {
 
+    [
+        "authScreen",
+        "registerScreen",
+        "loginScreen"
+    ].forEach(screen => {
 
-$("quickFont").onclick = () => {
-    showModal("fontModal");
-};
-
-
-document
-    .querySelectorAll("[data-size]")
-    .forEach(button => {
-
-        button.onclick = () => {
-
-            settings.fontSize =
-                Number(
-                    button.dataset.size
-                );
-
-            saveSettings();
-
-            applySettings();
-
-            toast("Размер текста изменён");
-
-        };
+        $(screen).classList.add("hidden");
 
     });
 
-
-document
-    .querySelectorAll("[data-font]")
-    .forEach(button => {
-
-        button.onclick = () => {
-
-            settings.font =
-                button.dataset.font;
-
-            saveSettings();
-
-            applySettings();
-
-            toast("Шрифт изменён");
-
-        };
-
-    });
-
-
-function updateFontButtons() {
-
-    document
-        .querySelectorAll("[data-size]")
-        .forEach(button => {
-
-            button.classList.toggle(
-                "active",
-                Number(button.dataset.size) ===
-                settings.fontSize
-            );
-
-        });
-
-
-    document
-        .querySelectorAll("[data-font]")
-        .forEach(button => {
-
-            button.classList.toggle(
-                "active",
-                button.dataset.font ===
-                settings.font
-            );
-
-        });
-
+    $(id).classList.remove("hidden");
 }
 
 
-/* LANGUAGE */
-
-$("languageSetting").onclick = () => {
-    showModal("languageModal");
-};
-
-
-$("quickLanguage").onclick = () => {
-    showModal("languageModal");
-};
+$("registerOpen").addEventListener(
+    "click",
+    () => openAuthScreen("registerScreen")
+);
 
 
-document
-    .querySelectorAll("[data-lang]")
-    .forEach(button => {
-
-        button.onclick = () => {
-
-            settings.language =
-                button.dataset.lang;
-
-            saveSettings();
-
-            applySettings();
-
-            toast(
-                `Язык: ${languageNames[settings.language]}`
-            );
-
-        };
-
-    });
+$("loginOpen").addEventListener(
+    "click",
+    () => openAuthScreen("loginScreen")
+);
 
 
-function updateLanguageButtons() {
+document.querySelectorAll(
+    "[data-back-auth]"
+).forEach(button => {
 
-    document
-        .querySelectorAll("[data-lang]")
-        .forEach(button => {
+    button.addEventListener(
+        "click",
+        () => openAuthScreen("authScreen")
+    );
 
-            button.classList.toggle(
-                "active",
-                button.dataset.lang ===
-                settings.language
-            );
-
-        });
-
-}
+});
 
 
-$("languageSearch").addEventListener(
-    "input",
+$("registerForm").addEventListener(
+    "submit",
     event => {
 
-        const query =
-            event.target.value
-                .toLowerCase()
+        event.preventDefault();
+
+        const name =
+            $("registerName")
+                .value
                 .trim();
 
+        const email =
+            $("registerEmail")
+                .value
+                .trim()
+                .toLowerCase();
 
-        document
-            .querySelectorAll(
-                "#languageList button"
+        const password =
+            $("registerPassword")
+                .value;
+
+        if (!name || !email || password.length < 6) {
+
+            toast(
+                "Заполни все поля правильно"
+            );
+
+            return;
+        }
+
+
+        const user = {
+
+            name,
+
+            username:
+                makeUsername(name),
+
+            bio:
+                "В Nexgram с нуля.",
+
+            email,
+
+            password,
+
+            avatar: "",
+
+            anonymous: false,
+
+            createdAt:
+                new Date().toISOString(),
+
+            entered: true
+
+        };
+
+
+        saveUser(user);
+
+        enterMessenger();
+
+        toast(
+            "Аккаунт Nexgram создан"
+        );
+    }
+);
+
+
+$("loginForm").addEventListener(
+    "submit",
+    event => {
+
+        event.preventDefault();
+
+        const email =
+            $("loginEmail")
+                .value
+                .trim()
+                .toLowerCase();
+
+        const password =
+            $("loginPassword")
+                .value;
+
+
+        const saved =
+            loadUser();
+
+
+        if (
+            saved &&
+            saved.email === email &&
+            saved.password === password
+        ) {
+
+            saved.entered = true;
+
+            saveUser(saved);
+
+            enterMessenger();
+
+            toast(
+                "С возвращением в Nexgram"
+            );
+
+            return;
+        }
+
+
+        toast(
+            "Аккаунт с такими данными не найден"
+        );
+    }
+);
+
+
+function makeUsername(name) {
+
+    const clean =
+        name
+            .toLowerCase()
+            .replace(
+                /[^a-zа-яё0-9]/gi,
+                ""
             )
-            .forEach(button => {
+            .slice(0, 14);
 
-                const text =
-                    button.textContent
-                        .toLowerCase();
+    const number =
+        Math.floor(
+            1000 + Math.random() * 9000
+        );
 
-                button.style.display =
-                    !query ||
-                    text.includes(query)
-                        ? "flex"
-                        : "none";
+    return (
+        clean || "nexuser"
+    ) + number;
+}
 
-            });
+
+$("forgotPassword").addEventListener(
+    "click",
+    () => {
+
+        toast(
+            "Восстановление подключим вместе с сервером"
+        );
 
     }
 );
 
 
-/* TOGGLES */
+/* =========================================================
+   ANONYMOUS
+========================================================= */
 
-$("notificationsToggle").onchange =
-    event => {
+$("anonymousOpen").addEventListener(
+    "click",
+    () => {
 
-        settings.notifications =
-            event.target.checked;
+        show("anonymousModal");
 
-        saveSettings();
+    }
+);
+
+
+$("anonymousContinue").addEventListener(
+    "click",
+    () => {
+
+        const user = {
+
+            name: "Аноним",
+
+            username: "anonymous" +
+                Math.floor(
+                    1000 + Math.random() * 9000
+                ),
+
+            bio:
+                "Анонимный режим Nexgram.",
+
+            email: "",
+
+            password: "",
+
+            avatar: "",
+
+            anonymous: true,
+
+            createdAt:
+                new Date().toISOString(),
+
+            entered: true
+
+        };
+
+
+        saveUser(user);
+
+        hide("anonymousModal");
+
+        enterMessenger();
 
         toast(
-            settings.notifications
-                ? "Уведомления включены"
-                : "Уведомления выключены"
+            "Ты вошёл в ограниченный режим"
         );
+    }
+);
 
-    };
+
+/* =========================================================
+   ENTER APP
+========================================================= */
+
+function enterMessenger() {
+
+    hide("authScreen");
+    hide("registerScreen");
+    hide("loginScreen");
+
+    show("appScreen");
+    show("bottomNav");
+    show("rocketButton");
+
+    renderProfile();
+
+    renderCapsules();
+
+    showPage("chatsPage");
+}
 
 
-$("vibrationToggle").onchange =
-    event => {
+function logout() {
 
-        settings.vibration =
-            event.target.checked;
+    localStorage.removeItem(
+        USER_KEY
+    );
 
-        saveSettings();
+    currentUser = null;
 
+    hide("appScreen");
+    hide("bottomNav");
+    hide("rocketButton");
+
+    openAuthScreen("authScreen");
+
+    toast(
+        "Ты вышел из Nexgram"
+    );
+}
+
+
+$("logoutBtn").addEventListener(
+    "click",
+    () => {
 
         if (
-            settings.vibration &&
-            navigator.vibrate
+            confirm(
+                "Выйти из аккаунта Nexgram?"
+            )
         ) {
 
-            navigator.vibrate(40);
+            logout();
 
         }
 
+    }
+);
 
-        toast(
-            settings.vibration
-                ? "Вибрация включена"
-                : "Вибрация выключена"
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function showPage(pageId) {
+
+    document.querySelectorAll(
+        ".app-page"
+    ).forEach(page => {
+
+        page.classList.remove(
+            "active-page"
         );
-
-    };
-
-
-$("animationsToggle").onchange =
-    event => {
-
-        settings.animations =
-            event.target.checked;
-
-        saveSettings();
-
-        applySettings();
-
-        toast(
-            settings.animations
-                ? "Анимации включены"
-                : "Анимации выключены"
-        );
-
-    };
-
-
-$("performanceToggle").onchange =
-    event => {
-
-        settings.performance =
-            event.target.checked;
-
-        saveSettings();
-
-        applySettings();
-
-        toast(
-            settings.performance
-                ? "Режим производительности включён"
-                : "Режим производительности выключен"
-        );
-
-    };
-
-
-/* LAB */
-
-document
-    .querySelectorAll(".lab-option")
-    .forEach(button => {
-
-        button.onclick = () => {
-
-            const type =
-                button.dataset.lab;
-
-
-            if (type === "smart") {
-                settings.labSmart =
-                    !settings.labSmart;
-            }
-
-
-            if (type === "blur") {
-                settings.labBlur =
-                    !settings.labBlur;
-            }
-
-
-            if (type === "particles") {
-                settings.labParticles =
-                    !settings.labParticles;
-            }
-
-
-            saveSettings();
-
-            updateLabButtons();
-
-            toast(
-                "Экспериментальная функция изменена"
-            );
-
-        };
 
     });
 
 
-function updateLabButtons() {
-
-    document
-        .querySelectorAll(".lab-option")
-        .forEach(button => {
-
-            const type =
-                button.dataset.lab;
-
-            let active = false;
+    $(pageId).classList.add(
+        "active-page"
+    );
 
 
-            if (type === "smart") {
-                active = settings.labSmart;
-            }
+    document.querySelectorAll(
+        ".nav-item"
+    ).forEach(item => {
+
+        item.classList.toggle(
+            "active",
+            item.dataset.page === pageId
+        );
+
+    });
 
 
-            if (type === "blur") {
-                active = settings.labBlur;
-            }
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
 
 
-            if (type === "particles") {
-                active = settings.labParticles;
-            }
+document.querySelectorAll(
+    ".nav-item"
+).forEach(button => {
 
+    button.addEventListener(
+        "click",
+        () => {
 
-            button.classList.toggle(
-                "active",
-                active
+            showPage(
+                button.dataset.page
             );
 
-        });
+        }
+    );
+
+});
+
+
+function openSettingsPage() {
+
+    showPage("settingsPage");
 
 }
 
 
-/* QUICK EFFECT */
+function openProfilePage() {
 
-$("quickAnimation").onclick = () => {
-
-    settings.animations =
-        !settings.animations;
-
-    saveSettings();
-
-    applySettings();
-
-    toast(
-        settings.animations
-            ? "Эффекты включены"
-            : "Эффекты выключены"
-    );
-
-};
-
-
-/* INFO */
-
-function showInfo(title, text) {
-
-    $("infoTitle").textContent =
-        title;
-
-    $("infoText").textContent =
-        text;
-
-    showModal("infoModal");
+    showPage("profilePage");
 
 }
 
 
-$("aboutBtn").onclick = () => {
+function openOrbitPage() {
 
-    showInfo(
-        "Nexgram",
-        "Nexgram — собственный современный мессенджер. Проект находится в активной разработке."
+    showPage("orbitPage");
+
+}
+
+
+function openCapsulesPage() {
+
+    showPage("capsulesPage");
+
+}
+
+
+$("openOrbitFromChats")
+    .addEventListener(
+        "click",
+        openOrbitPage
     );
 
-};
 
-
-$("privacyBtn").onclick = () => {
-
-    showInfo(
-        "Приватность",
-        "Здесь будут находиться настройки видимости профиля, статуса онлайн, сообщений и других личных данных."
+$("openProfileFromOrbit")
+    .addEventListener(
+        "click",
+        openProfilePage
     );
 
-};
 
-
-$("securityBtn").onclick = () => {
-
-    showInfo(
-        "Безопасность",
-        "В будущем здесь появятся дополнительные способы защиты аккаунта и управления активными сессиями."
+$("openCapsulesFromOrbit")
+    .addEventListener(
+        "click",
+        openCapsulesPage
     );
 
-};
 
-
-$("dataBtn").onclick = () => {
-
-    showInfo(
-        "Данные приложения",
-        "Настройки Nexgram сейчас сохраняются локально в браузере устройства."
+$("openSettingsFromOrbit")
+    .addEventListener(
+        "click",
+        openSettingsPage
     );
 
-};
 
-
-$("editProfileBtn").onclick = () => {
-
-    const user = getUser();
-
-    if (!user) return;
-
-
-    showInfo(
-        "Профиль",
-        `Ваше имя: ${user.name || "Пользователь Nexgram"}`
+$("openNavigatorFromOrbit")
+    .addEventListener(
+        "click",
+        openNavigator
     );
 
-};
+
+$("openCapsulesFromChats")
+    .addEventListener(
+        "click",
+        openCapsulesPage
+    );
 
 
-/* CLOSE */
-
-document
-    .querySelectorAll("[data-close]")
-    .forEach(button => {
-
-        button.onclick = () => {
-
-            closeModal(
-                button.dataset.close
-            );
-
-        };
-
-    });
+$("openNavigatorFromChats")
+    .addEventListener(
+        "click",
+        openNavigator
+    );
 
 
-document
-    .querySelectorAll(".modal")
-    .forEach(modal => {
-
-        modal.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    event.target === modal
-                ) {
-
-                    modal.classList.remove(
-                        "show"
-                    );
-
-                }
-
-            }
-        );
-
-    });
+$("orbitSettings")
+    .addEventListener(
+        "click",
+        openSettingsPage
+    );
 
 
-$("infoClose").onclick = () => {
-    closeModal("infoModal");
-};
+/* =========================================================
+   PROFILE
+========================================================= */
 
+function renderProfile() {
 
-/* PROFILE */
-
-function updateProfile() {
-
-    const user = getUser();
-
-    if (!user) return;
+    if (!currentUser) {
+        return;
+    }
 
 
     $("profileName").textContent =
-        user.name ||
-        "Пользователь Nexgram";
+        currentUser.name;
 
 
-    $("profileEmail").textContent =
-        user.email ||
-        "Анонимный режим";
-
-
-    $("profileAvatar").textContent =
+    $("profileUsername").textContent =
+        "@" +
         (
-            user.name ||
+            currentUser.username ||
+            "nexuser"
+        );
+
+
+    $("profileBio").textContent =
+        currentUser.bio ||
+        "В Nexgram с нуля.";
+
+
+    const letter =
+        (
+            currentUser.name ||
             "N"
         )
         .charAt(0)
         .toUpperCase();
 
+
+    $("avatarLetter").textContent =
+        letter;
+
+
+    $("navAvatar").textContent =
+        letter;
+
+
+    const avatar =
+        $("profileAvatar");
+
+
+    if (currentUser.avatar) {
+
+        avatar.src =
+            currentUser.avatar;
+
+        $("avatarButton")
+            .classList.add(
+                "has-image"
+            );
+
+        $("navAvatar").innerHTML =
+            `<img
+                src="${currentUser.avatar}"
+                style="
+                    width:100%;
+                    height:100%;
+                    object-fit:cover;
+                "
+            >`;
+
+    } else {
+
+        avatar.removeAttribute(
+            "src"
+        );
+
+        $("avatarButton")
+            .classList.remove(
+                "has-image"
+            );
+
+        $("navAvatar").textContent =
+            letter;
+    }
+
+
+    $("profileCapsuleCount")
+        .textContent =
+        capsules.length;
 }
 
 
-/* LOGOUT */
-
-$("logoutBtn").onclick = () => {
-
-    localStorage.removeItem(USER_KEY);
-
-    toast("Вы вышли из аккаунта");
-
-
-    setTimeout(() => {
-
-        showScreen("authScreen");
-
-    }, 500);
-
-};
-
-
-/* CHAT */
-
-$("newChatBtn").onclick = () => {
-
-    showInfo(
-        "Чаты ещё не готовы",
-        "Создание настоящих чатов появится после подключения серверной части Nexgram."
+$("avatarButton")
+    .addEventListener(
+        "click",
+        chooseAvatar
     );
 
-};
+
+$("changeAvatarBtn")
+    .addEventListener(
+        "click",
+        chooseAvatar
+    );
 
 
-$("chatSearch").addEventListener(
-    "input",
+function chooseAvatar() {
+
+    $("avatarInput").click();
+
+}
+
+
+$("avatarInput").addEventListener(
+    "change",
     event => {
 
-        const value =
-            event.target.value.trim();
+        const file =
+            event.target.files[0];
 
-
-        const title =
-            $("chatEmpty")
-                .querySelector("h3");
-
-
-        const text =
-            $("chatEmpty")
-                .querySelector("p");
-
-
-        if (value) {
-
-            title.textContent =
-                "Ничего не найдено";
-
-            text.textContent =
-                "Настоящие чаты появятся после разработки серверной части.";
-
-        } else {
-
-            title.textContent =
-                "Пока здесь пусто";
-
-            text.textContent =
-                "Когда чаты будут готовы, они появятся здесь.";
-
+        if (!file) {
+            return;
         }
+
+
+        if (
+            !file.type.startsWith(
+                "image/"
+            )
+        ) {
+
+            toast(
+                "Можно выбрать только изображение"
+            );
+
+            return;
+        }
+
+
+        if (
+            file.size >
+            5 * 1024 * 1024
+        ) {
+
+            toast(
+                "Изображение должно быть меньше 5 МБ"
+            );
+
+            return;
+        }
+
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload = () => {
+
+            currentUser.avatar =
+                reader.result;
+
+            saveUser(currentUser);
+
+            renderProfile();
+
+            toast(
+                "Аватар изменён"
+            );
+        };
+
+
+        reader.readAsDataURL(file);
 
     }
 );
 
 
-/* PWA */
+/* =========================================================
+   EDIT PROFILE
+========================================================= */
+
+function openProfileEditor() {
+
+    $("editNameInput").value =
+        currentUser.name || "";
+
+    $("editUsernameInput").value =
+        currentUser.username || "";
+
+    $("editBioInput").value =
+        currentUser.bio || "";
+
+    show("profileEditModal");
+}
+
+
+$("editProfileBtn")
+    .addEventListener(
+        "click",
+        openProfileEditor
+    );
+
+
+$("profileEditTop")
+    .addEventListener(
+        "click",
+        openProfileEditor
+    );
+
+
+$("openProfileFromOrbit")
+    .addEventListener(
+        "click",
+        openProfilePage
+    );
+
+
+$("saveProfileBtn")
+    .addEventListener(
+        "click",
+        () => {
+
+            const name =
+                $("editNameInput")
+                    .value
+                    .trim();
+
+            let username =
+                $("editUsernameInput")
+                    .value
+                    .trim()
+                    .replace(
+                        /^@/,
+                        ""
+                    );
+
+
+            const bio =
+                $("editBioInput")
+                    .value
+                    .trim();
+
+
+            if (!name) {
+
+                toast(
+                    "Имя не может быть пустым"
+                );
+
+                return;
+            }
+
+
+            if (!username) {
+
+                username =
+                    makeUsername(name);
+            }
+
+
+            currentUser.name =
+                name;
+
+            currentUser.username =
+                username;
+
+            currentUser.bio =
+                bio ||
+                "В Nexgram с нуля.";
+
+
+            saveUser(currentUser);
+
+            renderProfile();
+
+            hide("profileEditModal");
+
+            toast(
+                "Профиль сохранён"
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   THEME
+========================================================= */
+
+$("themeSetting")
+    .addEventListener(
+        "click",
+        () => show("themeModal")
+    );
+
+
+document.querySelectorAll(
+    "[data-theme]"
+).forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            settings.theme =
+                button.dataset.theme;
+
+            applySettings();
+
+            toast(
+                "Тема: " +
+                themeName(settings.theme)
+            );
+
+        }
+    );
+
+});
+
+
+/* =========================================================
+   FONT
+========================================================= */
+
+$("fontSetting")
+    .addEventListener(
+        "click",
+        () => show("fontModal")
+    );
+
+
+document.querySelectorAll(
+    "[data-font]"
+).forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            settings.font =
+                button.dataset.font;
+
+            applySettings();
+
+            toast(
+                "Размер: " +
+                fontName(settings.font)
+            );
+
+        }
+    );
+
+});
+
+
+/* =========================================================
+   TOGGLES
+========================================================= */
+
+$("animationsSetting")
+    .addEventListener(
+        "click",
+        () => {
+
+            settings.animations =
+                !settings.animations;
+
+            applySettings();
+
+            toast(
+                settings.animations
+                    ? "Анимации включены"
+                    : "Анимации выключены"
+            );
+
+        }
+    );
+
+
+$("glassSetting")
+    .addEventListener(
+        "click",
+        () => {
+
+            settings.glass =
+                !settings.glass;
+
+            applySettings();
+
+            toast(
+                settings.glass
+                    ? "Стеклянный интерфейс включён"
+                    : "Стеклянный интерфейс выключен"
+            );
+
+        }
+    );
+
+
+document.querySelectorAll(
+    "[data-toggle-setting]"
+).forEach(row => {
+
+    row.addEventListener(
+        "click",
+        () => {
+
+            const key =
+                row.dataset.toggleSetting;
+
+            settings[key] =
+                !settings[key];
+
+            applySettings();
+
+            toast(
+                settings[key]
+                    ? "Настройка включена"
+                    : "Настройка выключена"
+            );
+
+        }
+    );
+
+});
+
+
+/* =========================================================
+   LANGUAGE
+========================================================= */
+
+$("languageSetting")
+    .addEventListener(
+        "click",
+        () => show("languageModal")
+    );
+
+
+document.querySelectorAll(
+    "[data-language]"
+).forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            settings.language =
+                button.dataset.language;
+
+            applySettings();
+
+            hide("languageModal");
+
+            toast(
+                "Язык выбран: " +
+                settings.language
+            );
+
+        }
+    );
+
+});
+
+
+/* =========================================================
+   PRIVACY
+========================================================= */
+
+$("profileVisibilitySetting")
+    .addEventListener(
+        "click",
+        () => {
+
+            const values = [
+                "Все пользователи",
+                "Только контакты",
+                "Никто"
+            ];
+
+            const current =
+                values.indexOf(
+                    settings.visibility
+                );
+
+            const next =
+                values[
+                    (current + 1) %
+                    values.length
+                ];
+
+            settings.visibility =
+                next;
+
+            applySettings();
+
+            toast(
+                "Видимость: " +
+                next
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   CAPSULES
+========================================================= */
+
+$("addCapsuleBtn")
+    .addEventListener(
+        "click",
+        () => show("capsuleModal")
+    );
+
+
+function saveCapsule() {
+
+    const title =
+        $("capsuleTitle")
+            .value
+            .trim();
+
+    const text =
+        $("capsuleText")
+            .value
+            .trim();
+
+
+    if (!title && !text) {
+
+        toast(
+            "Напиши что-нибудь в капсуле"
+        );
+
+        return;
+    }
+
+
+    const capsule = {
+
+        id:
+            Date.now(),
+
+        title:
+            title ||
+            "Без названия",
+
+        text:
+            text,
+
+        createdAt:
+            new Date().toISOString()
+
+    };
+
+
+    capsules.unshift(
+        capsule
+    );
+
+
+    saveCapsules();
+
+    renderCapsules();
+
+    renderProfile();
+
+    $("capsuleTitle").value =
+        "";
+
+    $("capsuleText").value =
+        "";
+
+    hide("capsuleModal");
+
+    toast(
+        "Капсула запечатана ◈"
+    );
+}
+
+
+$("saveCapsuleBtn")
+    .addEventListener(
+        "click",
+        saveCapsule
+    );
+
+
+function renderCapsules() {
+
+    const list =
+        $("capsulesList");
+
+
+    if (!capsules.length) {
+
+        list.innerHTML = `
+
+            <div class="empty-chat-card">
+
+                <div class="capsule-icon"
+                     style="margin:0 auto 15px">
+                    ◈
+                </div>
+
+                <h2>
+                    Пока пусто
+                </h2>
+
+                <p>
+                    Создай первую капсулу —
+                    сохрани мысль, идею или план.
+                </p>
+
+                <button
+                    class="primary-btn"
+                    id="emptyAddCapsule"
+                >
+                    Создать капсулу
+                    <b>+</b>
+                </button>
+
+            </div>
+
+        `;
+
+
+        $("emptyAddCapsule")
+            .addEventListener(
+                "click",
+                () => show("capsuleModal")
+            );
+
+
+        return;
+    }
+
+
+    list.innerHTML =
+        capsules
+            .map(capsule => {
+
+                const date =
+                    new Date(
+                        capsule.createdAt
+                    );
+
+
+                const formatted =
+                    date.toLocaleString(
+                        settings.language === "Русский"
+                            ? "ru-RU"
+                            : "en-US",
+                        {
+                            day: "2-digit",
+                            month: "short",
+                            hour: "2-digit",
+                            minute: "2-digit"
+                        }
+                    );
+
+
+                return `
+
+                    <article
+                        class="capsule-card"
+                        data-id="${capsule.id}"
+                    >
+
+                        <button
+                            class="capsule-delete"
+                            data-delete-capsule="${capsule.id}"
+                        >
+                            ×
+                        </button>
+
+                        <h3>
+                            ${escapeHtml(
+                                capsule.title
+                            )}
+                        </h3>
+
+                        <p>
+                            ${escapeHtml(
+                                capsule.text
+                            )}
+                        </p>
+
+                        <div class="capsule-date">
+                            ${formatted}
+                        </div>
+
+                    </article>
+
+                `;
+
+            })
+            .join("");
+
+
+    list.querySelectorAll(
+        "[data-delete-capsule]"
+    ).forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const id =
+                    Number(
+                        button.dataset
+                            .deleteCapsule
+                    );
+
+
+                capsules =
+                    capsules.filter(
+                        capsule =>
+                            capsule.id !== id
+                    );
+
+
+                saveCapsules();
+
+                renderCapsules();
+
+                renderProfile();
+
+                toast(
+                    "Капсула удалена"
+                );
+
+            }
+        );
+
+    });
+}
+
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+/* =========================================================
+   CLEAR DATA
+========================================================= */
+
+$("clearCapsulesBtn")
+    .addEventListener(
+        "click",
+        () => {
+
+            if (!capsules.length) {
+
+                toast(
+                    "Капсул пока нет"
+                );
+
+                return;
+            }
+
+
+            if (
+                confirm(
+                    "Удалить все локальные капсулы?"
+                )
+            ) {
+
+                capsules = [];
+
+                saveCapsules();
+
+                renderCapsules();
+
+                renderProfile();
+
+                toast(
+                    "Капсулы очищены"
+                );
+
+            }
+
+        }
+    );
+
+
+$("resetSettingsBtn")
+    .addEventListener(
+        "click",
+        () => {
+
+            if (
+                confirm(
+                    "Сбросить все настройки Nexgram?"
+                )
+            ) {
+
+                settings = {
+                    ...defaultSettings
+                };
+
+                applySettings();
+
+                toast(
+                    "Настройки сброшены"
+                );
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   LAB
+========================================================= */
+
+$("labButton")
+    .addEventListener(
+        "click",
+        () => show("labModal")
+    );
+
+
+/* =========================================================
+   NAVIGATOR
+========================================================= */
+
+$("rocketButton")
+    .addEventListener(
+        "click",
+        openNavigator
+    );
+
+
+function openNavigator() {
+
+    show("navigatorModal");
+
+    setTimeout(
+        () => $("navigatorInput").focus(),
+        100
+    );
+
+}
+
+
+$("navigatorInput")
+    .addEventListener(
+        "input",
+        filterNavigator
+    );
+
+
+function filterNavigator() {
+
+    const query =
+        $("navigatorInput")
+            .value
+            .toLowerCase()
+            .trim();
+
+
+    const results =
+        document.querySelectorAll(
+            ".navigator-result"
+        );
+
+
+    results.forEach(result => {
+
+        const text =
+            result.innerText
+                .toLowerCase();
+
+
+        result.style.display =
+            !query ||
+            text.includes(query)
+                ? "flex"
+                : "none";
+
+    });
+
+
+    if (query) {
+
+        const aliases = {
+
+            "аватар": "profile",
+            "фото": "profile",
+            "имя": "profile",
+            "юзер": "profile",
+            "username": "profile",
+
+            "тема": "theme",
+            "цвет": "theme",
+            "фон": "theme",
+
+            "текст": "font",
+            "шрифт": "font",
+            "размер": "font",
+
+            "язык": "language",
+
+            "заметка": "capsules",
+            "заметки": "capsules",
+            "идея": "capsules",
+            "капсула": "capsules",
+
+            "настройки": "settings"
+
+        };
+
+
+        let matched =
+            null;
+
+
+        for (
+            const key in aliases
+        ) {
+
+            if (
+                query.includes(key)
+            ) {
+
+                matched =
+                    aliases[key];
+
+                break;
+            }
+
+        }
+
+
+        if (matched) {
+
+            results.forEach(result => {
+
+                const action =
+                    result.dataset.navAction;
+
+                result.style.display =
+                    action === matched
+                        ? "flex"
+                        : "none";
+
+            });
+
+        }
+
+    }
+
+}
+
+
+document.querySelectorAll(
+    "[data-nav-action]"
+).forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            const action =
+                button.dataset.navAction;
+
+
+            hide("navigatorModal");
+
+
+            switch (action) {
+
+                case "profile":
+                    openProfilePage();
+                    break;
+
+                case "theme":
+                    openSettingsPage();
+                    setTimeout(
+                        () => show("themeModal"),
+                        200
+                    );
+                    break;
+
+                case "font":
+                    openSettingsPage();
+                    setTimeout(
+                        () => show("fontModal"),
+                        200
+                    );
+                    break;
+
+                case "language":
+                    openSettingsPage();
+                    setTimeout(
+                        () => show("languageModal"),
+                        200
+                    );
+                    break;
+
+                case "capsules":
+                    openCapsulesPage();
+                    break;
+
+                case "settings":
+                    openSettingsPage();
+                    break;
+
+            }
+
+        }
+    );
+
+});
+
+
+/* =========================================================
+   MODAL CLOSES
+========================================================= */
+
+document.querySelectorAll(
+    "[data-close-modal]"
+).forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => hide("anonymousModal")
+    );
+
+});
+
+
+document.querySelectorAll(
+    "[data-close-theme]"
+).forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => hide("themeModal")
+    );
+
+});
+
+
+document.querySelectorAll(
+    "[data-close-font]"
+).forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => hide("fontModal")
+    );
+
+});
+
+
+document.querySelectorAll(
+    "[data-close-language]"
+).forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => hide("languageModal")
+    );
+
+});
+
+
+document.querySelectorAll(
+    "[data-close-profile]"
+).forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => hide("profileEditModal")
+    );
+
+});
+
+
+document.querySelectorAll(
+    "[data-close-capsule]"
+).forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => hide("capsuleModal")
+    );
+
+});
+
+
+document.querySelectorAll(
+    "[data-close-lab]"
+).forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => hide("labModal")
+    );
+
+});
+
+
+document.querySelectorAll(
+    "[data-close-navigator]"
+).forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => hide("navigatorModal")
+    );
+
+});
+
+
+document.querySelectorAll(
+    ".modal-overlay"
+).forEach(overlay => {
+
+    overlay.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target === overlay
+            ) {
+
+                overlay.classList.add(
+                    "hidden"
+                );
+
+            }
+
+        }
+    );
+
+});
+
+
+/* =========================================================
+   SEARCH BUTTON
+========================================================= */
+
+$("chatSearchBtn")
+    .addEventListener(
+        "click",
+        () => {
+
+            toast(
+                "Поиск чатов появится вместе с сервером"
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   INSTALL PWA
+========================================================= */
 
 window.addEventListener(
     "beforeinstallprompt",
@@ -1206,38 +1935,48 @@ window.addEventListener(
 
         event.preventDefault();
 
-        deferredPrompt = event;
+        installPrompt =
+            event;
+
+        show("installBtn");
 
     }
 );
 
 
-$("installBtn").onclick = async () => {
+$("installBtn")
+    .addEventListener(
+        "click",
+        async () => {
 
-    if (!deferredPrompt) {
+            if (!installPrompt) {
 
-        showInfo(
-            "Установка Nexgram",
-            "Откройте меню браузера и выберите «Установить приложение» или «Добавить на главный экран»."
-        );
+                toast(
+                    "Открой меню браузера и выбери «Установить приложение»"
+                );
 
-        return;
-
-    }
-
-
-    deferredPrompt.prompt();
-
-    await deferredPrompt.userChoice;
-
-    deferredPrompt = null;
-
-};
+                return;
+            }
 
 
-/* SERVICE WORKER */
+            installPrompt.prompt();
 
-if ("serviceWorker" in navigator) {
+            await installPrompt.userChoice;
+
+            installPrompt =
+                null;
+
+        }
+    );
+
+
+/* =========================================================
+   SERVICE WORKER
+========================================================= */
+
+if (
+    "serviceWorker" in navigator
+) {
 
     window.addEventListener(
         "load",
@@ -1245,16 +1984,15 @@ if ("serviceWorker" in navigator) {
 
             navigator.serviceWorker
                 .register(
-                    "./sw.js?v=11"
+                    "./sw.js?v=8"
                 )
-                .catch(error => {
-
-                    console.log(
-                        "SW error:",
-                        error
-                    );
-
-                });
+                .catch(
+                    error =>
+                        console.log(
+                            "SW error:",
+                            error
+                        )
+                );
 
         }
     );
@@ -1262,20 +2000,26 @@ if ("serviceWorker" in navigator) {
 }
 
 
-/* START */
+/* =========================================================
+   START
+========================================================= */
 
 applySettings();
 
+renderCapsules();
 
-const user = getUser();
 
+if (
+    currentUser &&
+    currentUser.entered
+) {
 
-if (user && user.entered) {
-
-    showScreen("notReadyScreen");
+    enterMessenger();
 
 } else {
 
-    showScreen("authScreen");
+    openAuthScreen(
+        "authScreen"
+    );
 
 }
