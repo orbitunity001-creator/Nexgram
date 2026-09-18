@@ -1,364 +1,653 @@
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
+  overflow: hidden;
+
+  background: #07090d;
+
+  color: #f4f7fb;
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+
+/* ========================================
+   APP
+======================================== */
+
+.app {
+  width: 100vw;
+  height: 100vh;
+
   min-height: 100vh;
 
-  background:
-    radial-gradient(circle at center, #20304a 0%, #0b1018 55%, #05070b 100%);
+  display: flex;
+  flex-direction: column;
 
-  color: white;
-  font-family: Arial, sans-serif;
+  background:
+    radial-gradient(
+      ellipse at 50% 42%,
+      rgba(35, 62, 88, 0.34) 0%,
+      rgba(10, 14, 20, 0.5) 42%,
+      #07090d 78%
+    );
+
+  position: relative;
+
+  isolation: isolate;
+}
+
+
+/* тонкая сетка */
+
+.app::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.025;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,0.5) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,0.5) 1px,
+      transparent 1px
+    );
+
+  background-size: 50px 50px;
+
+  z-index: -1;
+}
+
+
+/* ========================================
+   TOPBAR
+======================================== */
+
+.topbar {
+  height: 76px;
+
+  padding: 0 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.075);
+
+  background:
+    rgba(6, 9, 14, 0.5);
+
+  backdrop-filter: blur(16px);
+}
+
+
+.brand {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+}
+
+
+.brand-mark {
+  width: 38px;
+  height: 38px;
+
+  border: 1px solid rgba(255,255,255,0.22);
+
+  border-radius: 10px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  overflow: hidden;
-}
+  font-weight: 800;
+  font-size: 17px;
 
-.robot-app {
-  width: min(1100px, 94vw);
-}
-
-.robot-card {
-  width: 100%;
-  min-height: 650px;
-
-  padding: 30px;
-
-  border-radius: 35px;
-
-  background: rgba(20, 28, 40, 0.92);
-
-  border: 1px solid rgba(255,255,255,0.12);
-
-  box-shadow:
-    0 30px 80px rgba(0,0,0,0.55),
-    inset 0 1px rgba(255,255,255,0.08);
-
-  display: flex;
-  flex-direction: column;
-}
-
-.robot-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-h1 {
-  margin: 0;
-  font-size: 38px;
-  letter-spacing: 5px;
-}
-
-#status {
-  margin: 7px 0 0;
-  color: #aab6c7;
-  font-size: 15px;
-}
-
-.online {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  padding: 9px 15px;
-
-  border-radius: 20px;
-
-  background: rgba(50, 220, 130, 0.1);
-
-  color: #62e99b;
-
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.online span {
-  width: 9px;
-  height: 9px;
-
-  background: #55e994;
-
-  border-radius: 50%;
-
-  box-shadow: 0 0 15px #55e994;
-}
-
-.robot-screen {
-  flex: 1;
-
-  margin-top: 25px;
-
-  border-radius: 28px;
+  letter-spacing: 1px;
 
   background:
     linear-gradient(
       145deg,
-      #101a29,
-      #080d15
+      #202a36,
+      #10151c
     );
 
-  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow:
+    inset 0 1px rgba(255,255,255,0.08);
+}
 
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+
+.brand-text strong {
+  font-size: 17px;
+
+  letter-spacing: 4px;
+}
+
+
+.brand-text span {
+  font-size: 8px;
+
+  letter-spacing: 2px;
+
+  color: #697584;
+}
+
+
+.system-status {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 9px 13px;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius: 30px;
+
+  color: #a9b5c3;
+
+  font-size: 10px;
+
+  letter-spacing: 2px;
+
+  background:
+    rgba(255,255,255,0.025);
+}
+
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #65e39a;
+
+  box-shadow:
+    0 0 10px rgba(101,227,154,0.7);
+}
+
+
+/* ========================================
+   MAIN
+======================================== */
+
+.main {
+  flex: 1;
+
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px 30px 10px;
+}
+
+
+/* ========================================
+   ROBOT AREA
+======================================== */
+
+.robot-area {
+  width: 100%;
+
+  flex: 1;
+
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+.face-container {
   display: flex;
   align-items: center;
   justify-content: center;
 
-  gap: 55px;
-
-  padding: 40px;
-}
-
-/* FACE */
-
-.face {
-  width: 300px;
-  height: 300px;
-
-  border-radius: 50%;
-
-  background: linear-gradient(145deg, #293a50, #121b28);
-
-  border: 7px solid #526a84;
-
-  box-shadow:
-    0 0 50px rgba(80,180,255,0.15),
-    inset 0 0 40px rgba(0,0,0,0.5);
+  min-height: 230px;
 
   position: relative;
-
-  flex-shrink: 0;
-
-  transition: 0.3s;
 }
 
-.eyes {
+
+/* свет вокруг лица */
+
+.face-container::before {
+  content: "";
+
   position: absolute;
 
-  top: 92px;
-  left: 0;
-  right: 0;
+  width: 320px;
+  height: 180px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(65, 190, 255, 0.055);
+
+  filter: blur(55px);
+
+  pointer-events: none;
+}
+
+
+/* ========================================
+   ASCII FACE
+======================================== */
+
+.face {
+  position: relative;
+
+  z-index: 1;
+
+  font-family:
+    "Courier New",
+    Consolas,
+    monospace;
+
+  font-size:
+    clamp(100px, 14vw, 185px);
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing: 5px;
+
+  color: #8de7ff;
+
+  text-shadow:
+    0 0 7px rgba(141,231,255,0.9),
+    0 0 25px rgba(82,201,255,0.65),
+    0 0 70px rgba(82,201,255,0.2);
+
+  user-select: none;
+
+  transition:
+    transform 0.25s ease,
+    opacity 0.2s ease;
+}
+
+
+/* ========================================
+   ROBOT INFO
+======================================== */
+
+.robot-info {
+  text-align: center;
+
+  margin-top: 5px;
+}
+
+
+.robot-name {
+  font-size: 11px;
+
+  letter-spacing: 5px;
+
+  color: #65717f;
+}
+
+
+.robot-status {
+  margin-top: 8px;
+
+  font-size:
+    clamp(17px, 2vw, 22px);
+
+  color: #dce4ec;
+
+  font-weight: 400;
+}
+
+
+/* ========================================
+   CONTROL PANEL
+======================================== */
+
+.control-panel {
+  width: min(620px, 90vw);
 
   display: flex;
-  justify-content: center;
-  gap: 75px;
+  flex-direction: column;
+
+  align-items: center;
+
+  padding-bottom: 5px;
 }
 
-.eye {
-  width: 34px;
-  height: 50px;
 
-  border-radius: 50%;
+.panel-line {
+  width: 100%;
 
-  background: #72d8ff;
+  height: 1px;
 
-  box-shadow:
-    0 0 20px #72d8ff;
+  margin-bottom: 22px;
 
-  transition: 0.3s;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.1),
+      transparent
+    );
 }
 
-.mouth {
-  position: absolute;
 
-  left: 50%;
-  bottom: 75px;
+/* ========================================
+   START BUTTON
+======================================== */
 
-  transform: translateX(-50%);
+.start-button {
+  width: min(430px, 85vw);
 
-  width: 90px;
-  height: 35px;
+  height: 64px;
 
-  border-bottom: 7px solid #72d8ff;
+  border: 1px solid
+    rgba(139,231,255,0.32);
 
-  border-radius: 50%;
+  border-radius: 16px;
 
-  transition: 0.3s;
-}
+  background:
+    linear-gradient(
+      180deg,
+      #17384b,
+      #102735
+    );
 
-/* HAPPY */
-
-.face.happy .mouth {
-  width: 90px;
-  height: 45px;
-}
-
-/* SAD */
-
-.face.sad .mouth {
-  width: 85px;
-  height: 35px;
-
-  border-bottom: none;
-  border-top: 7px solid #72d8ff;
-}
-
-/* ANGRY */
-
-.face.angry .eye {
-  transform: rotate(-15deg);
-}
-
-.face.angry .right-eye {
-  transform: rotate(15deg);
-}
-
-.face.angry .mouth {
-  border-bottom: none;
-  border-top: 7px solid #ff7070;
-}
-
-/* SURPRISED */
-
-.face.surprised .eye {
-  width: 45px;
-  height: 60px;
-}
-
-.face.surprised .mouth {
-  width: 45px;
-  height: 55px;
-
-  border: 7px solid #72d8ff;
-  border-radius: 50%;
-}
-
-/* SPEECH */
-
-.speech {
-  max-width: 480px;
-
-  padding: 25px 30px;
-
-  border-radius: 25px;
-
-  background: rgba(255,255,255,0.06);
-
-  border: 1px solid rgba(255,255,255,0.1);
-
-  color: #e9f2ff;
-
-  font-size: 24px;
-  line-height: 1.4;
-
-  min-height: 100px;
+  color: #eafaff;
 
   display: flex;
   align-items: center;
-}
-
-/* CONTROLS */
-
-.controls {
-  display: flex;
-
   justify-content: center;
 
-  gap: 15px;
+  gap: 13px;
 
-  margin-top: 25px;
-}
+  font-size: 16px;
 
-button {
-  border: none;
+  font-weight: 700;
 
-  padding: 17px 30px;
-
-  border-radius: 18px;
-
-  font-size: 17px;
-  font-weight: bold;
+  letter-spacing: 3px;
 
   cursor: pointer;
 
-  color: white;
+  box-shadow:
+    0 10px 35px
+      rgba(0,0,0,0.3),
+    inset 0 1px
+      rgba(255,255,255,0.09);
 
-  background: #26384e;
-
-  transition: 0.2s;
+  transition:
+    transform 0.15s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-button:hover {
-  transform: translateY(-2px);
 
-  background: #344c67;
+.start-button:hover {
+  border-color:
+    rgba(139,231,255,0.65);
+
+  background:
+    linear-gradient(
+      180deg,
+      #1c455b,
+      #143243
+    );
+
+  box-shadow:
+    0 12px 40px
+      rgba(43,170,220,0.15),
+    inset 0 1px
+      rgba(255,255,255,0.12);
+
+  transform:
+    translateY(-1px);
 }
 
-#talkButton {
-  background: #2675d9;
+
+.start-button:active {
+  transform:
+    translateY(1px)
+    scale(0.99);
 }
 
-#talkButton:hover {
-  background: #3187f0;
+
+.button-icon {
+  font-size: 13px;
+
+  color: #8de7ff;
 }
 
-button:active {
-  transform: scale(0.97);
+
+.hint {
+  margin-top: 11px;
+
+  color: #56616d;
+
+  font-size: 10px;
+
+  letter-spacing: 1px;
 }
 
-/* LISTENING */
 
-.robot-card.listening .face {
-  animation: pulse 1.2s infinite;
+/* ========================================
+   FOOTER
+======================================== */
+
+.footer {
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  color: #3f4954;
+
+  font-size: 8px;
+
+  letter-spacing: 2px;
 }
 
-@keyframes pulse {
-  0%, 100% {
-    box-shadow:
-      0 0 30px rgba(80,180,255,0.15);
+
+.separator {
+  color: #28313a;
+}
+
+
+/* ========================================
+   FACE ANIMATIONS
+======================================== */
+
+.face.blink {
+  transform:
+    scaleY(0.15);
+}
+
+
+.face.wake {
+  animation:
+    wakeFace 0.7s ease;
+}
+
+
+@keyframes wakeFace {
+
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+}
+
+
+/* ========================================
+   RUNNING STATE
+======================================== */
+
+.app.running .status-dot {
+  animation:
+    statusPulse 1.2s infinite;
+}
+
+
+.app.running .face {
+  animation:
+    idleFace 4s ease-in-out infinite;
+}
+
+
+@keyframes statusPulse {
+
+  0%,
+  100% {
+    opacity: 1;
   }
 
   50% {
-    box-shadow:
-      0 0 70px rgba(80,180,255,0.5);
+    opacity: 0.35;
   }
+
 }
 
-/* MOBILE */
 
-@media (max-width: 750px) {
+@keyframes idleFace {
 
-  body {
-    overflow: auto;
+  0%,
+  100% {
+    transform: translateY(0);
   }
 
-  .robot-card {
-    min-height: auto;
+  50% {
+    transform: translateY(-4px);
   }
 
-  .robot-screen {
-    flex-direction: column;
+}
 
-    gap: 25px;
 
-    padding: 25px;
+/* ========================================
+   MOBILE / LOW HEIGHT
+======================================== */
+
+@media (max-height: 600px) {
+
+  .topbar {
+    height: 58px;
+
+    padding: 0 22px;
+  }
+
+  .brand-mark {
+    width: 32px;
+    height: 32px;
+  }
+
+  .face-container {
+    min-height: 145px;
   }
 
   .face {
-    width: 220px;
-    height: 220px;
+    font-size:
+      clamp(65px, 20vh, 125px);
   }
 
-  .eyes {
-    top: 65px;
-    gap: 55px;
+  .robot-status {
+    font-size: 15px;
   }
 
-  .eye {
-    width: 27px;
-    height: 40px;
+  .panel-line {
+    margin-bottom: 12px;
   }
 
-  .mouth {
-    bottom: 50px;
+  .start-button {
+    height: 52px;
   }
 
-  .speech {
-    font-size: 18px;
+  .footer {
+    height: 30px;
   }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .topbar {
+    padding: 0 17px;
+  }
+
+  .brand-text span {
+    display: none;
+  }
+
+  .system-status {
+    padding: 7px 10px;
+  }
+
+  .main {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .face {
+    letter-spacing: 2px;
+  }
+
 }
