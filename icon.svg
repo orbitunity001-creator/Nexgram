@@ -517,4 +517,428 @@
 
   </g>
 
+</svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+  <defs>
+
+    <!-- Основное свечение -->
+    <filter id="glow"
+      x="-100%" y="-100%"
+      width="300%" height="300%">
+
+      <feGaussianBlur
+        stdDeviation="4"
+        result="blur"/>
+
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+
+    </filter>
+
+    <!-- Мягкое свечение -->
+    <filter id="soft"
+      x="-100%" y="-100%"
+      width="300%" height="300%">
+
+      <feGaussianBlur stdDeviation="15"/>
+
+    </filter>
+
+    <!-- Светлый металл -->
+    <linearGradient
+      id="silver"
+      x1="0"
+      y1="0"
+      x2="1"
+      y2="1">
+
+      <stop offset="0"
+        stop-color="#FFFFFF"/>
+
+      <stop offset=".48"
+        stop-color="#E8ECEF"/>
+
+      <stop offset="1"
+        stop-color="#9EA7AD"/>
+
+    </linearGradient>
+
+    <!-- Корпус -->
+    <linearGradient
+      id="body"
+      x1="0"
+      y1="0"
+      x2="0"
+      y2="1">
+
+      <stop offset="0"
+        stop-color="#171B1E"/>
+
+      <stop offset=".5"
+        stop-color="#0A0C0E"/>
+
+      <stop offset="1"
+        stop-color="#030405"/>
+
+    </linearGradient>
+
+  </defs>
+
+
+  <!-- =================================
+       ФОН
+  ================================= -->
+
+  <rect
+    width="512"
+    height="512"
+    rx="112"
+    fill="#010203"
+  />
+
+  <ellipse
+    cx="256"
+    cy="280"
+    rx="195"
+    ry="190"
+    fill="#FFFFFF"
+    opacity=".035"
+    filter="url(#soft)"
+  />
+
+
+  <!-- =================================
+       АНТЕННА
+  ================================= -->
+
+  <path
+    d="M256 58 V104"
+    fill="none"
+    stroke="#E9EDF0"
+    stroke-width="6"
+    stroke-linecap="round"
+  />
+
+  <circle
+    cx="256"
+    cy="47"
+    r="11"
+    fill="#FFFFFF"
+    filter="url(#glow)"
+  />
+
+
+  <!-- =================================
+       ГОЛОВА
+  ================================= -->
+
+  <rect
+    x="116"
+    y="105"
+    width="280"
+    height="270"
+    rx="70"
+    fill="url(#body)"
+    stroke="url(#silver)"
+    stroke-width="9"
+    filter="url(#glow)"
+  />
+
+
+  <!-- верхний отражённый кант -->
+
+  <path
+    d="M174 126 Q256 108 338 126"
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="3"
+    opacity=".2"
+  />
+
+
+  <!-- =================================
+       БОКОВЫЕ МОДУЛИ
+  ================================= -->
+
+  <rect
+    x="95"
+    y="188"
+    width="21"
+    height="82"
+    rx="10"
+    fill="#DCE1E4"
+    filter="url(#glow)"
+  />
+
+  <rect
+    x="396"
+    y="188"
+    width="21"
+    height="82"
+    rx="10"
+    fill="#DCE1E4"
+    filter="url(#glow)"
+  />
+
+  <!-- технические прорези -->
+
+  <path
+    d="M101 207 V250"
+    stroke="#FFFFFF"
+    stroke-width="2"
+    opacity=".5"
+  />
+
+  <path
+    d="M411 207 V250"
+    stroke="#FFFFFF"
+    stroke-width="2"
+    opacity=".5"
+  />
+
+
+  <!-- =================================
+       ГЛАЗА
+       БЕЗ ЗРАЧКОВ
+  ================================= -->
+
+  <rect
+    x="160"
+    y="173"
+    width="78"
+    height="43"
+    rx="21"
+    fill="#FFFFFF"
+    filter="url(#glow)"
+  />
+
+  <rect
+    x="274"
+    y="173"
+    width="78"
+    height="43"
+    rx="21"
+    fill="#FFFFFF"
+    filter="url(#glow)"
+  />
+
+
+  <!-- лёгкая внутренняя линия глаз -->
+
+  <path
+    d="M178 195 H220"
+    stroke="#D9DEE2"
+    stroke-width="3"
+    stroke-linecap="round"
+    opacity=".7"
+  />
+
+  <path
+    d="M292 195 H334"
+    stroke="#D9DEE2"
+    stroke-width="3"
+    stroke-linecap="round"
+    opacity=".7"
+  />
+
+
+  <!-- =================================
+       ЕСТЕСТВЕННЫЙ РОТ
+  ================================= -->
+
+  <path
+    d="
+      M214 271
+      C226 279 241 283 256 283
+      C271 283 286 279 298 271
+    "
+    fill="none"
+    stroke="#F1F3F4"
+    stroke-width="6"
+    stroke-linecap="round"
+    filter="url(#glow)"
+  />
+
+
+  <!-- =================================
+       ПЛЕЧИ
+  ================================= -->
+
+  <path
+    d="M137 314 Q256 348 375 314"
+    fill="none"
+    stroke="#596268"
+    stroke-width="3"
+    opacity=".5"
+  />
+
+
+  <!-- =================================
+       РУКИ — БОЛЕЕ РОБОТИЗИРОВАННЫЕ
+  ================================= -->
+
+  <!-- левая верхняя часть -->
+
+  <path
+    d="
+      M119 302
+      C96 302 78 312 67 331
+    "
+    fill="none"
+    stroke="url(#silver)"
+    stroke-width="13"
+    stroke-linecap="round"
+    filter="url(#glow)"
+  />
+
+  <!-- левый сустав -->
+
+  <circle
+    cx="65"
+    cy="336"
+    r="15"
+    fill="#0A0C0E"
+    stroke="#E3E7E9"
+    stroke-width="6"
+    filter="url(#glow)"
+  />
+
+  <circle
+    cx="65"
+    cy="336"
+    r="5"
+    fill="#FFFFFF"
+  />
+
+
+  <!-- правая верхняя часть -->
+
+  <path
+    d="
+      M393 302
+      C416 302 434 312 445 331
+    "
+    fill="none"
+    stroke="url(#silver)"
+    stroke-width="13"
+    stroke-linecap="round"
+    filter="url(#glow)"
+  />
+
+  <!-- правый сустав -->
+
+  <circle
+    cx="447"
+    cy="336"
+    r="15"
+    fill="#0A0C0E"
+    stroke="#E3E7E9"
+    stroke-width="6"
+    filter="url(#glow)"
+  />
+
+  <circle
+    cx="447"
+    cy="336"
+    r="5"
+    fill="#FFFFFF"
+  />
+
+
+  <!-- =================================
+       КНИГА
+  ================================= -->
+
+  <path
+    d="
+      M103 356
+      Q174 331 256 359
+      Q338 331 409 356
+      V451
+      Q339 425 256 451
+      Q173 425 103 451
+      Z
+    "
+    fill="#07090A"
+    stroke="url(#silver)"
+    stroke-width="8"
+    stroke-linejoin="round"
+    filter="url(#glow)"
+  />
+
+
+  <!-- центральный корешок -->
+
+  <path
+    d="M256 359 V451"
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="7"
+    stroke-linecap="round"
+    filter="url(#glow)"
+  />
+
+
+  <!-- страницы -->
+
+  <g
+    fill="none"
+    stroke="#BFC6CA"
+    stroke-width="4"
+    stroke-linecap="round">
+
+    <path d="M126 379 Q174 365 230 380"/>
+    <path d="M126 398 Q174 383 230 399"/>
+    <path d="M126 417 Q174 402 230 418"/>
+
+    <path d="M282 380 Q338 365 386 379"/>
+    <path d="M282 399 Q338 383 386 398"/>
+    <path d="M282 418 Q338 402 386 417"/>
+
+  </g>
+
+
+  <!-- =================================
+       ПАЛЬЦЫ НА КНИГЕ
+  ================================= -->
+
+  <path
+    d="
+      M67 350
+      Q82 358 101 367
+    "
+    fill="none"
+    stroke="#E5E9EB"
+    stroke-width="8"
+    stroke-linecap="round"
+  />
+
+  <path
+    d="
+      M445 350
+      Q430 358 411 367
+    "
+    fill="none"
+    stroke="#E5E9EB"
+    stroke-width="8"
+    stroke-linecap="round"
+  />
+
+
+  <!-- =================================
+       НИЖНЕЕ СВЕЧЕНИЕ
+  ================================= -->
+
+  <ellipse
+    cx="256"
+    cy="464"
+    rx="155"
+    ry="19"
+    fill="#FFFFFF"
+    opacity=".045"
+    filter="url(#soft)"
+  />
+
 </svg>
