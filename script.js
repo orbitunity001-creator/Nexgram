@@ -1,294 +1,188 @@
-const talkButton = document.getElementById("talkButton");
-const stopButton = document.getElementById("stopButton");
+const app =
+  document.querySelector(".app");
 
-const speechBox = document.getElementById("speech");
-const statusText = document.getElementById("status");
+const face =
+  document.getElementById("face");
 
-const robotFace = document.getElementById("robotFace");
+const status =
+  document.getElementById("robotStatus");
 
-let recognition = null;
-
-const SpeechRecognition =
-  window.SpeechRecognition ||
-  window.webkitSpeechRecognition;
-
-if (SpeechRecognition) {
-
-  recognition = new SpeechRecognition();
-
-  recognition.lang = "ru-RU";
-
-  recognition.continuous = false;
-
-  recognition.interimResults = false;
-
-  recognition.maxAlternatives = 1;
-
-  recognition.onstart = () => {
-
-    statusText.textContent = "Слушаю тебя...";
-
-    document
-      .querySelector(".robot-card")
-      .classList.add("listening");
-
-    setFace("surprised");
-  };
-
-  recognition.onresult = (event) => {
-
-    const text =
-      event.results[0][0].transcript
-        .toLowerCase()
-        .trim();
-
-    console.log("Ты сказал:", text);
-
-    answer(text);
-  };
-
-  recognition.onerror = (event) => {
-
-    console.log("Ошибка:", event.error);
-
-    statusText.textContent =
-      "Не получилось услышать";
-
-    setFace("sad");
-
-    speechBox.textContent =
-      "Я не расслышал. Попробуй ещё раз.";
-
-  };
-
-  recognition.onend = () => {
-
-    document
-      .querySelector(".robot-card")
-      .classList.remove("listening");
-
-    if (
-      statusText.textContent ===
-      "Слушаю тебя..."
-    ) {
-      statusText.textContent =
-        "Готов к разговору";
-    }
-  };
-
-} else {
-
-  talkButton.disabled = true;
-
-  statusText.textContent =
-    "Браузер не поддерживает микрофон";
-}
+const startButton =
+  document.getElementById("startButton");
 
 
 /*
-    НАСТРОЕНИЯ РОБОТА
+========================================
+ЛИЦА РОБОТА
+========================================
 */
 
-function setFace(mood) {
+const faces = [
 
-  robotFace.className = "face " + mood;
-}
+  "^_^",
+  ":-)",
+  ":-D",
+  "^o^",
+  "(^o^)",
+  "8-)",
+  "B-)",
+  ":-P",
+  ";-)",
+  "O:-)",
+  ":-|",
+  ":-/",
+  ":-\\"
+
+];
 
 
 /*
-    ОТВЕТЫ
+========================================
+АНИМАЦИЯ МОРГАНИЯ
+========================================
 */
 
-function answer(text) {
+function blink() {
 
-  let response = "";
-  let mood = "happy";
-
-  if (
-    text.includes("привет") ||
-    text.includes("здравствуй")
-  ) {
-
-    response =
-      "Привет! Рад тебя видеть.";
-
-    mood = "happy";
-
-  } else if (
-    text.includes("как дела") ||
-    text.includes("как ты")
-  ) {
-
-    response =
-      "У меня всё отлично! Я готов разговаривать.";
-
-    mood = "happy";
-
-  } else if (
-    text.includes("грустно") ||
-    text.includes("грусть")
-  ) {
-
-    response =
-      "Не грусти. Я рядом и могу с тобой поговорить.";
-
-    mood = "sad";
-
-  } else if (
-    text.includes("злой") ||
-    text.includes("сердит")
-  ) {
-
-    response =
-      "Ого! Кажется, кто-то сегодня сердится.";
-
-    mood = "angry";
-
-  } else if (
-    text.includes("вау") ||
-    text.includes("удив")
-  ) {
-
-    response =
-      "Вау! Это действительно неожиданно!";
-
-    mood = "surprised";
-
-  } else if (
-    text.includes("пока") ||
-    text.includes("до свидания")
-  ) {
-
-    response =
-      "Пока! Ещё увидимся.";
-
-    mood = "happy";
-
-  } else {
-
-    response =
-      "Ты сказал: " + text;
-
-    mood = "happy";
-  }
-
-  showAnswer(response, mood);
-}
-
-
-/*
-    ПОКАЗЫВАЕМ ОТВЕТ
-*/
-
-function showAnswer(text, mood) {
-
-  speechBox.textContent = text;
-
-  statusText.textContent =
-    "Говорю...";
-
-  setFace(mood);
-
-  speak(text, mood);
-}
-
-
-/*
-    ГОЛОС
-*/
-
-function speak(text, mood) {
-
-  if (!("speechSynthesis" in window)) {
-
-    statusText.textContent =
-      "Голос не поддерживается";
-
+  if (!app.classList.contains("running")) {
     return;
   }
 
-  window.speechSynthesis.cancel();
+  face.classList.add("blink");
 
-  const utterance =
-    new SpeechSynthesisUtterance(text);
+  setTimeout(() => {
 
-  utterance.lang = "ru-RU";
+    face.classList.remove("blink");
 
-  utterance.rate = 0.95;
+  }, 130);
 
-  utterance.pitch = 1.05;
-
-  utterance.volume = 1;
-
-  /*
-     Немного меняем голос
-     в зависимости от настроения
-  */
-
-  if (mood === "happy") {
-    utterance.pitch = 1.2;
-    utterance.rate = 1.0;
-  }
-
-  if (mood === "sad") {
-    utterance.pitch = 0.8;
-    utterance.rate = 0.85;
-  }
-
-  if (mood === "angry") {
-    utterance.pitch = 0.7;
-    utterance.rate = 1.05;
-  }
-
-  if (mood === "surprised") {
-    utterance.pitch = 1.35;
-    utterance.rate = 1.1;
-  }
-
-  utterance.onend = () => {
-
-    statusText.textContent =
-      "Готов к разговору";
-  };
-
-  window.speechSynthesis.speak(
-    utterance
-  );
 }
 
 
 /*
-    КНОПКИ
+========================================
+СЛУЧАЙНОЕ ЛИЦО
+========================================
 */
 
-talkButton.addEventListener(
+function changeFace() {
+
+  const current =
+    face.textContent;
+
+  let next;
+
+  do {
+
+    next =
+      faces[
+        Math.floor(
+          Math.random() *
+          faces.length
+        )
+      ];
+
+  } while (
+    next === current &&
+    faces.length > 1
+  );
+
+  face.classList.add("wake");
+
+  setTimeout(() => {
+
+    face.textContent = next;
+
+  }, 120);
+
+  setTimeout(() => {
+
+    face.classList.remove("wake");
+
+  }, 800);
+
+}
+
+
+/*
+========================================
+ЗАПУСК
+========================================
+*/
+
+let started = false;
+
+
+startButton.addEventListener(
   "click",
   () => {
 
-    if (!recognition) {
+    if (started) {
       return;
     }
 
-    window.speechSynthesis.cancel();
+    started = true;
 
-    recognition.start();
+    app.classList.add("running");
+
+    status.textContent =
+      "Система запущена";
+
+    startButton.innerHTML = `
+      <span class="button-icon">●</span>
+      <span class="button-text">РОБОТ ЗАПУЩЕН</span>
+    `;
+
+    face.textContent = "^_^";
+
+    /*
+      Через небольшое время
+      робот начинает менять эмоции
+    */
+
+    setTimeout(() => {
+
+      status.textContent =
+        "Готов к работе";
+
+    }, 1200);
+
   }
 );
 
 
-stopButton.addEventListener(
-  "click",
-  () => {
+/*
+========================================
+АВТОМАТИЧЕСКОЕ МОРГАНИЕ
+========================================
+*/
 
-    if (recognition) {
-      recognition.stop();
-    }
+setInterval(() => {
 
-    window.speechSynthesis.cancel();
+  if (
+    started &&
+    Math.random() > 0.35
+  ) {
 
-    statusText.textContent =
-      "Готов к разговору";
+    blink();
 
-    setFace("happy");
   }
-);
+
+}, 3200);
+
+
+/*
+========================================
+ПЕРИОДИЧЕСКАЯ СМЕНА ЭМОЦИИ
+========================================
+*/
+
+setInterval(() => {
+
+  if (!started) {
+    return;
+  }
+
+  changeFace();
+
+}, 6500);
