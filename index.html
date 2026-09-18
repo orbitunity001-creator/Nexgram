@@ -2,61 +2,131 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Мой Робот</title>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+
+  <meta name="theme-color" content="#080b10">
+
+  <title>ROBO — Robot Interface</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <main class="robot-app">
 
-    <section class="robot-card">
+  <div class="app">
 
-      <div class="robot-header">
-        <div>
-          <h1>ROBO</h1>
-          <p id="status">Готов к разговору</p>
+    <!-- Верхняя панель -->
+    <header class="topbar">
+
+      <div class="brand">
+        <div class="brand-mark">
+          R
         </div>
 
-        <div class="online">
-          <span></span>
-          ONLINE
+        <div class="brand-text">
+          <strong>ROBO</strong>
+          <span>PERSONAL ROBOT</span>
         </div>
       </div>
 
-      <div class="robot-screen">
 
-        <div id="robotFace" class="face happy">
+      <div class="system-status">
+        <span class="status-dot"></span>
+        <span>READY</span>
+      </div>
 
-          <div class="eyes">
-            <div class="eye left-eye"></div>
-            <div class="eye right-eye"></div>
+    </header>
+
+
+    <!-- Основной экран -->
+    <main class="main">
+
+      <section class="robot-area">
+
+        <div class="face-container">
+
+          <div
+            id="face"
+            class="face"
+            aria-label="Лицо робота"
+          >
+            ^_^
           </div>
 
-          <div id="mouth" class="mouth"></div>
+        </div>
+
+
+        <div class="robot-info">
+
+          <div class="robot-name">
+            ROBO
+          </div>
+
+          <div
+            id="robotStatus"
+            class="robot-status"
+          >
+            Готов к запуску
+          </div>
 
         </div>
 
-        <div id="speech" class="speech">
-          Привет! Я готов разговаривать.
+      </section>
+
+
+      <!-- Нижняя панель -->
+      <section class="control-panel">
+
+        <div class="panel-line"></div>
+
+        <button
+          id="startButton"
+          class="start-button"
+          type="button"
+        >
+
+          <span class="button-icon">
+            ▶
+          </span>
+
+          <span class="button-text">
+            НАЧАТЬ
+          </span>
+
+        </button>
+
+        <div class="hint">
+          Нажмите, чтобы запустить робота
         </div>
 
-      </div>
+      </section>
 
-      <div class="controls">
-        <button id="talkButton">
-          🎤 Говорить
-        </button>
+    </main>
 
-        <button id="stopButton">
-          🔇 Стоп
-        </button>
-      </div>
 
-    </section>
+    <!-- Нижняя информация -->
+    <footer class="footer">
 
-  </main>
+      <span>ROBO SYSTEM</span>
+
+      <span class="separator">•</span>
+
+      <span>v1.0</span>
+
+      <span class="separator">•</span>
+
+      <span>LOCAL</span>
+
+    </footer>
+
+  </div>
+
 
   <script src="script.js"></script>
+
 </body>
 </html>
