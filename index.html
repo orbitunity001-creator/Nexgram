@@ -1,132 +1,1152 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>School Escape</title>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  >
+<style>
+* {
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+}
 
-  <meta name="theme-color" content="#080b10">
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #080b10;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-  <title>ROBO — Robot Interface</title>
+#game {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at center, #303842 0%, #12161c 55%, #07090d 100%);
+}
 
-  <link rel="stylesheet" href="style.css">
+/* ---------- GAME WORLD ---------- */
+
+#world {
+    position: absolute;
+    inset: 0;
+    perspective: 900px;
+    overflow: hidden;
+}
+
+#floor {
+    position: absolute;
+    left: -20%;
+    top: 55%;
+    width: 140%;
+    height: 70%;
+    transform: perspective(500px) rotateX(63deg);
+    transform-origin: top center;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(255,255,255,.045) 0 2px,
+            transparent 2px 80px
+        ),
+        repeating-linear-gradient(
+            0deg,
+            rgba(0,0,0,.18) 0 2px,
+            transparent 2px 80px
+        ),
+        #5c6268;
+}
+
+.wall {
+    position: absolute;
+    top: 0;
+    height: 62%;
+    width: 50%;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(255,255,255,.03) 0 3px,
+            transparent 3px 100px
+        ),
+        #41474e;
+}
+
+#wallLeft {
+    left: 0;
+    transform: skewY(12deg);
+    transform-origin: right;
+}
+
+#wallRight {
+    right: 0;
+    transform: skewY(-12deg);
+    transform-origin: left;
+}
+
+#backWall {
+    position: absolute;
+    top: 0;
+    left: 15%;
+    width: 70%;
+    height: 55%;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            #444a50 0 98px,
+            #34393f 98px 102px
+        );
+    border-bottom: 8px solid #22262b;
+}
+
+/* ---------- WINDOWS / DECOR ---------- */
+
+.window {
+    position: absolute;
+    width: 130px;
+    height: 100px;
+    top: 14%;
+    background: #78a8c7;
+    border: 9px solid #272b30;
+    box-shadow: inset 0 0 25px rgba(255,255,255,.25);
+}
+
+.window::before,
+.window::after {
+    content: "";
+    position: absolute;
+    background: #272b30;
+}
+
+.window::before {
+    width: 8px;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.window::after {
+    height: 8px;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#w1 { left: 21%; }
+#w2 { right: 21%; }
+
+/* ---------- NPC ---------- */
+
+#teacher {
+    position: absolute;
+    left: 50%;
+    top: 24%;
+    width: 100px;
+    height: 190px;
+    transform: translateX(-50%) scale(.8);
+    transition: transform .1s linear;
+    z-index: 20;
+    display: none;
+}
+
+.head {
+    position: absolute;
+    top: 0;
+    left: 17px;
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    background: #d49b72;
+    border: 4px solid #704d3a;
+}
+
+.eye {
+    position: absolute;
+    top: 25px;
+    width: 9px;
+    height: 12px;
+    border-radius: 50%;
+    background: #151515;
+}
+
+.eye.left { left: 17px; }
+.eye.right { right: 17px; }
+
+.mouth {
+    position: absolute;
+    left: 25px;
+    top: 43px;
+    width: 20px;
+    height: 7px;
+    border-bottom: 4px solid #291b17;
+    border-radius: 50%;
+}
+
+.body {
+    position: absolute;
+    left: 20px;
+    top: 64px;
+    width: 60px;
+    height: 95px;
+    border-radius: 15px 15px 5px 5px;
+    background: #263b64;
+    border: 4px solid #17243e;
+}
+
+.arm {
+    position: absolute;
+    width: 17px;
+    height: 80px;
+    background: #d49b72;
+    top: 70px;
+    border-radius: 10px;
+}
+
+.arm.left {
+    left: 2px;
+    transform: rotate(14deg);
+}
+
+.arm.right {
+    right: 2px;
+    transform: rotate(-14deg);
+}
+
+.leg {
+    position: absolute;
+    top: 150px;
+    width: 22px;
+    height: 55px;
+    background: #17191c;
+    border-radius: 8px;
+}
+
+.leg.left { left: 23px; }
+.leg.right { right: 23px; }
+
+#teacherLabel {
+    position: absolute;
+    top: -35px;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-size: 13px;
+    text-shadow: 0 2px 4px #000;
+}
+
+/* ---------- OBJECTS ---------- */
+
+.notebook {
+    position: absolute;
+    width: 70px;
+    height: 55px;
+    background: #e7e1bd;
+    border: 4px solid #242424;
+    box-shadow: 7px 7px 0 rgba(0,0,0,.25);
+    z-index: 10;
+}
+
+.notebook::after {
+    content: "✎";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: #b22e2e;
+    font-size: 27px;
+}
+
+#book1 { left: 28%; top: 42%; }
+#book2 { right: 29%; top: 38%; }
+#book3 { left: 48%; top: 49%; }
+
+.door {
+    position: absolute;
+    width: 85px;
+    height: 150px;
+    bottom: 45%;
+    background: #633f2d;
+    border: 8px solid #2a211c;
+    z-index: 5;
+}
+
+.door::after {
+    content: "";
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    right: 12px;
+    top: 50%;
+    border-radius: 50%;
+    background: #e3c15a;
+}
+
+#door1 { left: 12%; }
+#door2 { right: 12%; }
+
+/* ---------- HUD ---------- */
+
+#hud {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+}
+
+#topbar {
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.stat {
+    padding: 9px 13px;
+    border: 2px solid rgba(255,255,255,.15);
+    border-radius: 10px;
+    background: rgba(0,0,0,.55);
+    color: #fff;
+    backdrop-filter: blur(5px);
+    font-weight: bold;
+}
+
+#crosshair {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 22px;
+    height: 22px;
+    transform: translate(-50%, -50%);
+}
+
+#crosshair::before,
+#crosshair::after {
+    content: "";
+    position: absolute;
+    background: rgba(255,255,255,.9);
+}
+
+#crosshair::before {
+    width: 22px;
+    height: 2px;
+    top: 10px;
+}
+
+#crosshair::after {
+    height: 22px;
+    width: 2px;
+    left: 10px;
+}
+
+#message {
+    position: absolute;
+    left: 50%;
+    bottom: 18%;
+    transform: translateX(-50%);
+    min-width: 280px;
+    padding: 13px 20px;
+    text-align: center;
+    color: white;
+    background: rgba(0,0,0,.72);
+    border-radius: 12px;
+    opacity: 0;
+    transition: opacity .2s;
+}
+
+/* ---------- START SCREEN ---------- */
+
+#menu,
+#gameOver,
+#winScreen {
+    position: absolute;
+    inset: 0;
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background:
+        radial-gradient(circle, rgba(45,55,70,.92), rgba(5,7,10,.98));
+    color: white;
+    text-align: center;
+}
+
+#gameOver,
+#winScreen {
+    display: none;
+}
+
+.title {
+    font-size: clamp(42px, 8vw, 90px);
+    font-weight: 900;
+    letter-spacing: -4px;
+    text-shadow: 5px 5px 0 #111;
+    margin: 0;
+}
+
+.subtitle {
+    opacity: .75;
+    max-width: 600px;
+    padding: 0 20px;
+    line-height: 1.5;
+}
+
+button {
+    margin-top: 25px;
+    padding: 15px 30px;
+    border: 0;
+    border-radius: 12px;
+    background: #e7b93d;
+    color: #17130a;
+    font-weight: 900;
+    font-size: 17px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #8c6a17;
+}
+
+button:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #8c6a17;
+}
+
+/* ---------- CONTROLS ---------- */
+
+#controls {
+    position: absolute;
+    z-index: 200;
+    left: 20px;
+    bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 58px);
+    grid-template-rows: repeat(2, 58px);
+    gap: 7px;
+}
+
+.control {
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,.2);
+    background: rgba(0,0,0,.45);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-weight: bold;
+    font-size: 21px;
+    pointer-events: auto;
+}
+
+#up { grid-column: 2; }
+#left { grid-column: 1; grid-row: 2; }
+#down { grid-column: 2; grid-row: 2; }
+#right { grid-column: 3; grid-row: 2; }
+
+#sprint {
+    position: absolute;
+    right: 20px;
+    bottom: 25px;
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    background: rgba(210,70,70,.7);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-weight: bold;
+    pointer-events: auto;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 700px) {
+    .window { display: none; }
+
+    #topbar {
+        left: 8px;
+        top: 8px;
+    }
+
+    .stat {
+        font-size: 12px;
+        padding: 7px 9px;
+    }
+
+    #controls {
+        left: 10px;
+        bottom: 10px;
+    }
+
+    .control {
+        width: 50px;
+        height: 50px;
+    }
+
+    #sprint {
+        right: 12px;
+        bottom: 18px;
+        width: 70px;
+        height: 70px;
+    }
+}
+</style>
 </head>
 
 <body>
 
-  <div class="app">
+<div id="game">
 
-    <!-- Верхняя панель -->
-    <header class="topbar">
+    <!-- MENU -->
+    <div id="menu">
+        <h1 class="title">SCHOOL ESCAPE</h1>
+        <p class="subtitle">
+            Найди все тетради, реши задания и выберись из школы.
+            Но учитель уже знает, что ты здесь...
+        </p>
 
-      <div class="brand">
-        <div class="brand-mark">
-          R
+        <button id="startBtn">НАЧАТЬ ИГРУ</button>
+
+        <p style="opacity:.5;margin-top:25px">
+            WASD / стрелки — движение • Shift — бег • E — взаимодействие
+        </p>
+    </div>
+
+    <!-- WORLD -->
+    <div id="world">
+
+        <div id="backWall"></div>
+        <div id="wallLeft" class="wall"></div>
+        <div id="wallRight" class="wall"></div>
+        <div id="floor"></div>
+
+        <div id="w1" class="window"></div>
+        <div id="w2" class="window"></div>
+
+        <div id="door1" class="door"></div>
+        <div id="door2" class="door"></div>
+
+        <div id="book1" class="notebook"></div>
+        <div id="book2" class="notebook"></div>
+        <div id="book3" class="notebook"></div>
+
+        <div id="teacher">
+            <div id="teacherLabel">УЧИТЕЛЬ</div>
+            <div class="head">
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="mouth"></div>
+            </div>
+            <div class="body"></div>
+            <div class="arm left"></div>
+            <div class="arm right"></div>
+            <div class="leg left"></div>
+            <div class="leg right"></div>
         </div>
 
-        <div class="brand-text">
-          <strong>ROBO</strong>
-          <span>PERSONAL ROBOT</span>
-        </div>
-      </div>
+    </div>
 
+    <!-- HUD -->
+    <div id="hud">
 
-      <div class="system-status">
-        <span class="status-dot"></span>
-        <span>READY</span>
-      </div>
-
-    </header>
-
-
-    <!-- Основной экран -->
-    <main class="main">
-
-      <section class="robot-area">
-
-        <div class="face-container">
-
-          <div
-            id="face"
-            class="face"
-            aria-label="Лицо робота"
-          >
-            ^_^
-          </div>
-
+        <div id="topbar">
+            <div class="stat">📚 Тетради: <span id="books">0/3</span></div>
+            <div class="stat">⚡ Энергия: <span id="energy">100</span></div>
+            <div class="stat">❤️ Жизни: <span id="lives">3</span></div>
         </div>
 
+        <div id="crosshair"></div>
+        <div id="message"></div>
 
-        <div class="robot-info">
+    </div>
 
-          <div class="robot-name">
-            ROBO
-          </div>
+    <!-- MOBILE CONTROLS -->
+    <div id="controls">
+        <div class="control" id="up">▲</div>
+        <div class="control" id="left">◀</div>
+        <div class="control" id="down">▼</div>
+        <div class="control" id="right">▶</div>
+    </div>
 
-          <div
-            id="robotStatus"
-            class="robot-status"
-          >
-            Готов к запуску
-          </div>
+    <div id="sprint">БЕГ</div>
 
-        </div>
+    <!-- GAME OVER -->
+    <div id="gameOver">
+        <h1 class="title">ТЫ ПОПАЛСЯ</h1>
+        <p class="subtitle">
+            Учитель догнал тебя.
+        </p>
+        <button onclick="restartGame()">ИГРАТЬ СНОВА</button>
+    </div>
 
-      </section>
+    <!-- WIN -->
+    <div id="winScreen">
+        <h1 class="title">ТЫ ВЫБРАЛСЯ!</h1>
+        <p class="subtitle">
+            Все тетради собраны. Школа осталась позади.
+        </p>
+        <button onclick="restartGame()">ЕЩЁ РАЗ</button>
+    </div>
 
+</div>
 
-      <!-- Нижняя панель -->
-      <section class="control-panel">
+<script>
+/* =========================================================
+   SCHOOL ESCAPE
+   Original browser game
+   ========================================================= */
 
-        <div class="panel-line"></div>
+const game = {
+    running: false,
+    books: 0,
+    lives: 3,
+    energy: 100,
+    sprinting: false,
 
-        <button
-          id="startButton"
-          class="start-button"
-          type="button"
-        >
+    player: {
+        x: 50,
+        y: 55,
+        speed: 0.45
+    },
 
-          <span class="button-icon">
-            ▶
-          </span>
+    teacher: {
+        x: 50,
+        y: 24,
+        speed: 0.055,
+        active: false
+    },
 
-          <span class="button-text">
-            НАЧАТЬ
-          </span>
+    keys: {}
+};
 
-        </button>
+const bookPositions = [
+    {x: 28, y: 42, collected:false},
+    {x: 71, y: 38, collected:false},
+    {x: 48, y: 49, collected:false}
+];
 
-        <div class="hint">
-          Нажмите, чтобы запустить робота
-        </div>
+const bookElements = [
+    document.getElementById("book1"),
+    document.getElementById("book2"),
+    document.getElementById("book3")
+];
 
-      </section>
+const teacherEl = document.getElementById("teacher");
 
-    </main>
+const booksEl = document.getElementById("books");
+const energyEl = document.getElementById("energy");
+const livesEl = document.getElementById("lives");
+const messageEl = document.getElementById("message");
 
+const menu = document.getElementById("menu");
+const gameOver = document.getElementById("gameOver");
+const winScreen = document.getElementById("winScreen");
 
-    <!-- Нижняя информация -->
-    <footer class="footer">
+let messageTimer = null;
 
-      <span>ROBO SYSTEM</span>
+/* ---------------- AUDIO ---------------- */
 
-      <span class="separator">•</span>
+const AudioContextClass =
+    window.AudioContext || window.webkitAudioContext;
 
-      <span>v1.0</span>
+let audioCtx = null;
 
-      <span class="separator">•</span>
+function initAudio() {
+    if (!audioCtx) {
+        audioCtx = new AudioContextClass();
+    }
+}
 
-      <span>LOCAL</span>
+function beep(freq = 440, duration = .08, type = "square") {
+    if (!audioCtx) return;
 
-    </footer>
+    const oscillator = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
 
-  </div>
+    oscillator.type = type;
+    oscillator.frequency.value = freq;
 
+    gain.gain.setValueAtTime(.06, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        audioCtx.currentTime + duration
+    );
 
-  <script src="script.js"></script>
+    oscillator.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + duration);
+}
+
+/* ---------------- UI ---------------- */
+
+function showMessage(text) {
+    messageEl.textContent = text;
+    messageEl.style.opacity = "1";
+
+    clearTimeout(messageTimer);
+
+    messageTimer = setTimeout(() => {
+        messageEl.style.opacity = "0";
+    }, 2200);
+}
+
+function updateHUD() {
+    booksEl.textContent = `${game.books}/3`;
+    energyEl.textContent = Math.round(game.energy);
+    livesEl.textContent = game.lives;
+}
+
+/* ---------------- GAME START ---------------- */
+
+document.getElementById("startBtn").addEventListener("click", () => {
+    initAudio();
+    startGame();
+});
+
+function startGame() {
+
+    game.running = true;
+    game.books = 0;
+    game.lives = 3;
+    game.energy = 100;
+
+    game.player.x = 50;
+    game.player.y = 55;
+
+    game.teacher.x = 50;
+    game.teacher.y = 24;
+    game.teacher.active = false;
+
+    bookPositions.forEach((b, i) => {
+        b.collected = false;
+        bookElements[i].style.display = "block";
+    });
+
+    menu.style.display = "none";
+    gameOver.style.display = "none";
+    winScreen.style.display = "none";
+
+    teacherEl.style.display = "none";
+
+    updateHUD();
+
+    showMessage("Собери 3 тетради и найди выход!");
+
+    beep(440, .12);
+}
+
+/* ---------------- INPUT ---------------- */
+
+window.addEventListener("keydown", e => {
+
+    game.keys[e.key.toLowerCase()] = true;
+
+    if (e.key === "Shift") {
+        game.sprinting = true;
+    }
+
+    if (e.key.toLowerCase() === "e") {
+        interact();
+    }
+});
+
+window.addEventListener("keyup", e => {
+
+    game.keys[e.key.toLowerCase()] = false;
+
+    if (e.key === "Shift") {
+        game.sprinting = false;
+    }
+});
+
+/* ---------------- MOBILE INPUT ---------------- */
+
+function holdButton(id, key) {
+
+    const element = document.getElementById(id);
+
+    element.addEventListener("pointerdown", e => {
+        e.preventDefault();
+        game.keys[key] = true;
+    });
+
+    element.addEventListener("pointerup", e => {
+        e.preventDefault();
+        game.keys[key] = false;
+    });
+
+    element.addEventListener("pointerleave", () => {
+        game.keys[key] = false;
+    });
+}
+
+holdButton("up", "w");
+holdButton("down", "s");
+holdButton("left", "a");
+holdButton("right", "d");
+
+document.getElementById("sprint")
+    .addEventListener("pointerdown", () => {
+        game.sprinting = true;
+    });
+
+document.getElementById("sprint")
+    .addEventListener("pointerup", () => {
+        game.sprinting = false;
+    });
+
+/* ---------------- MOVEMENT ---------------- */
+
+function updatePlayer() {
+
+    if (!game.running) return;
+
+    let dx = 0;
+    let dy = 0;
+
+    if (
+        game.keys["w"] ||
+        game.keys["arrowup"]
+    ) dy -= 1;
+
+    if (
+        game.keys["s"] ||
+        game.keys["arrowdown"]
+    ) dy += 1;
+
+    if (
+        game.keys["a"] ||
+        game.keys["arrowleft"]
+    ) dx -= 1;
+
+    if (
+        game.keys["d"] ||
+        game.keys["arrowright"]
+    ) dx += 1;
+
+    if (dx !== 0 || dy !== 0) {
+
+        const length = Math.sqrt(dx * dx + dy * dy);
+
+        dx /= length;
+        dy /= length;
+
+        let speed = game.player.speed;
+
+        if (game.sprinting && game.energy > 0) {
+            speed *= 1.8;
+            game.energy -= .7;
+        } else {
+            game.energy += .25;
+        }
+
+        game.player.x += dx * speed;
+        game.player.y += dy * speed;
+
+        game.energy = Math.max(
+            0,
+            Math.min(100, game.energy)
+        );
+
+        game.player.x = Math.max(
+            8,
+            Math.min(92, game.player.x)
+        );
+
+        game.player.y = Math.max(
+            15,
+            Math.min(82, game.player.y)
+        );
+    }
+
+    updateHUD();
+}
+
+/* ---------------- BOOKS ---------------- */
+
+function checkBooks() {
+
+    bookPositions.forEach((book, index) => {
+
+        if (book.collected) return;
+
+        const dx = game.player.x - book.x;
+        const dy = game.player.y - book.y;
+
+        const distance = Math.sqrt(
+            dx * dx + dy * dy
+        );
+
+        if (distance < 6) {
+
+            book.collected = true;
+            bookElements[index].style.display = "none";
+
+            game.books++;
+
+            beep(700, .1);
+            beep(900, .1);
+
+            showMessage(
+                `Тетрадь найдена! ${game.books}/3`
+            );
+
+            if (game.books === 1) {
+
+                game.teacher.active = true;
+                teacherEl.style.display = "block";
+
+                showMessage(
+                    "Кажется, учитель заметил тебя..."
+                );
+
+                beep(180, .25, "sawtooth");
+            }
+
+            if (game.books === 3) {
+                showMessage(
+                    "Все тетради собраны! Найди выход!"
+                );
+            }
+        }
+    });
+}
+
+/* ---------------- TEACHER AI ---------------- */
+
+function updateTeacher() {
+
+    if (!game.teacher.active || !game.running)
+        return;
+
+    const dx =
+        game.player.x -
+        game.teacher.x;
+
+    const dy =
+        game.player.y -
+        game.teacher.y;
+
+    const distance = Math.sqrt(
+        dx * dx + dy * dy
+    );
+
+    if (distance > 0.1) {
+
+        game.teacher.x +=
+            (dx / distance) *
+            game.teacher.speed;
+
+        game.teacher.y +=
+            (dy / distance) *
+            game.teacher.speed;
+    }
+
+    const scale =
+        Math.max(.55, Math.min(1.25, 1.2 - distance / 80));
+
+    teacherEl.style.left =
+        game.teacher.x + "%";
+
+    teacherEl.style.top =
+        game.teacher.y + "%";
+
+    teacherEl.style.transform =
+        `translateX(-50%) scale(${scale})`;
+
+    if (distance < 6) {
+        catchPlayer();
+    }
+}
+
+/* ---------------- CATCH ---------------- */
+
+let lastCatch = 0;
+
+function catchPlayer() {
+
+    const now = Date.now();
+
+    if (now - lastCatch < 1800)
+        return;
+
+    lastCatch = now;
+
+    game.lives--;
+
+    beep(100, .4, "sawtooth");
+
+    updateHUD();
+
+    if (game.lives <= 0) {
+        loseGame();
+        return;
+    }
+
+    game.player.x = 50;
+    game.player.y = 65;
+
+    game.energy = 60;
+
+    showMessage(
+        `Тебя поймали! Осталось жизней: ${game.lives}`
+    );
+}
+
+/* ---------------- INTERACTION ---------------- */
+
+function interact() {
+
+    if (!game.running)
+        return;
+
+    // Exit is near bottom-center.
+    const exitX = 50;
+    const exitY = 80;
+
+    const dx = game.player.x - exitX;
+    const dy = game.player.y - exitY;
+
+    const distance = Math.sqrt(
+        dx * dx + dy * dy
+    );
+
+    if (distance < 9) {
+
+        if (game.books >= 3) {
+            winGame();
+        } else {
+            showMessage(
+                `Выход закрыт. Нужно найти ещё ${3 - game.books} тетради.`
+            );
+            beep(180, .12);
+        }
+    }
+}
+
+/* ---------------- WIN / LOSE ---------------- */
+
+function winGame() {
+
+    game.running = false;
+
+    beep(600, .15);
+    beep(800, .15);
+    beep(1100, .25);
+
+    winScreen.style.display = "flex";
+}
+
+function loseGame() {
+
+    game.running = false;
+
+    gameOver.style.display = "flex";
+}
+
+function restartGame() {
+    startGame();
+}
+
+/* ---------------- WORLD UPDATE ---------------- */
+
+function renderPlayerView() {
+
+    // Slight camera effect based on player movement.
+    const offsetX =
+        (game.player.x - 50) * -0.18;
+
+    const offsetY =
+        (game.player.y - 50) * -0.12;
+
+    document.getElementById("backWall").style.transform =
+        `translate(${offsetX}px, ${offsetY}px)`;
+
+    document.getElementById("wallLeft").style.transform =
+        `skewY(12deg) translate(${offsetX}px, ${offsetY}px)`;
+
+    document.getElementById("wallRight").style.transform =
+        `skewY(-12deg) translate(${offsetX}px, ${offsetY}px)`;
+}
+
+/* ---------------- GAME LOOP ---------------- */
+
+function gameLoop() {
+
+    updatePlayer();
+    checkBooks();
+    updateTeacher();
+    renderPlayerView();
+
+    requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+
+/* ---------------- EXIT DOOR ---------------- */
+
+const exitDoor = document.createElement("div");
+
+exitDoor.style.position = "absolute";
+exitDoor.style.left = "calc(50% - 45px)";
+exitDoor.style.bottom = "17%";
+exitDoor.style.width = "90px";
+exitDoor.style.height = "130px";
+exitDoor.style.background = "#24704c";
+exitDoor.style.border = "8px solid #153d2c";
+exitDoor.style.zIndex = "7";
+exitDoor.style.boxShadow = "0 0 25px rgba(30,220,130,.15)";
+
+exitDoor.innerHTML = `
+    <div style="
+        position:absolute;
+        top:12px;
+        width:100%;
+        text-align:center;
+        color:#dfffea;
+        font-weight:bold;
+        font-size:12px;
+    ">
+        EXIT
+    </div>
+`;
+
+document.getElementById("world").appendChild(exitDoor);
+
+/* ---------------- HELP TEXT ---------------- */
+
+setInterval(() => {
+
+    if (!game.running)
+        return;
+
+    const exitX = 50;
+    const exitY = 80;
+
+    const dx = game.player.x - exitX;
+    const dy = game.player.y - exitY;
+
+    const distance = Math.sqrt(
+        dx * dx + dy * dy
+    );
+
+    if (distance < 10) {
+
+        if (game.books >= 3) {
+            showMessage("Нажми E — выйти из школы!");
+        } else {
+            showMessage(
+                "Здесь выход. Но сначала собери все тетради."
+            );
+        }
+    }
+
+}, 3000);
+</script>
 
 </body>
 </html>
